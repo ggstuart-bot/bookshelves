@@ -26,7 +26,8 @@ export function server(request) {
                 <link rel="icon" href="/assets/icon.svg">
             </head>
             <body>
-                <h1>hello world</h1>
+                <h1>Bookshelves</h1>
+                <p>Manage your books from anywhere.</p>
             </body>
         </html>
     `;
