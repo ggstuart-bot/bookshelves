@@ -4,7 +4,7 @@ export function server(request) {
 
     // Placeholder: this will need to change when we add HTML views
     const headers = new Headers({ "content-type": "text/html" });
-    const page = `
+    const document = `
         <!DOCTYPE html>
         <html lang="en">
             <head>
@@ -16,5 +16,5 @@ export function server(request) {
             </body>
         </html>
     `;
-    return new Response(page, { headers });
+    return new Response(document, { headers });
 }
