@@ -1,0 +1,18 @@
+:root {
+    color-scheme: light dark; /* light or dark page colours, from the OS setting */
+}
+
+body {
+    margin: 0;
+    font-family: system-ui;
+    font-weight: 300;
+}
+
+h1 {
+    font-weight: 400;
+}
+
+/* Padding keeps everything off the edges of the window */
+body > * {
+    padding: 0.5rem 1rem;
+}
