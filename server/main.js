@@ -1,4 +1,7 @@
 import { serveDir } from "@std/http";
+import { layout } from "./views/layout.js";
+import { homeView } from "./views/home.js";
+import { notFoundView } from "./views/notFound.js";
 
 export function server(request) {
     const url = new URL(request.url);
@@ -14,24 +17,12 @@ export function server(request) {
         });
     }
     if (url.pathname === "/") {
-        // Placeholder: this will need to change when we add HTML views
+        // Placeholder: this will need to change when we add controllers
         const headers = new Headers({ "content-type": "text/html" });
-        const document = `
-            <!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset="utf-8">
-                    <title>Bookshelves</title>
-                    <link rel="stylesheet" href="/assets/styles.css">
-                    <link rel="icon" href="/assets/icon.svg">
-                </head>
-                <body>
-                    <h1>Welcome to Bookshelves</h1>
-                    <p>Organise your books with bookshelves.</p>
-                </body>
-            </html>
-        `;
-        return new Response(document, { headers });
+        return new Response(layout(homeView()), { headers });
     }
-    return new Response("Not found", { status: 404 });
+
+    // Placeholder: this will need to change when we add controllers
+    const headers = new Headers({ "content-type": "text/html" });
+    return new Response(layout(notFoundView()), { headers, status: 404 });
 }
