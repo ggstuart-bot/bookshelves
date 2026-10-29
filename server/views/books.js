@@ -18,8 +18,12 @@ export function booksView({ data: { books, page, hasNext } }) {
 function pagination(page, hasNext) {
     if (page === 1 && !hasNext) return "";
     return `<nav aria-label="Pagination">
-            ${page > 1 ? `<a href="/books?page=${page - 1}" rel="prev">previous</a>` : ""}
-            <a href="/books?page=${page}" aria-current="page">page ${page}</a>
-            ${hasNext ? `<a href="/books?page=${page + 1}" rel="next">next</a>` : ""}
+            ${page > 1 ? `<a href="${pageUrl(page - 1)}" rel="prev">previous</a>` : ""}
+            <a href="${pageUrl(page)}" aria-current="page">page ${page}</a>
+            ${hasNext ? `<a href="${pageUrl(page + 1)}" rel="next">next</a>` : ""}
         </nav>`;
+}
+
+function pageUrl(page) {
+    return `/books?${new URLSearchParams({ page })}`;
 }
