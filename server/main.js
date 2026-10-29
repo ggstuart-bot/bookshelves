@@ -1,5 +1,6 @@
 import { serveDir } from "@std/http";
 import { homeController } from "./controllers/home.js";
+import { booksController } from "./controllers/books.js";
 import { notFoundController } from "./controllers/notFound.js";
 
 export function server(request) {
@@ -17,6 +18,9 @@ export function server(request) {
     }
     if (url.pathname === "/") {
         return homeController();
+    }
+    if (url.pathname === "/books") {
+        return booksController();
     }
     return notFoundController();
 }
