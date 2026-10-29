@@ -1,10 +1,13 @@
-export function booksView() {
+export function booksView({ data: { books } }) {
+    const items = books.map((book) => `<li>${book.title}</li>`);
     return `
         <section>
             <header>
                 <h1>Books</h1>
-                <p>All the books in Bookshelves.</p>
             </header>
+            <ul>
+                ${items.join("")}
+            </ul>
         </section>
     `;
 }
