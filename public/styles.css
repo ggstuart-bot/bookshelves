@@ -75,3 +75,17 @@ nav {
     align-items: center;
     gap: 0.5rem;
 }
+
+/* Pictures never overflow their box */
+img {
+    max-inline-size: 100%;
+}
+
+/* auto-fill makes as many columns as fit, each at least 15rem wide */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+}
