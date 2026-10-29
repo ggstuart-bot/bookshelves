@@ -5,6 +5,7 @@ import { notFoundController } from "./controllers/notFound.js";
 
 export function server(request) {
     const url = new URL(request.url);
+    const ctx = { request };
 
     // Placeholder: this will need to change when we add middleware
     console.log(request.method, url.pathname);
@@ -20,7 +21,7 @@ export function server(request) {
         return homeController();
     }
     if (url.pathname === "/books") {
-        return booksController();
+        return booksController(ctx);
     }
     return notFoundController();
 }
