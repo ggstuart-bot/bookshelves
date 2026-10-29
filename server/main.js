@@ -1,7 +1,6 @@
 import { serveDir } from "@std/http";
-import { layout } from "./views/layout.js";
-import { homeView } from "./views/home.js";
-import { notFoundView } from "./views/notFound.js";
+import { homeController } from "./controllers/home.js";
+import { notFoundController } from "./controllers/notFound.js";
 
 export function server(request) {
     const url = new URL(request.url);
@@ -17,12 +16,7 @@ export function server(request) {
         });
     }
     if (url.pathname === "/") {
-        // Placeholder: this will need to change when we add controllers
-        const headers = new Headers({ "content-type": "text/html" });
-        return new Response(layout(homeView()), { headers });
+        return homeController();
     }
-
-    // Placeholder: this will need to change when we add controllers
-    const headers = new Headers({ "content-type": "text/html" });
-    return new Response(layout(notFoundView()), { headers, status: 404 });
+    return notFoundController();
 }
