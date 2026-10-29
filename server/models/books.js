@@ -17,3 +17,10 @@ export function getBooks(page) {
         LIMIT :limit OFFSET :offset
     `).all({ limit: PAGE_SIZE, offset: (page - 1) * PAGE_SIZE });
 }
+
+// Placeholder: this will need to change when we add search
+export function countBooks() {
+    return db.prepare(`
+        SELECT count(*) AS count FROM books
+    `).get().count;
+}
