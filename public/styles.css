@@ -77,6 +77,11 @@ nav {
     gap: 0.5rem;
 }
 
+/* Pictures never overflow their box */
+img {
+    max-inline-size: 100%;
+}
+
 /* auto-fill makes as many columns as fit, each at least 15rem wide */
 .grid {
     display: grid;
@@ -90,6 +95,7 @@ nav {
 .card {
     border: 1px solid;
     border-radius: 0.5rem;
+    overflow: clip;
 
     > div:last-child {
         padding: 0.5rem;
@@ -100,4 +106,12 @@ nav {
         margin: 0;
         font-size: 1em;
     }
+}
+
+/* A book cover is always 2:3, cropped to fit */
+.cover {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
 }
