@@ -11,7 +11,8 @@ body {
     font-weight: 300;
 }
 
-h1 {
+h1,
+h2 {
     font-weight: 400;
 }
 
@@ -83,4 +84,20 @@ nav {
     gap: 1rem;
     padding: 0;
     list-style: none;
+}
+
+/* A card is a bordered box with rounded corners */
+.card {
+    border: 1px solid;
+    border-radius: 0.5rem;
+
+    > div:last-child {
+        padding: 0.5rem;
+    }
+
+    h2,
+    p {
+        margin: 0;
+        font-size: 1em;
+    }
 }

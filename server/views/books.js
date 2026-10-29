@@ -1,3 +1,5 @@
+import { bookCard } from "./partials/bookCard.js";
+
 export function booksView({ data: { books } }) {
     return `
         <section>
@@ -5,12 +7,8 @@ export function booksView({ data: { books } }) {
                 <h1>Books</h1>
             </header>
             <ul class="grid">
-                ${books.map(bookItem).join("")}
+                ${books.map(bookCard).join("")}
             </ul>
         </section>
     `;
-}
-
-function bookItem(book) {
-    return `<li>${book.title}</li>`;
 }
