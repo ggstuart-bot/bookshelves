@@ -18,8 +18,12 @@ export function booksView({ data: { books, page, pageCount } }) {
 function pagination(page, pageCount) {
     if (pageCount <= 1) return "";
     return `<nav aria-label="Pagination">
-            ${page > 1 ? `<a href="/books?page=${page - 1}" rel="prev">previous</a>` : ""}
-            <a href="/books?page=${page}" aria-current="page">page ${page} of ${pageCount}</a>
-            ${page < pageCount ? `<a href="/books?page=${page + 1}" rel="next">next</a>` : ""}
+            ${page > 1 ? `<a href="${pageUrl(page - 1)}" rel="prev">previous</a>` : ""}
+            <a href="${pageUrl(page)}" aria-current="page">page ${page} of ${pageCount}</a>
+            ${page < pageCount ? `<a href="${pageUrl(page + 1)}" rel="next">next</a>` : ""}
         </nav>`;
+}
+
+function pageUrl(page) {
+    return `/books?${new URLSearchParams({ page })}`;
 }
