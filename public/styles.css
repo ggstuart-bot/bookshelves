@@ -1,5 +1,8 @@
+/* The accent is a custom property, so it is set once and used everywhere */
 :root {
     color-scheme: light dark; /* light or dark page colours, from the OS setting */
+    --hue: 20; /* change the hue (0 to 360) to pick any accent colour */
+    --highlight: oklch(62% 0.2 var(--hue));
 }
 
 body {
@@ -8,11 +11,118 @@ body {
     font-weight: 300;
 }
 
-h1 {
+h1,
+h2 {
     font-weight: 400;
+}
+
+/* Links keep the text colour, with an accent underline */
+a {
+    color: inherit;
+    text-decoration-color: var(--highlight);
+    text-decoration-thickness: 2px;
+}
+
+/* The header and footer are dark panels with light text */
+.secondary {
+    background: #333;
+    color: white;
 }
 
 /* Padding keeps everything off the edges of the window */
 body > * {
     padding: 0.5rem 1rem;
+}
+
+/* Three rows: header and footer take what they need, main takes the rest */
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-block-size: 100vh;
+
+    & > header,
+    & > footer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+}
+
+/* The logo and site name sit side by side */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5em;
+    img {
+        block-size: 1em;
+    }
+}
+
+/* The icon is drawn black in light mode, so invert it to show on the dark header */
+@media (prefers-color-scheme: light) {
+    .brand img {
+        filter: invert(1);
+    }
+}
+
+/* Links in a nav sit in a centred row */
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Pictures never overflow their box */
+img {
+    max-inline-size: 100%;
+}
+
+/* auto-fill makes as many columns as fit, each at least 15rem wide */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+}
+
+/* A card is a bordered box with rounded corners. Each kind of card sets its own grid */
+.card {
+    display: grid;
+    border: 1px solid;
+    border-radius: 0.5rem;
+    overflow: clip;
+    overflow-wrap: anywhere; /* a very long word breaks, rather than squashing the cover */
+
+    /* The text is spread from the top of the card to the bottom */
+    > div:last-child {
+        display: grid;
+        align-content: space-between;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    h2,
+    p {
+        margin: 0;
+        font-size: 1em;
+    }
+}
+
+/* A book cover is always 2:3, cropped to fit */
+.cover {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+
+/* A book card: the cover in a narrow column, the text beside it */
+.card.book {
+    grid-template-columns: 2fr 3fr;
 }
