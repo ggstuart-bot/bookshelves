@@ -11,7 +11,8 @@ body {
     font-weight: 300;
 }
 
-h1 {
+h1,
+h2 {
     font-weight: 400;
 }
 
@@ -74,4 +75,54 @@ nav {
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
+}
+
+/* Pictures never overflow their box */
+img {
+    max-inline-size: 100%;
+}
+
+/* auto-fill makes as many columns as fit, each at least 15rem wide */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+}
+
+/* A card is a bordered box with rounded corners. Each kind of card sets its own grid */
+.card {
+    display: grid;
+    border: 1px solid;
+    border-radius: 0.5rem;
+    overflow: clip;
+    overflow-wrap: anywhere; /* a very long word breaks, rather than squashing the cover */
+
+    /* The text is spread from the top of the card to the bottom */
+    > div:last-child {
+        display: grid;
+        align-content: space-between;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    h2,
+    p {
+        margin: 0;
+        font-size: 1em;
+    }
+}
+
+/* A book cover is always 2:3, cropped to fit */
+.cover {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+
+/* A book card: the cover in a narrow column, the text beside it */
+.card.book {
+    grid-template-columns: 2fr 3fr;
 }
