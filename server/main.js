@@ -2,6 +2,7 @@ import { homeController } from "./controllers/home.js";
 import { booksController } from "./controllers/books.js";
 import { staticController } from "./controllers/static.js";
 import { notFoundController } from "./controllers/notFound.js";
+import { NotFoundError } from "./tools/errors.js";
 import { Router } from "./tools/router.js";
 
 const app = new Router();
@@ -17,5 +18,12 @@ export function server(request) {
     // Placeholder: this will need to change when we add middleware
     console.log(request.method, url.pathname);
 
-    return app.handle(ctx) ?? notFoundController();
+    try {
+        return app.handle(ctx);
+    } catch (error) {
+        if (error instanceof NotFoundError) {
+            return notFoundController();
+        }
+        throw error;
+    }
 }
