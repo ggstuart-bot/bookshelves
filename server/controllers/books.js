@@ -17,5 +17,5 @@ export function booksController(ctx) {
     ctx.data.books = getBooks(page, PAGE_SIZE);
     ctx.data.pageCount = pageCount;
     ctx.data.title = "Books";
-    return render(booksView, { title: ctx.data.title, data: ctx.data });
+    return render(booksView, ctx);
 }
