@@ -16,14 +16,13 @@ export function searchBooks(q, page, pageSize) {
     `).all({ pattern: `%${q}%`, limit: pageSize, offset: (page - 1) * pageSize });
 }
 
-// Placeholder: this will need to change when we add search
-function countBooks() {
+function countBooks(q) {
     return db.prepare(`
         SELECT count(*) AS count FROM books
-    `).get().count;
+        WHERE title LIKE :pattern OR author LIKE :pattern
+    `).get({ pattern: `%${q}%` }).count;
 }
 
-// Placeholder: this will need to change when we add search
-export function countPages(pageSize) {
-    return Math.ceil(countBooks() / pageSize);
+export function countPages(q, pageSize) {
+    return Math.ceil(countBooks(q) / pageSize);
 }
