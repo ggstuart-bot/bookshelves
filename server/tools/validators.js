@@ -16,7 +16,7 @@ export function minLength(len) {
     };
 }
 
-export function maxLength(len) {
+function maxLength(len) {
     return (name, value) => {
         if (value.length > len) {
             throw new ValidationError(

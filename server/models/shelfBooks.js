@@ -21,7 +21,7 @@ export function removeBookFromShelf(shelfId, bookId) {
 }
 
 // Up to 5 small covers to show on a shelf card
-export function getThumbnailsByShelfId(shelfId) {
+function getThumbnailsByShelfId(shelfId) {
     return db.prepare(`
         SELECT books.id, thumbnailUrl
         FROM shelfBooks JOIN books ON books.id = shelfBooks.bookId

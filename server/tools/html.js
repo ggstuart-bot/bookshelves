@@ -9,7 +9,7 @@ class SafeHTML {
     }
 }
 
-export function safe(value) {
+function safe(value) {
     return new SafeHTML(String(value ?? ""));
 }
 
