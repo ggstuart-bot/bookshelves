@@ -2,6 +2,13 @@ import { homeController } from "./controllers/home.js";
 import { booksController } from "./controllers/books.js";
 import { staticController } from "./controllers/static.js";
 import { notFoundController } from "./controllers/notFound.js";
+import { Router } from "./tools/router.js";
+
+const app = new Router();
+
+app.register("GET", "/assets/*", staticController);
+app.register("GET", "/", homeController);
+app.register("GET", "/books", booksController);
 
 export function server(request) {
     const url = new URL(request.url);
@@ -10,15 +17,5 @@ export function server(request) {
     // Placeholder: this will need to change when we add middleware
     console.log(request.method, url.pathname);
 
-    // Placeholder: this will need to change when we add a router
-    if (url.pathname.startsWith("/assets/")) {
-        return staticController(ctx);
-    }
-    if (url.pathname === "/") {
-        return homeController(ctx);
-    }
-    if (url.pathname === "/books") {
-        return booksController(ctx);
-    }
-    return notFoundController(ctx);
+    return app.handle(ctx) ?? notFoundController();
 }
