@@ -184,6 +184,7 @@ export async function server(request) {
         return await app.handle(ctx);
     } catch (error) {
         if (error instanceof NotFoundError) {
+            console.log("Not found:", error.message);
             return notFoundController(ctx);
         }
         throw error;
