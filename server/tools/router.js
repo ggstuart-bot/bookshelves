@@ -1,3 +1,5 @@
+import { NotFoundError } from "./errors.js";
+
 // Placeholder: this will need to change when we add middleware and URL parameters
 export class Router {
     constructor() {
@@ -19,7 +21,9 @@ export class Router {
             return route.method === request.method && route.pattern.test(url);
         });
         if (!route) {
-            return;
+            throw new NotFoundError(
+                `${request.method} ${url.pathname} doesn't match any known route`,
+            );
         }
         return route.handler(ctx);
     }
