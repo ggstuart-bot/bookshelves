@@ -1,8 +1,8 @@
-import { between, required } from "../tools/validators.js";
+import { maxLength, minLength, required } from "../tools/validators.js";
 
 export const shelfSchema = {
     title: {
         displayName: "Title",
-        validators: [required, between(3, 25)],
+        validators: [required, minLength(3), maxLength(25)],
     },
 };

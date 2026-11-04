@@ -6,10 +6,8 @@ export class Router {
         this.middleware = [];
     }
 
-    register(method, pattern, ...handlers) {
-        if (typeof pattern == "string") {
-            pattern = new URLPattern({ pathname: pattern });
-        }
+    register(method, pathname, ...handlers) {
+        const pattern = new URLPattern({ pathname });
         this.routes.push({ method, pattern, handlers });
     }
 
@@ -27,7 +25,7 @@ export class Router {
     handle(ctx) {
         const { url, request } = ctx;
         const route = this.routes.find((route) => {
-            return route.method == request.method && route.pattern.test(url);
+            return route.method === request.method && route.pattern.test(url);
         });
         if (!route) {
             throw new NotFoundError(

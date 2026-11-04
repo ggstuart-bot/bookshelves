@@ -26,15 +26,6 @@ export function maxLength(len) {
     };
 }
 
-export function between(min, max) {
-    const minValidator = minLength(min);
-    const maxValidator = maxLength(max);
-    return (name, value) => {
-        minValidator(name, value);
-        maxValidator(name, value);
-    };
-}
-
 export function hasDigit(name, value) {
     if (!/\d/.test(value)) {
         throw new ValidationError(`${name} must include a digit.`);
