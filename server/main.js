@@ -22,7 +22,7 @@ export function server(request) {
         return app.handle(ctx);
     } catch (error) {
         if (error instanceof NotFoundError) {
-            return notFoundController();
+            return notFoundController(ctx);
         }
         throw error;
     }
