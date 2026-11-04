@@ -6,10 +6,8 @@ export class Router {
         this.middleware = [];
     }
 
-    register(method, pattern, ...handlers) {
-        if (typeof pattern == "string") {
-            pattern = new URLPattern({ pathname: pattern });
-        }
+    register(method, path, ...handlers) {
+        const pattern = new URLPattern({ pathname: path });
         this.routes.push({ method, pattern, handlers });
     }
 
