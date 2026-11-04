@@ -9,10 +9,6 @@ class SafeHTML {
     }
 }
 
-function safe(value) {
-    return new SafeHTML(String(value ?? ""));
-}
-
 function toHTML(value) {
     if (value === undefined || value === null) return "";
     if (value instanceof SafeHTML) return value.value;
@@ -21,7 +17,7 @@ function toHTML(value) {
 }
 
 export function html(strings, ...values) {
-    return safe(strings.reduce(
+    return new SafeHTML(strings.reduce(
         (output, string, index) => output + string + toHTML(values[index]),
         "",
     ));
