@@ -9,6 +9,10 @@ export class Router {
         this.routes.push({ method, pattern, handler });
     }
 
+    get(...args) {
+        this.register("GET", ...args);
+    }
+
     handle(ctx) {
         const { url, request } = ctx;
         const route = this.routes.find((route) => {
