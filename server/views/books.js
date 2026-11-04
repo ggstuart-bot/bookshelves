@@ -2,14 +2,14 @@ import { bookCard } from "./partials/bookCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
 export function booksView(ctx) {
-    const { data: { books, page, pageCount } } = ctx;
+    const { data: { books, q, page, pageCount } } = ctx;
 
     return `
         <section>
             <header>
                 <h1>Books</h1>
             </header>
-            ${searchForm()}
+            ${searchForm(q)}
             <ul class="grid">
                 ${books.map(bookCard).join("")}
             </ul>

@@ -8,12 +8,12 @@ export function createBook({ title, author, year, thumbnailUrl, coverUrl }) {
     `).get({ title, author, year, thumbnailUrl, coverUrl });
 }
 
-// Placeholder: this will need to change when we add search
-export function getBooks(page, pageSize) {
+export function searchBooks(q, page, pageSize) {
     return db.prepare(`
         SELECT id, title, author, year, thumbnailUrl, coverUrl FROM books
+        WHERE title LIKE :pattern OR author LIKE :pattern
         LIMIT :limit OFFSET :offset
-    `).all({ limit: pageSize, offset: (page - 1) * pageSize });
+    `).all({ pattern: `%${q}%`, limit: pageSize, offset: (page - 1) * pageSize });
 }
 
 // Placeholder: this will need to change when we add search
