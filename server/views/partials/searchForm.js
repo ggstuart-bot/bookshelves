@@ -1,4 +1,6 @@
-export function searchForm(q) {
+// The book search form, shared by the home page and the books page.
+// Pass the current search to pre-fill the box
+export function searchForm(q = "") {
     return `
         <search>
             <form method="GET" action="/books">
