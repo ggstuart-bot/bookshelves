@@ -25,7 +25,7 @@ export class Router {
     handle(ctx) {
         const { url, request } = ctx;
         const route = this.routes.find((route) => {
-            return route.method == request.method && route.pattern.test(url);
+            return route.method === request.method && route.pattern.test(url);
         });
         if (!route) {
             throw new NotFoundError(
