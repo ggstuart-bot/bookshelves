@@ -6,9 +6,9 @@ import { Router } from "./tools/router.js";
 
 const app = new Router();
 
-app.register("GET", "/assets/*", staticController);
-app.register("GET", "/", homeController);
-app.register("GET", "/books", booksController);
+app.get("/assets/*", staticController);
+app.get("/", homeController);
+app.get("/books", booksController);
 
 export function server(request) {
     const url = new URL(request.url);
