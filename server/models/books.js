@@ -22,7 +22,7 @@ export function searchBooks(q, page, pageSize) {
     `).all({ pattern: `%${q}%`, limit: pageSize, offset: (page - 1) * pageSize });
 }
 
-export function countBooks(q) {
+function countBooks(q) {
     return db.prepare(`
         SELECT count(*) AS count FROM books
         WHERE title LIKE :pattern OR author LIKE :pattern
