@@ -13,7 +13,7 @@ app.get("/books", booksController);
 
 export function server(request) {
     const url = new URL(request.url);
-    const ctx = { request, url };
+    const ctx = { request, url, data: {} };
 
     // Placeholder: this will need to change when we add middleware
     console.log(request.method, url.pathname);
