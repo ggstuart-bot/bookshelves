@@ -41,6 +41,7 @@ import { withSession } from "./middleware/session.js";
 import { requireAdmin, requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 import {
+    canChangeAdmin,
     canPublishProfile,
     canPublishShelf,
     canUseShelf,
@@ -56,6 +57,7 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser");
+const mayChangeAdmin = requirePermission(canChangeAdmin, "targetUser", ForbiddenError);
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser");
 const mayPublishShelf = requirePermission(canPublishShelf, "shelf", ForbiddenError);
 const mayViewShelf = requirePermission(canViewShelf, "shelf");
@@ -143,6 +145,7 @@ app.post(
     mustBeSignedIn,
     requireAdmin,
     withTargetUser,
+    mayChangeAdmin,
     promoteController,
 );
 app.post(
@@ -150,6 +153,7 @@ app.post(
     mustBeSignedIn,
     requireAdmin,
     withTargetUser,
+    mayChangeAdmin,
     demoteController,
 );
 
