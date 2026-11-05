@@ -1,5 +1,10 @@
 import { html } from "../tools/html.js";
-import { canChangeAdmin, canPublishProfile, isSelf } from "../tools/permissions.js";
+import {
+    canChangeAdmin,
+    canChangeAvatar,
+    canPublishProfile,
+    isSelf,
+} from "../tools/permissions.js";
 import { adminButton } from "./partials/adminButton.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
@@ -25,6 +30,7 @@ export function userView(ctx) {
         ${hasControls
             ? html`
                 <aside>
+                    ${canChangeAvatar(currentUser, targetUser) ? avatarForm(targetUser) : ""}
                     ${canChangeAdmin(currentUser, targetUser)
                         ? html`<h2>Admin status</h2>${adminButton(targetUser)}`
                         : ""}
@@ -38,6 +44,18 @@ export function userView(ctx) {
 function avatarImage({ id, avatarId }, alt) {
     const src = avatarId ? `/users/${id}/avatar?v=${avatarId}` : DEFAULT_AVATAR;
     return html`<img class="avatar" src="${src}" alt="${alt}">`;
+}
+
+function avatarForm(user) {
+    return html`
+        <h2>Change avatar</h2>
+        <form class="secondary" method="POST" action="/users/${user.id}/avatar"
+            enctype="multipart/form-data">
+            <label for="avatar">Avatar</label>
+            <input id="avatar" type="file" name="avatar" required>
+            <button>upload avatar</button>
+        </form>
+    `;
 }
 
 function visibilityForm(user) {
