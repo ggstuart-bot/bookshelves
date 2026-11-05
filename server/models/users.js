@@ -12,10 +12,9 @@ export function getUserByUsername(username) {
     ).get({ username });
 }
 
-// Placeholder: this will need to change when users have avatars
 export function getUserById(id) {
     return db.prepare(
-        `SELECT id, username, isAdmin, isPublic FROM users WHERE id=:id`,
+        `SELECT id, username, isAdmin, avatarId, isPublic FROM users WHERE id=:id`,
     ).get({ id });
 }
 
