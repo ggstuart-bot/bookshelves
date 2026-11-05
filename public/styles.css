@@ -225,3 +225,26 @@ form.secondary {
         }
     }
 }
+
+/* A shelf card: a strip of covers on top, the text fills the rest */
+.card.shelf {
+    grid-template-rows: auto 1fr;
+    /* The row's items are pushed to opposite ends */
+    .row {
+        justify-content: space-between;
+    }
+}
+
+/* A centred strip of covers with a line underneath */
+.covers {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    padding: 0.5rem;
+    border-block-end: 1px solid;
+    /* min-inline-size: 0 lets the covers shrink to fit the card */
+    img {
+        min-inline-size: 0;
+        object-fit: cover;
+    }
+}
