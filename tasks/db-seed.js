@@ -11,7 +11,7 @@ for (const book of books) {
     bookIds[book.title] = id;
 }
 
-// Placeholder: this will need to change when users have avatars and admin rights
+// Placeholder: this will need to change when users have avatars
 for (const user of seed.users) {
     const { id: userId } = await createUser(user);
 

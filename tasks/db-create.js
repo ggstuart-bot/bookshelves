@@ -6,12 +6,13 @@ db.exec("DROP TABLE IF EXISTS shelves");
 db.exec("DROP TABLE IF EXISTS books");
 db.exec("DROP TABLE IF EXISTS users");
 
-// Placeholder: this will need to change when users have admin rights and avatars
+// Placeholder: this will need to change when users have avatars
 db.exec(`
     CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         hashedPassword TEXT NOT NULL,
+        isAdmin INTEGER DEFAULT 0,
         isPublic INTEGER NOT NULL DEFAULT 0
     )
 `);
