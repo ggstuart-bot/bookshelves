@@ -1,12 +1,13 @@
 import { bookCard } from "./partials/bookCard.js";
 
 export function booksView(ctx) {
-    const { data: { books, q, page, pageCount } } = ctx;
+    const { data: { title, books, q, page, pageCount } } = ctx;
 
     return `
         <section>
             <header>
-                <h1>Books</h1>
+                <h1>${title}</h1>
+                ${q ? `<p><a href="/books">show all books</a></p>` : ""}
             </header>
             ${searchForm(q)}
             <ul class="grid">

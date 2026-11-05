@@ -18,6 +18,6 @@ export function booksController(ctx) {
     ctx.data.page = page;
     ctx.data.books = searchBooks(q, page, PAGE_SIZE);
     ctx.data.pageCount = pageCount;
-    ctx.data.title = "Books";
+    ctx.data.title = q ? `Books matching "${q}"` : "Books";
     return render(booksView, ctx);
 }
