@@ -10,11 +10,10 @@ export function myShelvesController(ctx) {
     return render(myShelvesView, ctx);
 }
 
-// Placeholder: this will need to change when we add shelf pages
 export function createShelfController(ctx) {
     const { validated } = ctx;
-    createShelf({ title: validated.title });
-    return redirect("/shelves");
+    const shelf = createShelf({ title: validated.title });
+    return redirect(`/shelves/${shelf.id}`);
 }
 
 export function shelfController(ctx) {
