@@ -7,6 +7,13 @@ export function getUserByUsername(username) {
     ).get({ username });
 }
 
+// Placeholder: this will need to change when users have public profiles, admin rights and avatars
+export function getUserById(id) {
+    return db.prepare(
+        `SELECT id, username FROM users WHERE id=:id`,
+    ).get({ id });
+}
+
 // Placeholder: this will need to change when users have public profiles and admin rights
 export async function createUser({ username, password }) {
     const hashedPassword = await hashPassword(password);
