@@ -25,6 +25,7 @@ import {
     signupFormController,
     unpublishProfileController,
     userController,
+    usersController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import {
@@ -34,9 +35,10 @@ import {
     signinRedirectController,
     signoutController,
 } from "./controllers/sessions.js";
+import { forbiddenController } from "./controllers/forbidden.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
+import { requireAdmin, requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import {
     canPublishProfile,
     canPublishShelf,
@@ -53,6 +55,7 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
+const mustBeAdmin = requireAdmin(forbiddenController);
 const mayViewUser = requirePermission(canViewUser, "targetUser", notFoundController);
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser", notFoundController);
 const mayPublishShelf = requirePermission(canPublishShelf, "shelf", profileNotPublicController);
@@ -119,6 +122,7 @@ app.post(
     mayUseShelf,
     removeBookController,
 );
+app.get("/users", mustBeSignedIn, mustBeAdmin, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.post(
     "/users/:userId/publish",
