@@ -10,7 +10,7 @@ export function booksController(ctx) {
     const q = url.searchParams.get("q") ?? "";
     const pageParam = url.searchParams.get("page");
     const page = pageParam === null ? 1 : Number(pageParam);
-    const pageCount = Math.max(1, countPages(PAGE_SIZE));
+    const pageCount = Math.max(1, countPages(q, PAGE_SIZE));
     if (!Number.isSafeInteger(page) || page < 1 || page > pageCount) {
         throw new NotFoundError(`Page ${pageParam} not found`);
     }
