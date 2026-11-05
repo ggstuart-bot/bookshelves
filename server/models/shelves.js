@@ -53,6 +53,12 @@ export function updateShelfIsPublicById(id, isPublic) {
     ).get({ id, isPublic });
 }
 
+export function unpublishShelvesByOwnerId(ownerId) {
+    return db.prepare(
+        `UPDATE shelves SET isPublic=0 WHERE ownerId=:ownerId`,
+    ).run({ ownerId });
+}
+
 export function deleteShelfById(id) {
     return db.prepare(
         `DELETE FROM shelves WHERE id=:id RETURNING id, title, ownerId`,
