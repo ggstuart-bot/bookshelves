@@ -3,6 +3,8 @@ import { bookController, booksController } from "./controllers/books.js";
 import { addBookController, removeBookController } from "./controllers/shelfBooks.js";
 import {
     createShelfController,
+    deleteShelfController,
+    editShelfController,
     myShelvesController,
     shelfController,
 } from "./controllers/shelves.js";
@@ -16,6 +18,7 @@ import { shelfSchema } from "./schema/shelf.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
+const validateEditShelf = withValidation(shelfSchema, shelfController);
 
 const app = new Router();
 
@@ -28,6 +31,8 @@ app.get("/books/:bookId", withBook, bookController);
 app.get("/shelves", myShelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
+app.post("/shelves/:shelfId/edit", withShelf, validateEditShelf, editShelfController);
+app.post("/shelves/:shelfId/delete", withShelf, deleteShelfController);
 app.post("/shelves/:shelfId/books/:bookId/add", withShelf, withBook, addBookController);
 app.post("/shelves/:shelfId/books/:bookId/delete", withShelf, withBook, removeBookController);
 
