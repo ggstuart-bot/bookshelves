@@ -3,16 +3,19 @@ import { DEFAULT_COVER } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 
+// Placeholder: this will need to change when shelves can be public
 export function myShelvesView(ctx) {
     const { data: { shelves, errors, values } } = ctx;
 
     return html`
         <section>
             <header>
-                <h1>Shelves</h1>
+                <h1>My shelves</h1>
+                <p>Make a shelf, then add books to it from any book's page.</p>
             </header>
-            <h2>All shelves</h2>
-            ${cardGrid(shelves.map(shelfCard), "No shelves yet")}
+            <h2>Private shelves</h2>
+            <p>Only you can see these shelves</p>
+            ${cardGrid(shelves.map(shelfCard), "No private shelves yet")}
         </section>
         <aside>
             <h2>New shelf</h2>
