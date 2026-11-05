@@ -30,7 +30,7 @@ function shelfCard(shelf) {
     return html`
         <li class="card shelf">
             <div>
-                <h3>${shelf.title}</h3>
+                <h3><a href="/shelves/${shelf.id}">${shelf.title}</a></h3>
             </div>
         </li>
     `;
