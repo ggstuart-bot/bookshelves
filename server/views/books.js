@@ -1,33 +1,37 @@
+import { html } from "../tools/html.js";
 import { bookCard } from "./partials/bookCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
 export function booksView(ctx) {
     const { data: { title, books, q, page, pageCount } } = ctx;
 
-    return `
+    return html`
         <section>
             <header>
                 <h1>${title}</h1>
-                ${q ? `<p><a href="/books">show all books</a></p>` : ""}
+                ${q ? html`<p><a href="/books">show all books</a></p>` : ""}
             </header>
             ${searchForm(q)}
-            ${cardGrid(books.map(bookCard), q ? `No books match "${q}"` : "No books found")}
+            ${cardGrid(
+                books.map(bookCard),
+                q ? `No books match "${q}"` : "No books found",
+            )}
             ${pagination(q, page, pageCount)}
         </section>
     `;
 }
 
 function cardGrid(cards, emptyMessage) {
-    return cards.length ? `<ul class="grid">${cards.join("")}</ul>` : `<p>${emptyMessage}</p>`;
+    return cards.length ? html`<ul class="grid">${cards}</ul>` : html`<p>${emptyMessage}</p>`;
 }
 
 // Previous, the current page and next. Nothing at all if there's only one page
 function pagination(q, page, pageCount) {
     if (pageCount <= 1) return "";
-    return `<nav aria-label="Pagination">
-            ${page > 1 ? `<a href="${pageUrl(q, page - 1)}" rel="prev">previous</a>` : ""}
+    return html`<nav aria-label="Pagination">
+            ${page > 1 ? html`<a href="${pageUrl(q, page - 1)}" rel="prev">previous</a>` : ""}
             <a href="${pageUrl(q, page)}" aria-current="page">page ${page} of ${pageCount}</a>
-            ${page < pageCount ? `<a href="${pageUrl(q, page + 1)}" rel="next">next</a>` : ""}
+            ${page < pageCount ? html`<a href="${pageUrl(q, page + 1)}" rel="next">next</a>` : ""}
         </nav>`;
 }
 
