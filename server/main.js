@@ -6,7 +6,10 @@ import {
     deleteShelfController,
     editShelfController,
     myShelvesController,
+    profileNotPublicController,
+    publishShelfController,
     shelfController,
+    unpublishShelfController,
 } from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
 import { notFoundController } from "./controllers/notFound.js";
@@ -34,7 +37,13 @@ import {
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
 import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
-import { canPublishProfile, canUseShelf, canViewShelf, canViewUser } from "./tools/permissions.js";
+import {
+    canPublishProfile,
+    canPublishShelf,
+    canUseShelf,
+    canViewShelf,
+    canViewUser,
+} from "./tools/permissions.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
@@ -46,6 +55,7 @@ const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser", notFoundController);
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser", notFoundController);
+const mayPublishShelf = requirePermission(canPublishShelf, "shelf", profileNotPublicController);
 const mayViewShelf = requirePermission(canViewShelf, "shelf", notFoundController);
 const mayUseShelf = requirePermission(canUseShelf, "shelf", notFoundController);
 
@@ -76,6 +86,21 @@ app.post(
     mayUseShelf,
     validateEditShelf,
     editShelfController,
+);
+app.post(
+    "/shelves/:shelfId/publish",
+    mustBeSignedIn,
+    withShelf,
+    mayUseShelf,
+    mayPublishShelf,
+    publishShelfController,
+);
+app.post(
+    "/shelves/:shelfId/unpublish",
+    mustBeSignedIn,
+    withShelf,
+    mayUseShelf,
+    unpublishShelfController,
 );
 app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, deleteShelfController);
 app.post(
