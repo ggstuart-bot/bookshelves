@@ -8,6 +8,7 @@ import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
 import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
+import { withBook } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 
@@ -18,7 +19,7 @@ app.use(withLogs);
 app.get("/assets/*", staticController);
 app.get("/", homeController);
 app.get("/books", booksController);
-app.get("/books/:bookId", bookController);
+app.get("/books/:bookId", withBook, bookController);
 app.get("/shelves", myShelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
 
