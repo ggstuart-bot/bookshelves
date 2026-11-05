@@ -34,3 +34,9 @@ export function signinRedirectController(ctx) {
     ctx.flash = "Please sign in to continue";
     return redirect("/signin", ctx);
 }
+
+export function alreadySignedInRedirectController(ctx) {
+    const { user: { username } } = ctx;
+    ctx.flash = `You are already signed in as '${username}'`;
+    return redirect("/", ctx);
+}
