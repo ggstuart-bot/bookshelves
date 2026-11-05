@@ -15,10 +15,13 @@ import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
 import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
+import { createUserController, signupFormController } from "./controllers/users.js";
+import { userSchema } from "./schema/user.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
+const validateNewUser = withValidation(userSchema, signupFormController);
 
 const app = new Router();
 
@@ -28,6 +31,10 @@ app.get("/assets/*", staticController);
 app.get("/", homeController);
 app.get("/books", booksController);
 app.get("/books/:bookId", withBook, bookController);
+
+app.get("/signup", signupFormController);
+app.post("/signup", validateNewUser, createUserController);
+
 app.get("/shelves", myShelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
