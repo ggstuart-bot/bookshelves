@@ -59,7 +59,7 @@ db.exec(`
     CREATE TABLE sessions (
         id TEXT PRIMARY KEY,
         userId INTEGER NOT NULL,
-        expires INTEGER NOT NULL,
+        expires TEXT NOT NULL,
         FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
     )
 `);
