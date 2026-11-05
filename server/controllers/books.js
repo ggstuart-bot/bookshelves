@@ -14,5 +14,6 @@ export function booksController(ctx) {
         throw new NotFoundError(`Page ${pageParam} not found`);
     }
     const books = getBooks(page, PAGE_SIZE);
-    return render(booksView, { title: "Books", data: { books, page, pageCount } });
+    ctx.data.title = "Books";
+    return render(booksView, ctx, { data: { books, page, pageCount } });
 }
