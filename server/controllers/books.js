@@ -13,7 +13,9 @@ export function booksController(ctx) {
     if (!Number.isSafeInteger(page) || page < 1 || page > pageCount) {
         throw new NotFoundError(`Page ${pageParam} not found`);
     }
-    const books = getBooks(page, PAGE_SIZE);
+    ctx.data.page = page;
+    ctx.data.books = getBooks(page, PAGE_SIZE);
+    ctx.data.pageCount = pageCount;
     ctx.data.title = "Books";
-    return render(booksView, ctx, { data: { books, page, pageCount } });
+    return render(booksView, ctx);
 }
