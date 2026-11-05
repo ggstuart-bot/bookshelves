@@ -1,6 +1,7 @@
-// Placeholder: this will need to change when we add flash messages, sign-in and nav highlighting
-export function layout(content, page = {}) {
-    const title = page.title ? `${page.title} | Bookshelves` : "Bookshelves";
+// Placeholder: this will need to change when we add flash messages and sign-in
+export function layout(content, ctx) {
+    const { data, url } = ctx;
+    const title = data.title ? `${data.title} | Bookshelves` : "Bookshelves";
 
     const document = `
         <!DOCTYPE html>
@@ -16,7 +17,7 @@ export function layout(content, page = {}) {
             <header class="secondary">
                 <a href="/" class="brand"><img src="/assets/icon.svg" alt=""> Bookshelves</a>
                 <nav>
-                    <a href="/books">books</a>
+                    ${navLink("/books", "books", url.pathname)}
                 </nav>
             </header>
             <main>
@@ -31,4 +32,9 @@ export function layout(content, page = {}) {
         </html>
     `;
     return document;
+}
+
+// A header link, marked as the current page when it matches the path exactly
+function navLink(href, content, path) {
+    return `<a href="${href}" aria-current="${href === path ? "page" : "false"}">${content}</a>`;
 }

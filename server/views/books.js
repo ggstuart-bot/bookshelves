@@ -1,6 +1,8 @@
 import { bookCard } from "./partials/bookCard.js";
 
-export function booksView({ data: { books, page, pageCount } }) {
+export function booksView(ctx) {
+    const { data: { books, page, pageCount } } = ctx;
+
     return `
         <section>
             <header>
