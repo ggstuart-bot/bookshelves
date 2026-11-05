@@ -1,31 +1,38 @@
 import { bookCard } from "./partials/bookCard.js";
+import { searchForm } from "./partials/searchForm.js";
 
 export function booksView(ctx) {
-    const { data: { books, page, pageCount } } = ctx;
+    const { data: { title, books, q, page, pageCount } } = ctx;
 
     return `
         <section>
             <header>
-                <h1>Books</h1>
+                <h1>${title}</h1>
+                ${q ? `<p><a href="/books">show all books</a></p>` : ""}
             </header>
-            <ul class="grid">
-                ${books.map(bookCard).join("")}
-            </ul>
-            ${pagination(page, pageCount)}
+            ${searchForm(q)}
+            ${cardGrid(books.map(bookCard), q ? `No books match "${q}"` : "No books found")}
+            ${pagination(q, page, pageCount)}
         </section>
     `;
 }
 
+function cardGrid(cards, emptyMessage) {
+    return cards.length ? `<ul class="grid">${cards.join("")}</ul>` : `<p>${emptyMessage}</p>`;
+}
+
 // Previous, the current page and next. Nothing at all if there's only one page
-function pagination(page, pageCount) {
+function pagination(q, page, pageCount) {
     if (pageCount <= 1) return "";
     return `<nav aria-label="Pagination">
-            ${page > 1 ? `<a href="${pageUrl(page - 1)}" rel="prev">previous</a>` : ""}
-            <a href="${pageUrl(page)}" aria-current="page">page ${page} of ${pageCount}</a>
-            ${page < pageCount ? `<a href="${pageUrl(page + 1)}" rel="next">next</a>` : ""}
+            ${page > 1 ? `<a href="${pageUrl(q, page - 1)}" rel="prev">previous</a>` : ""}
+            <a href="${pageUrl(q, page)}" aria-current="page">page ${page} of ${pageCount}</a>
+            ${page < pageCount ? `<a href="${pageUrl(q, page + 1)}" rel="next">next</a>` : ""}
         </nav>`;
 }
 
-function pageUrl(page) {
-    return `/books?${new URLSearchParams({ page })}`;
+// Only keep q in the link if there's a search
+function pageUrl(q, page) {
+    const params = q ? { q, page } : { page };
+    return `/books?${new URLSearchParams(params)}`;
 }
