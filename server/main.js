@@ -18,7 +18,9 @@ import { shelfSchema } from "./schema/shelf.js";
 import {
     createUserController,
     profileController,
+    publishProfileController,
     signupFormController,
+    unpublishProfileController,
     userController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
@@ -32,7 +34,7 @@ import {
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
 import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
-import { canUseShelf, canViewShelf, canViewUser } from "./tools/permissions.js";
+import { canPublishProfile, canUseShelf, canViewShelf, canViewUser } from "./tools/permissions.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
@@ -43,6 +45,7 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser", notFoundController);
+const mayPublishProfile = requirePermission(canPublishProfile, "targetUser", notFoundController);
 const mayViewShelf = requirePermission(canViewShelf, "shelf", notFoundController);
 const mayUseShelf = requirePermission(canUseShelf, "shelf", notFoundController);
 
@@ -92,6 +95,20 @@ app.post(
     removeBookController,
 );
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
+app.post(
+    "/users/:userId/publish",
+    mustBeSignedIn,
+    withTargetUser,
+    mayPublishProfile,
+    publishProfileController,
+);
+app.post(
+    "/users/:userId/unpublish",
+    mustBeSignedIn,
+    withTargetUser,
+    mayPublishProfile,
+    unpublishProfileController,
+);
 
 export async function server(request) {
     const url = new URL(request.url);
