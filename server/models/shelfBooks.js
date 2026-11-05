@@ -19,3 +19,22 @@ export function removeBookFromShelf(shelfId, bookId) {
         `DELETE FROM shelfBooks WHERE shelfId=:shelfId AND bookId=:bookId`,
     ).run({ shelfId, bookId });
 }
+
+// Up to 5 small covers to show on a shelf card
+function getThumbnailsByShelfId(shelfId) {
+    return db.prepare(`
+        SELECT books.id, thumbnailUrl
+        FROM shelfBooks JOIN books ON books.id = shelfBooks.bookId
+        WHERE shelfId=:shelfId
+        LIMIT 5
+    `).all({ shelfId });
+}
+
+// Adds each shelf's thumbnails to the shelves it's given
+// This runs one small query per shelf, which is fine for a handful of shelves
+export function addThumbnails(shelves) {
+    for (const shelf of shelves) {
+        shelf.thumbnails = getThumbnailsByShelfId(shelf.id);
+    }
+    return shelves;
+}
