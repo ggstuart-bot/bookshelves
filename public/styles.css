@@ -26,10 +26,17 @@ a {
     text-decoration-thickness: 2px;
 }
 
-/* The current page's nav link is filled with the accent */
+/* The flash message and the current page's nav link are filled with the accent */
+#flash,
 nav a[aria-current="page"] {
     background: var(--highlight);
     color: contrast-color(var(--highlight)); /* black or white, whichever is easier to read */
+}
+
+/* Anything you can tab to gets an accent outline */
+:focus-visible {
+    outline: 2px solid var(--highlight);
+    outline-offset: 2px;
 }
 
 /* A secondary panel is dark, with light text */
@@ -209,6 +216,31 @@ form.secondary {
         &:empty {
             display: none;
         }
+    }
+}
+
+/* Fixed, so the page never moves. Hover or focus brings it back */
+#flash {
+    position: fixed;
+    inset-block-end: 4rem;
+    inset-inline-end: 0;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    /* Only animate when the visitor hasn't asked for reduced motion */
+    @media (prefers-reduced-motion: no-preference) {
+        animation: slide-away 0.5s 3s forwards; /* wait 3s, slide for 0.5s, then stay put */
+    }
+    /* Stopping the animation brings the message back */
+    &:hover,
+    &:focus {
+        animation: none;
+    }
+}
+
+/* After 3 seconds it slides right, leaving a sliver showing */
+@keyframes slide-away {
+    to {
+        translate: calc(100% - 1rem);
     }
 }
 
