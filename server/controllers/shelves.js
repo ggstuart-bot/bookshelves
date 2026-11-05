@@ -19,7 +19,7 @@ export function myShelvesController(ctx) {
 export function createShelfController(ctx) {
     const { validated } = ctx;
     const shelf = createShelf({ title: validated.title });
-    return redirect(`/shelves/${shelf.id}`);
+    return redirect(`/shelves/${shelf.id}`, ctx);
 }
 
 export function shelfController(ctx) {
@@ -33,12 +33,12 @@ export function shelfController(ctx) {
 export function editShelfController(ctx) {
     const { validated, data: { shelf: { id } } } = ctx;
     const shelf = updateShelfTitleById(id, validated.title);
-    return redirect(`/shelves/${shelf.id}`);
+    return redirect(`/shelves/${shelf.id}`, ctx);
 }
 
 // Placeholder: this will need to change when we add flash messages
 export function deleteShelfController(ctx) {
     const { data: { shelf: { id } } } = ctx;
     deleteShelfById(id);
-    return redirect("/shelves");
+    return redirect("/shelves", ctx);
 }
