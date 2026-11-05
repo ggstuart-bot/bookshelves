@@ -9,11 +9,12 @@ import { adminButton } from "./partials/adminButton.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
 import { shelfCard } from "./partials/shelfCard.js";
+import { AVATAR_TYPES } from "../schema/avatar.js";
 
 const DEFAULT_AVATAR = "/assets/default-avatar.svg";
 
 export function userView(ctx) {
-    const { data: { targetUser, publicShelves }, user: currentUser } = ctx;
+    const { data: { targetUser, publicShelves, errors }, user: currentUser } = ctx;
     // Only you (or an admin) get controls, so only then is there an aside
     const hasControls = isSelf(currentUser, targetUser) || canChangeAdmin(currentUser, targetUser);
 
@@ -30,7 +31,9 @@ export function userView(ctx) {
         ${hasControls
             ? html`
                 <aside>
-                    ${canChangeAvatar(currentUser, targetUser) ? avatarForm(targetUser) : ""}
+                    ${canChangeAvatar(currentUser, targetUser)
+                        ? avatarForm(targetUser, errors)
+                        : ""}
                     ${canChangeAdmin(currentUser, targetUser)
                         ? html`<h2>Admin status</h2>${adminButton(targetUser)}`
                         : ""}
@@ -46,13 +49,15 @@ function avatarImage({ id, avatarId }, alt) {
     return html`<img class="avatar" src="${src}" alt="${alt}">`;
 }
 
-function avatarForm(user) {
+function avatarForm(user, errors) {
     return html`
         <h2>Change avatar</h2>
         <form class="secondary" method="POST" action="/users/${user.id}/avatar"
             enctype="multipart/form-data">
             <label for="avatar">Avatar</label>
-            <input id="avatar" type="file" name="avatar" required>
+            <input id="avatar" type="file" name="avatar" accept="${AVATAR_TYPES.join(",")}" required
+                aria-describedby="avatar-error" aria-invalid="${Boolean(errors?.avatar)}">
+            <span id="avatar-error" class="error">${errors?.avatar ?? ""}</span>
             <button>upload avatar</button>
         </form>
     `;
