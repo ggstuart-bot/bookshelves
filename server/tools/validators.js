@@ -25,3 +25,11 @@ export function maxLength(len) {
         }
     };
 }
+
+export function unique(exists) {
+    return (name, value) => {
+        if (exists(value)) {
+            throw new ValidationError(`${name} already taken.`);
+        }
+    };
+}
