@@ -1,4 +1,4 @@
-import { createShelf, getShelves } from "../models/shelves.js";
+import { createShelf, getShelves, updateShelfTitleById } from "../models/shelves.js";
 import { addThumbnails, getBooksByShelfId } from "../models/shelfBooks.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
@@ -22,4 +22,11 @@ export function shelfController(ctx) {
     ctx.data.title = shelf.title;
     ctx.data.books = getBooksByShelfId(shelf.id);
     return render(myShelfView, ctx);
+}
+
+// Placeholder: this will need to change when we add flash messages
+export function editShelfController(ctx) {
+    const { validated, data: { shelf: { id } } } = ctx;
+    const shelf = updateShelfTitleById(id, validated.title);
+    return redirect(`/shelves/${shelf.id}`);
 }
