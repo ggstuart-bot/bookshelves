@@ -31,6 +31,7 @@ import {
     usersController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
+import { avatarSchema } from "./schema/avatar.js";
 import {
     alreadySignedInRedirectController,
     signinController,
@@ -56,6 +57,7 @@ const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
 const validateNewUser = withValidation(userSchema, signupFormController);
 const validateSignin = withValidation(signinSchema, signinFormController);
+const validateAvatar = withValidation(avatarSchema, userController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
@@ -136,6 +138,7 @@ app.post(
     mustBeSignedIn,
     withTargetUser,
     mayChangeAvatar,
+    validateAvatar,
     uploadAvatarController,
 );
 app.post(
