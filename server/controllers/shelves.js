@@ -30,16 +30,16 @@ export function shelfController(ctx) {
     return render(myShelfView, ctx);
 }
 
-// Placeholder: this will need to change when we add flash messages
 export function editShelfController(ctx) {
     const { validated, data: { shelf: { id } } } = ctx;
     const shelf = updateShelfTitleById(id, validated.title);
+    ctx.flash = `Shelf renamed to '${shelf.title}'`;
     return redirect(`/shelves/${shelf.id}`, ctx);
 }
 
-// Placeholder: this will need to change when we add flash messages
 export function deleteShelfController(ctx) {
     const { data: { shelf: { id } } } = ctx;
-    deleteShelfById(id);
+    const shelf = deleteShelfById(id);
+    ctx.flash = `Shelf '${shelf.title}' deleted`;
     return redirect("/shelves", ctx);
 }
