@@ -135,6 +135,17 @@ img {
     grid-template-columns: 2fr 3fr;
 }
 
+/* A row puts its items side by side, wrapping when there isn't room. A picture in it is 15rem wide */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: 1rem;
+    > img {
+        inline-size: 15rem;
+    }
+}
+
 /* Buttons and nav links share one look. The current page is filled in */
 button,
 nav a {
