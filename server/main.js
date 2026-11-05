@@ -5,8 +5,11 @@ import { staticController } from "./controllers/static.js";
 import { notFoundController } from "./controllers/notFound.js";
 import { NotFoundError } from "./tools/errors.js";
 import { Router } from "./tools/router.js";
+import { withLogs } from "./middleware/logging.js";
 
 const app = new Router();
+
+app.use(withLogs);
 
 app.get("/assets/*", staticController);
 app.get("/", homeController);
@@ -17,9 +20,6 @@ app.post("/shelves", createShelfController);
 export async function server(request) {
     const url = new URL(request.url);
     const ctx = { request, url, data: {} };
-
-    // Placeholder: this will need to change when we add middleware
-    console.log(request.method, url.pathname);
 
     try {
         return await app.handle(ctx);
