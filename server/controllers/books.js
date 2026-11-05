@@ -1,4 +1,5 @@
 import { countPages, searchBooks } from "../models/books.js";
+import { getShelves } from "../models/shelves.js";
 import { render } from "../tools/render.js";
 import { NotFoundError } from "../tools/errors.js";
 import { booksView } from "../views/books.js";
@@ -23,7 +24,9 @@ export function booksController(ctx) {
     return render(booksView, ctx);
 }
 
+// Placeholder: this will need to change when shelves have owners
 export function bookController(ctx) {
+    ctx.data.shelves = getShelves();
     ctx.data.title = ctx.data.book.title;
     return render(bookView, ctx);
 }
