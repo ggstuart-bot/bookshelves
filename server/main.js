@@ -20,16 +20,20 @@ import { userSchema } from "./schema/user.js";
 import {
     signinController,
     signinFormController,
+    signinRedirectController,
     signoutController,
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
+import { requireUser } from "./middleware/access.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
 const validateNewUser = withValidation(userSchema, signupFormController);
 const validateSignin = withValidation(signinSchema, signinFormController);
+
+const mustBeSignedIn = requireUser(signinRedirectController);
 
 const app = new Router();
 
@@ -47,7 +51,7 @@ app.get("/signin", signinFormController);
 app.post("/signin", validateSignin, signinController);
 app.post("/signout", signoutController);
 
-app.get("/shelves", myShelvesController);
+app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
 app.post("/shelves/:shelfId/edit", withShelf, validateEditShelf, editShelfController);
