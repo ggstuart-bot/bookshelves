@@ -54,12 +54,31 @@ app.post("/signin", mustBeSignedOut, validateSignin, signinController);
 app.post("/signout", signoutController);
 
 app.get("/shelves", mustBeSignedIn, myShelvesController);
-app.post("/shelves", validateNewShelf, createShelfController);
-app.get("/shelves/:shelfId", withShelf, shelfController);
-app.post("/shelves/:shelfId/edit", withShelf, validateEditShelf, editShelfController);
-app.post("/shelves/:shelfId/delete", withShelf, deleteShelfController);
-app.post("/shelves/:shelfId/books/:bookId/add", withShelf, withBook, addBookController);
-app.post("/shelves/:shelfId/books/:bookId/delete", withShelf, withBook, removeBookController);
+app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
+// Placeholder: this will need to change when shelves have owners
+app.get("/shelves/:shelfId", mustBeSignedIn, withShelf, shelfController);
+app.post(
+    "/shelves/:shelfId/edit",
+    mustBeSignedIn,
+    withShelf,
+    validateEditShelf,
+    editShelfController,
+);
+app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, deleteShelfController);
+app.post(
+    "/shelves/:shelfId/books/:bookId/add",
+    mustBeSignedIn,
+    withShelf,
+    withBook,
+    addBookController,
+);
+app.post(
+    "/shelves/:shelfId/books/:bookId/delete",
+    mustBeSignedIn,
+    withShelf,
+    withBook,
+    removeBookController,
+);
 
 export async function server(request) {
     const url = new URL(request.url);
