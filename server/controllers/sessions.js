@@ -29,3 +29,8 @@ export function signoutController(ctx) {
     ctx.flash = "Signed out";
     return redirect("/", ctx);
 }
+
+export function signinRedirectController(ctx) {
+    ctx.flash = "Please sign in to continue";
+    return redirect("/signin", ctx);
+}
