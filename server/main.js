@@ -6,7 +6,9 @@ import {
     deleteShelfController,
     editShelfController,
     myShelvesController,
+    publishShelfController,
     shelfController,
+    unpublishShelfController,
 } from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
 import { notFoundController } from "./controllers/notFound.js";
@@ -76,6 +78,20 @@ app.post(
     mayUseShelf,
     validateEditShelf,
     editShelfController,
+);
+app.post(
+    "/shelves/:shelfId/publish",
+    mustBeSignedIn,
+    withShelf,
+    mayUseShelf,
+    publishShelfController,
+);
+app.post(
+    "/shelves/:shelfId/unpublish",
+    mustBeSignedIn,
+    withShelf,
+    mayUseShelf,
+    unpublishShelfController,
 );
 app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, deleteShelfController);
 app.post(

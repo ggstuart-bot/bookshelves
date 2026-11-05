@@ -2,6 +2,7 @@ import { html } from "../tools/html.js";
 import { DEFAULT_COVER } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { shelfTitleForm } from "./partials/shelfTitleForm.js";
+import { visibilityButton } from "./partials/visibilityButton.js";
 
 // Placeholder: this will need to change when shelves can be public
 export function myShelvesView(ctx) {
@@ -15,7 +16,10 @@ export function myShelvesView(ctx) {
             </header>
             <h2>Private shelves</h2>
             <p>Only you can see these shelves</p>
-            ${cardGrid(shelves.map(shelfCard), "No private shelves yet")}
+            ${cardGrid(
+                shelves.map((shelf) => shelfCard(shelf, visibilityButton(shelf))),
+                "No private shelves yet",
+            )}
         </section>
         <aside>
             <h2>New shelf</h2>
@@ -26,7 +30,7 @@ export function myShelvesView(ctx) {
 
 // A shelf as a card in a .grid list, with a fanned row of its first few covers.
 // Shelf lists always sit under an <h2>, so the title is an <h3>
-function shelfCard(shelf) {
+function shelfCard(shelf, footer) {
     return html`
         <li class="card shelf">
             ${shelf.thumbnails.length
@@ -37,6 +41,7 @@ function shelfCard(shelf) {
                     <h3><a href="/shelves/${shelf.id}">${shelf.title}</a></h3>
                     <p>${shelf.bookCount} ${shelf.bookCount === 1 ? "book" : "books"}</p>
                 </div>
+                <footer>${footer}</footer>
             </div>
         </li>
     `;
