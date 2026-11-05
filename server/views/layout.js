@@ -17,24 +17,24 @@ export function layout(content, ctx) {
                 <link rel="icon" href="/assets/icon.svg">
             </head>
             <body>
-            <header class="secondary">
-                <a href="/" class="brand"><img src="/assets/icon.svg" alt=""> Bookshelves</a>
-                <nav>
-                    ${navLink("/books", "books", url.pathname)}
-                    ${adminLinks(user, url.pathname)}
-                    ${authLinks(user, url.pathname)}
-                </nav>
-            </header>
-            ${flashMessage(data.flash)}
-            <main>
-            ${content}
-            </main>
-            <footer class="secondary">
-                ${userMessage(user)}
-                <p>
-                    &copy; Bookshelves developers
-                </p>
-            </footer>
+                <header class="secondary">
+                    <a href="/" class="brand"><img src="/assets/icon.svg" alt=""> Bookshelves</a>
+                    <nav>
+                        ${navLink("/books", "books", url.pathname)}
+                        ${adminLinks(user, url.pathname)}
+                        ${authLinks(user, url.pathname)}
+                    </nav>
+                </header>
+                ${flashMessage(data.flash)}
+                <main>
+                ${content}
+                </main>
+                <footer class="secondary">
+                    ${userMessage(user)}
+                    <p>
+                        &copy; Bookshelves developers
+                    </p>
+                </footer>
             </body>
         </html>
     `;
