@@ -1,4 +1,5 @@
 import { bookCard } from "./partials/bookCard.js";
+import { searchForm } from "./partials/searchForm.js";
 
 export function booksView(ctx) {
     const { data: { title, books, q, page, pageCount } } = ctx;
@@ -13,18 +14,6 @@ export function booksView(ctx) {
             ${cardGrid(books.map(bookCard), q ? `No books match "${q}"` : "No books found")}
             ${pagination(q, page, pageCount)}
         </section>
-    `;
-}
-
-function searchForm(q) {
-    return `
-        <search>
-            <form method="GET" action="/books">
-                <label for="q">Search by title or author</label>
-                <input id="q" type="search" name="q" value="${q}">
-                <button>search</button>
-            </form>
-        </search>
     `;
 }
 
