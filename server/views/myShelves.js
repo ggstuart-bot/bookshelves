@@ -12,6 +12,14 @@ export function myShelvesView(ctx) {
             <h2>All shelves</h2>
             ${cardGrid(shelves.map(shelfCard), "No shelves yet")}
         </section>
+        <aside>
+            <h2>New shelf</h2>
+            <form class="secondary" method="POST" action="/shelves">
+                <label for="title">Title</label>
+                <input id="title" name="title">
+                <button>create</button>
+            </form>
+        </aside>
     `;
 }
 
