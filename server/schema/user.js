@@ -1,5 +1,12 @@
 import { usernameExists } from "../models/users.js";
-import { maxLength, minLength, required, unique } from "../tools/validators.js";
+import {
+    hasDigit,
+    hasSymbol,
+    maxLength,
+    minLength,
+    required,
+    unique,
+} from "../tools/validators.js";
 
 export const userSchema = {
     username: {
@@ -8,6 +15,6 @@ export const userSchema = {
     },
     password: {
         displayName: "Password",
-        validators: [required, minLength(8)],
+        validators: [required, minLength(8), hasDigit, hasSymbol],
     },
 };
