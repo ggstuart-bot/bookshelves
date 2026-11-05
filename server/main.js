@@ -14,7 +14,7 @@ app.get("/books", booksController);
 app.get("/shelves", myShelvesController);
 app.post("/shelves", createShelfController);
 
-export function server(request) {
+export async function server(request) {
     const url = new URL(request.url);
     const ctx = { request, url, data: {} };
 
@@ -22,7 +22,7 @@ export function server(request) {
     console.log(request.method, url.pathname);
 
     try {
-        return app.handle(ctx);
+        return await app.handle(ctx);
     } catch (error) {
         if (error instanceof NotFoundError) {
             console.log("Not found:", error.message);
