@@ -6,6 +6,7 @@ export function signupView(ctx) {
         <section>
             <header>
                 <h1>Sign up</h1>
+                <p>Already have an account? <a href="/signin">sign in</a> to gain access.</p>
             </header>
             <form class="secondary" method="POST">
                 <label for="username">Username</label>
