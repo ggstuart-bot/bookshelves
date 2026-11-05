@@ -27,7 +27,7 @@ import {
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
 import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
-import { canUseShelf } from "./tools/permissions.js";
+import { canUseShelf, canViewShelf } from "./tools/permissions.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
@@ -37,6 +37,7 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
+const mayViewShelf = requirePermission(canViewShelf, "shelf", notFoundController);
 const mayUseShelf = requirePermission(canUseShelf, "shelf", notFoundController);
 
 const app = new Router();
@@ -57,8 +58,7 @@ app.post("/signout", signoutController);
 
 app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
-// Placeholder: this will need to change when shelves have owners
-app.get("/shelves/:shelfId", mustBeSignedIn, withShelf, shelfController);
+app.get("/shelves/:shelfId", withShelf, mayViewShelf, shelfController);
 app.post(
     "/shelves/:shelfId/edit",
     mustBeSignedIn,
