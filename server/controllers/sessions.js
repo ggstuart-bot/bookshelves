@@ -1,7 +1,24 @@
+import { getUserByUsername } from "../models/users.js";
+import { verifyPassword } from "../tools/hash.js";
+import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { signinView } from "../views/signin.js";
 
 export function signinFormController(ctx) {
     ctx.data.title = "Sign in";
     return render(signinView, ctx);
+}
+
+// Placeholder: this will need to change when we add sessions
+export async function signinController(ctx) {
+    const { validated: { username, password } } = ctx;
+    const user = getUserByUsername(username);
+    if (!user || !(await verifyPassword(password, user.hashedPassword))) {
+        ctx.data.values = { username };
+        ctx.data.errors = { credentials: `Invalid credentials` };
+        ctx.status = 401;
+        return signinFormController(ctx);
+    }
+    ctx.flash = `Signed in as '${username}'`;
+    return redirect("/", ctx);
 }
