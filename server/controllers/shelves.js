@@ -52,6 +52,7 @@ function changeShelfVisibility(ctx, isPublic) {
     ctx.flash = isPublic
         ? `Shelf '${shelf.title}' is now public`
         : `Shelf '${shelf.title}' is now private`;
+    // Back to My shelves, where the shelf has moved to its new section
     return redirect("/shelves", ctx);
 }
 
