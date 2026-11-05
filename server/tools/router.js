@@ -14,6 +14,9 @@ export class Router {
     get(...args) {
         this.register("GET", ...args);
     }
+    post(...args) {
+        this.register("POST", ...args);
+    }
 
     handle(ctx) {
         const { url, request } = ctx;
