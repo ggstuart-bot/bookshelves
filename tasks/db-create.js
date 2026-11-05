@@ -3,6 +3,16 @@ import { db } from "../server/models/db.js";
 db.exec("DROP TABLE IF EXISTS shelfBooks");
 db.exec("DROP TABLE IF EXISTS shelves");
 db.exec("DROP TABLE IF EXISTS books");
+db.exec("DROP TABLE IF EXISTS users");
+
+// Placeholder: this will need to change when users have public profiles, admin rights and avatars
+db.exec(`
+    CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        hashedPassword TEXT NOT NULL
+    )
+`);
 
 // Placeholder: this will need to change when shelves have owners
 db.exec(`
