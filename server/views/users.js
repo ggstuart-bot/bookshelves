@@ -1,7 +1,7 @@
 import { html } from "../tools/html.js";
 import { canChangeAdmin } from "../tools/permissions.js";
+import { adminButton } from "./partials/adminButton.js";
 import { cardGrid } from "./partials/cardGrid.js";
-import { postButton } from "./partials/postButton.js";
 
 export function usersView(ctx) {
     const { data: { users }, user: currentUser } = ctx;
@@ -37,10 +37,4 @@ function userCard(user, footer) {
             </div>
         </li>
     `;
-}
-
-function adminButton(user) {
-    const action = user.isAdmin ? "demote" : "promote";
-    const label = user.isAdmin ? "remove admin" : "make admin";
-    return postButton(`/users/${user.id}/${action}`, label);
 }
