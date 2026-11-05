@@ -1,6 +1,10 @@
 import { homeController } from "./controllers/home.js";
 import { bookController, booksController } from "./controllers/books.js";
-import { createShelfController, myShelvesController } from "./controllers/shelves.js";
+import {
+    createShelfController,
+    myShelvesController,
+    shelfController,
+} from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
 import { notFoundController } from "./controllers/notFound.js";
 import { NotFoundError } from "./tools/errors.js";
@@ -22,6 +26,7 @@ app.get("/books", booksController);
 app.get("/books/:bookId", withBook, bookController);
 app.get("/shelves", myShelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
+app.get("/shelves/:shelfId", shelfController);
 
 export async function server(request) {
     const url = new URL(request.url);
