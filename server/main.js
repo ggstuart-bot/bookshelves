@@ -19,6 +19,7 @@ import { withLogs } from "./middleware/logging.js";
 import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
 import {
+    avatarController,
     createUserController,
     demoteController,
     ownAdminStatusController,
@@ -129,6 +130,7 @@ app.post(
 );
 app.get("/users", mustBeSignedIn, mustBeAdmin, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
+app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
 app.post(
     "/users/:userId/publish",
     mustBeSignedIn,
