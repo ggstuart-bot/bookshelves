@@ -20,11 +20,15 @@ import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
 import {
     createUserController,
+    demoteController,
+    ownAdminStatusController,
     profileController,
+    promoteController,
     publishProfileController,
     signupFormController,
     unpublishProfileController,
     userController,
+    usersController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import {
@@ -34,10 +38,12 @@ import {
     signinRedirectController,
     signoutController,
 } from "./controllers/sessions.js";
+import { forbiddenController } from "./controllers/forbidden.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
+import { requireAdmin, requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import {
+    canChangeAdmin,
     canPublishProfile,
     canPublishShelf,
     canUseShelf,
@@ -53,7 +59,9 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
+const mustBeAdmin = requireAdmin(forbiddenController);
 const mayViewUser = requirePermission(canViewUser, "targetUser", notFoundController);
+const mayChangeAdmin = requirePermission(canChangeAdmin, "targetUser", ownAdminStatusController);
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser", notFoundController);
 const mayPublishShelf = requirePermission(canPublishShelf, "shelf", profileNotPublicController);
 const mayViewShelf = requirePermission(canViewShelf, "shelf", notFoundController);
@@ -119,6 +127,7 @@ app.post(
     mayUseShelf,
     removeBookController,
 );
+app.get("/users", mustBeSignedIn, mustBeAdmin, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.post(
     "/users/:userId/publish",
@@ -133,6 +142,22 @@ app.post(
     withTargetUser,
     mayPublishProfile,
     unpublishProfileController,
+);
+app.post(
+    "/users/:userId/promote",
+    mustBeSignedIn,
+    mustBeAdmin,
+    withTargetUser,
+    mayChangeAdmin,
+    promoteController,
+);
+app.post(
+    "/users/:userId/demote",
+    mustBeSignedIn,
+    mustBeAdmin,
+    withTargetUser,
+    mayChangeAdmin,
+    demoteController,
 );
 
 export async function server(request) {

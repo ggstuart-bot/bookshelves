@@ -1,9 +1,15 @@
-import { createUser, updateUserIsPublicById } from "../models/users.js";
+import {
+    createUser,
+    getUsers,
+    updateUserIsAdminById,
+    updateUserIsPublicById,
+} from "../models/users.js";
 import { getPublicShelvesByOwnerId, unpublishShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { signupView } from "../views/signup.js";
+import { usersView } from "../views/users.js";
 import { userView } from "../views/user.js";
 
 export function signupFormController(ctx) {
@@ -18,6 +24,12 @@ export async function createUserController(ctx) {
     return redirect("/signin", ctx);
 }
 
+export function usersController(ctx) {
+    ctx.data.users = getUsers();
+    ctx.data.title = "Users";
+    return render(usersView, ctx);
+}
+
 export function userController(ctx) {
     const { data: { targetUser } } = ctx;
     ctx.data.publicShelves = addThumbnails(getPublicShelvesByOwnerId(targetUser.id));
@@ -27,6 +39,28 @@ export function userController(ctx) {
 
 export function profileController(ctx) {
     return redirect(`/users/${ctx.user.id}`, ctx);
+}
+
+export function ownAdminStatusController(ctx) {
+    ctx.flash = "You can't change your own admin status";
+    return redirect("/users", ctx);
+}
+
+function changeAdminStatus(ctx, isAdmin) {
+    const { data: { targetUser } } = ctx;
+    updateUserIsAdminById(targetUser.id, isAdmin);
+    ctx.flash = isAdmin
+        ? `'${targetUser.username}' is now an admin`
+        : `'${targetUser.username}' is no longer an admin`;
+    return redirect("/users", ctx);
+}
+
+export function promoteController(ctx) {
+    return changeAdminStatus(ctx, 1);
+}
+
+export function demoteController(ctx) {
+    return changeAdminStatus(ctx, 0);
 }
 
 // Unpublishing a profile also unpublishes its shelves,
