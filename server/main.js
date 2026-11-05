@@ -6,6 +6,10 @@ import { notFoundController } from "./controllers/notFound.js";
 import { NotFoundError } from "./tools/errors.js";
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
+import { withValidation } from "./middleware/validation.js";
+import { shelfSchema } from "./schema/shelf.js";
+
+const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 
 const app = new Router();
 
@@ -15,7 +19,7 @@ app.get("/assets/*", staticController);
 app.get("/", homeController);
 app.get("/books", booksController);
 app.get("/shelves", myShelvesController);
-app.post("/shelves", createShelfController);
+app.post("/shelves", validateNewShelf, createShelfController);
 
 export async function server(request) {
     const url = new URL(request.url);
