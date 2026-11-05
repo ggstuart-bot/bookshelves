@@ -23,7 +23,7 @@ export function server(request) {
     } catch (error) {
         if (error instanceof NotFoundError) {
             console.log("Not found:", error.message);
-            return notFoundController();
+            return notFoundController(ctx);
         }
         throw error;
     }
