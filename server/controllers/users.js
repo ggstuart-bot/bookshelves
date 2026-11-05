@@ -8,10 +8,9 @@ export function signupFormController(ctx) {
     return render(signupView, ctx);
 }
 
-// Placeholder: this will need to change when we add sign in
 export async function createUserController(ctx) {
     const { validated } = ctx;
     const user = await createUser(validated);
     ctx.flash = `User '${user.username}' created`;
-    return redirect("/", ctx);
+    return redirect("/signin", ctx);
 }
