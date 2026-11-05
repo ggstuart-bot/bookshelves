@@ -4,7 +4,7 @@ import { DEFAULT_COVER } from "./bookCard.js";
 // A shelf as a card in a .grid list, with a fanned row of its first few covers.
 // Pass extra content (e.g. the owner) to show it in the card footer.
 // Shelf lists always sit under an <h2>, so the title is an <h3>
-export function shelfCard(shelf, footer) {
+export function shelfCard(shelf, footer = "") {
     return html`
         <li class="card shelf">
             ${shelf.thumbnails.length
