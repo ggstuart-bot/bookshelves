@@ -133,7 +133,8 @@ img {
     grid-template-columns: 2fr 3fr;
 }
 
-/* Nav links are outlined pills, underlined on hover */
+/* Buttons and nav links share one look. The current page is filled in */
+button,
 nav a {
     padding: 0.25em 0.75em;
     border: 1px solid;
@@ -143,5 +144,34 @@ nav a {
     text-decoration: none;
     &:hover {
         text-decoration: underline var(--highlight) 2px;
+    }
+}
+
+/* An input may shrink below its default width, so the search row never overflows */
+input {
+    min-width: 0;
+}
+
+/* Buttons and inputs use the page font rather than the browser's */
+button,
+input {
+    font: inherit;
+}
+
+/* A form is a one-column grid: each label, input and button on its own row */
+form {
+    display: grid;
+    gap: 0.5rem;
+    max-inline-size: 30rem;
+    button {
+        justify-self: start;
+    }
+}
+
+/* The search box and its button share a row, under the label */
+search > form {
+    grid-template-columns: 1fr auto;
+    label {
+        grid-column: 1 / -1;
     }
 }
