@@ -23,6 +23,15 @@ export function getShelves() {
     `).all();
 }
 
+// Placeholder: this will need to change when shelves can be public
+export function getShelvesByOwnerId(ownerId) {
+    return db.prepare(`
+        SELECT id, title, ownerId,
+            (SELECT count(*) FROM shelfBooks WHERE shelfId = shelves.id) AS bookCount
+        FROM shelves WHERE ownerId=:ownerId
+    `).all({ ownerId });
+}
+
 export function updateShelfTitleById(id, title) {
     return db.prepare(
         `UPDATE shelves SET title=:title WHERE id=:id RETURNING id, title, ownerId`,
