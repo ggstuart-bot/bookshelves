@@ -9,7 +9,7 @@ export function myShelvesView(ctx) {
     return html`
         <section>
             <header>
-                <h1>Shelves</h1>
+                <h1>My shelves</h1>
             </header>
             <h2>All shelves</h2>
             ${cardGrid(shelves.map(shelfCard), "No shelves yet")}

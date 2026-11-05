@@ -47,11 +47,11 @@ function userMessage(user) {
     return user ? html`<p>Signed in as '${user.username}'</p>` : "";
 }
 
-// Placeholder: this will need to change when shelves have owners and users have profiles
+// Placeholder: this will need to change when users have profiles
 function authLinks(user, path) {
     if (!user) return navLink("/signin", "sign in", path);
     return html`
-        ${navLink("/shelves", "shelves", path)}
+        ${navLink("/shelves", "my shelves", path)}
         ${postButton("/signout", "sign out")}
     `;
 }
