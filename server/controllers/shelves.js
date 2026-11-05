@@ -19,6 +19,7 @@ export function myShelvesController(ctx) {
 export function createShelfController(ctx) {
     const { validated } = ctx;
     const shelf = createShelf({ title: validated.title });
+    ctx.flash = `Shelf '${shelf.title}' created`;
     return redirect(`/shelves/${shelf.id}`, ctx);
 }
 
