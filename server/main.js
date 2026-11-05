@@ -18,6 +18,7 @@ import { createUserController, signupFormController } from "./controllers/users.
 import { userSchema } from "./schema/user.js";
 import { signinController, signinFormController } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
+import { withSession } from "./middleware/session.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
@@ -29,6 +30,7 @@ const app = new Router();
 
 app.use(withLogs);
 app.use(withErrors);
+app.use(withSession);
 
 app.get("/assets/*", staticController);
 app.get("/", homeController);
