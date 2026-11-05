@@ -26,7 +26,8 @@ import {
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { requireGuest, requireUser } from "./middleware/access.js";
+import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
+import { canUseShelf } from "./tools/permissions.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
@@ -36,6 +37,7 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
+const mayUseShelf = requirePermission(canUseShelf, "shelf", notFoundController);
 
 const app = new Router();
 
@@ -61,15 +63,17 @@ app.post(
     "/shelves/:shelfId/edit",
     mustBeSignedIn,
     withShelf,
+    mayUseShelf,
     validateEditShelf,
     editShelfController,
 );
-app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, deleteShelfController);
+app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, deleteShelfController);
 app.post(
     "/shelves/:shelfId/books/:bookId/add",
     mustBeSignedIn,
     withShelf,
     withBook,
+    mayUseShelf,
     addBookController,
 );
 app.post(
@@ -77,6 +81,7 @@ app.post(
     mustBeSignedIn,
     withShelf,
     withBook,
+    mayUseShelf,
     removeBookController,
 );
 
