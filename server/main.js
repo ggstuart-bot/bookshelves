@@ -11,7 +11,7 @@ import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
 import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
-import { withBook } from "./middleware/resources.js";
+import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 
@@ -26,7 +26,7 @@ app.get("/books", booksController);
 app.get("/books/:bookId", withBook, bookController);
 app.get("/shelves", myShelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
-app.get("/shelves/:shelfId", shelfController);
+app.get("/shelves/:shelfId", withShelf, shelfController);
 
 export function server(request) {
     const url = new URL(request.url);

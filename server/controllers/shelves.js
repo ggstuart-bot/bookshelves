@@ -1,5 +1,4 @@
-import { createShelf, getShelfById, getShelves } from "../models/shelves.js";
-import { NotFoundError } from "../tools/errors.js";
+import { createShelf, getShelves } from "../models/shelves.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { myShelvesView } from "../views/myShelves.js";
@@ -19,12 +18,7 @@ export function createShelfController(ctx) {
 }
 
 export function shelfController(ctx) {
-    const { params: { shelfId } } = ctx;
-    const shelf = getShelfById(Number(shelfId));
-    if (!shelf) {
-        throw new NotFoundError(`Shelf ${shelfId} not found`);
-    }
-    ctx.data.shelf = shelf;
+    const { data: { shelf } } = ctx;
     ctx.data.title = shelf.title;
     return render(myShelfView, ctx);
 }
