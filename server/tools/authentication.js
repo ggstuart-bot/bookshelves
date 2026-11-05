@@ -1,5 +1,5 @@
-import { setCookie } from "@std/http";
-import { createSession } from "../models/sessions.js";
+import { getCookies, setCookie } from "@std/http";
+import { createSession, getSessionById } from "../models/sessions.js";
 
 const SESSION_LENGTH = 1000 * 60 * 60 * 24;
 
@@ -15,4 +15,10 @@ export function signin(userId, ctx) {
         sameSite: "Lax",
         maxAge: SESSION_LENGTH / 1000,
     });
+}
+
+export function currentSession(ctx) {
+    const { request } = ctx;
+    const { sessionId } = getCookies(request.headers);
+    return sessionId && getSessionById(sessionId);
 }

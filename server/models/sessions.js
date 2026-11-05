@@ -8,3 +8,9 @@ export function createSession(userId, expires) {
         RETURNING *;
     `).get({ id, userId, expires: new Date(expires).toISOString() });
 }
+
+export function getSessionById(id) {
+    return db.prepare(
+        `SELECT * FROM sessions WHERE id=:id AND expires > :now`,
+    ).get({ id, now: new Date().toISOString() });
+}
