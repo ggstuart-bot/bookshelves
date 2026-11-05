@@ -13,3 +13,9 @@ export function addBookToShelf(shelfId, bookId) {
         `INSERT OR IGNORE INTO shelfBooks(shelfId, bookId) VALUES (:shelfId, :bookId)`,
     ).run({ shelfId, bookId });
 }
+
+export function removeBookFromShelf(shelfId, bookId) {
+    return db.prepare(
+        `DELETE FROM shelfBooks WHERE shelfId=:shelfId AND bookId=:bookId`,
+    ).run({ shelfId, bookId });
+}
