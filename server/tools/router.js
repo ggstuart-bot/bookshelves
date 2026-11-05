@@ -7,9 +7,9 @@ export class Router {
         this.middleware = [];
     }
 
-    register(method, pathname, handler) {
+    register(method, pathname, ...handlers) {
         const pattern = new URLPattern({ pathname });
-        this.routes.push({ method, pattern, handler });
+        this.routes.push({ method, pattern, handlers });
     }
 
     use(fn) {
@@ -37,7 +37,7 @@ export class Router {
                 `${request.method} ${url.pathname} doesn't match any known route`,
             );
         }
-        return route.handler(ctx);
+        return this.chain(ctx, route.handlers);
     }
 
     chain(ctx, handlers) {
