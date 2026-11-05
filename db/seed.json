@@ -1,0 +1,61 @@
+{
+    "users": [
+        {
+            "username": "testUser1",
+            "password": "testUser1!",
+            "shelves": [
+                {
+                    "title": "classics",
+                    "books": [
+                        "Pride and Prejudice",
+                        "Jane Eyre",
+                        "The Great Gatsby",
+                        "To Kill a Mockingbird"
+                    ]
+                },
+                {
+                    "title": "fantasy",
+                    "books": [
+                        "The Hobbit",
+                        "A Game of Thrones",
+                        "The Name of the Wind",
+                        "The Way of Kings"
+                    ]
+                },
+                {
+                    "title": "to read",
+                    "books": [
+                        "The Book Thief",
+                        "The Kite Runner",
+                        "Life of Pi"
+                    ]
+                }
+            ]
+        },
+        {
+            "username": "testUser2",
+            "password": "testUser2!",
+            "shelves": [
+                {
+                    "title": "sci-fi",
+                    "books": [
+                        "Dune",
+                        "Ender's Game",
+                        "The Hitchhiker's Guide to the Galaxy",
+                        "Fahrenheit 451",
+                        "1984"
+                    ]
+                },
+                {
+                    "title": "children's favourites",
+                    "books": [
+                        "Charlotte's Web",
+                        "Matilda",
+                        "Where the Wild Things Are",
+                        "The Lion, the Witch, and the Wardrobe"
+                    ]
+                }
+            ]
+        }
+    ]
+}
