@@ -7,9 +7,9 @@ export class Router {
         this.middleware = [];
     }
 
-    register(method, pathname, handler) {
+    register(method, pathname, ...handlers) {
         const pattern = new URLPattern({ pathname });
-        this.routes.push({ method, pattern, handler });
+        this.routes.push({ method, pattern, handlers });
     }
 
     use(fn) {
@@ -29,7 +29,7 @@ export class Router {
             return route.method === request.method && route.pattern.test(url);
         });
         if (!route) return this.chain(ctx, [...this.middleware, noMatchingRoute]);
-        return this.chain(ctx, [...this.middleware, route.handler]);
+        return this.chain(ctx, [...this.middleware, ...route.handlers]);
     }
 
     chain(ctx, handlers) {
