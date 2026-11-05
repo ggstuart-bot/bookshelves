@@ -23,6 +23,7 @@ export async function createShelfController(ctx) {
     } catch (error) {
         if (!(error instanceof ValidationError)) throw error;
         ctx.data.errors = { title: error.message };
+        ctx.data.values = { title };
         ctx.status = 400;
         return myShelvesController(ctx);
     }
