@@ -1,14 +1,19 @@
 import { NotFoundError } from "./errors.js";
 
-// Placeholder: this will need to change when we add middleware and URL parameters
+// Placeholder: this will need to change when we add URL parameters
 export class Router {
     constructor() {
         this.routes = [];
+        this.middleware = [];
     }
 
-    register(method, pathname, handler) {
+    register(method, pathname, ...handlers) {
         const pattern = new URLPattern({ pathname });
-        this.routes.push({ method, pattern, handler });
+        this.routes.push({ method, pattern, handlers });
+    }
+
+    use(fn) {
+        this.middleware.push(fn);
     }
 
     get(...args) {
@@ -28,6 +33,13 @@ export class Router {
                 `${request.method} ${url.pathname} doesn't match any known route`,
             );
         }
-        return route.handler(ctx);
+        return this.chain(ctx, [...this.middleware, ...route.handlers]);
+    }
+
+    chain(ctx, handlers) {
+        const [fn, ...remaining] = handlers;
+        if (!remaining.length) return fn(ctx);
+        const next = (ctx) => this.chain(ctx, remaining);
+        return fn(ctx, next);
     }
 }
