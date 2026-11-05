@@ -1,6 +1,6 @@
 import { html } from "../../tools/html.js";
 
-const DEFAULT_COVER = "/assets/default-cover.svg";
+export const DEFAULT_COVER = "/assets/default-cover.svg";
 
 export function bookCard(book) {
     const cover = book.coverUrl ?? DEFAULT_COVER;
