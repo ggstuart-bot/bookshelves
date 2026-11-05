@@ -18,6 +18,7 @@ import { shelfSchema } from "./schema/shelf.js";
 import { createUserController, signupFormController } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import {
+    alreadySignedInRedirectController,
     signinController,
     signinFormController,
     signinRedirectController,
@@ -25,7 +26,7 @@ import {
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { requireUser } from "./middleware/access.js";
+import { requireGuest, requireUser } from "./middleware/access.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
@@ -34,6 +35,7 @@ const validateNewUser = withValidation(userSchema, signupFormController);
 const validateSignin = withValidation(signinSchema, signinFormController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
+const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 
 const app = new Router();
 
@@ -45,10 +47,10 @@ app.get("/", homeController);
 app.get("/books", booksController);
 app.get("/books/:bookId", withBook, bookController);
 
-app.get("/signup", signupFormController);
-app.post("/signup", validateNewUser, createUserController);
-app.get("/signin", signinFormController);
-app.post("/signin", validateSignin, signinController);
+app.get("/signup", mustBeSignedOut, signupFormController);
+app.post("/signup", mustBeSignedOut, validateNewUser, createUserController);
+app.get("/signin", mustBeSignedOut, signinFormController);
+app.post("/signin", mustBeSignedOut, validateSignin, signinController);
 app.post("/signout", signoutController);
 
 app.get("/shelves", mustBeSignedIn, myShelvesController);
