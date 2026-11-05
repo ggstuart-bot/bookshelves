@@ -26,6 +26,7 @@ import {
     publishProfileController,
     signupFormController,
     unpublishProfileController,
+    uploadAvatarController,
     userController,
     usersController,
 } from "./controllers/users.js";
@@ -43,6 +44,7 @@ import { requireAdmin, requireGuest, requirePermission, requireUser } from "./mi
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 import {
     canChangeAdmin,
+    canChangeAvatar,
     canPublishProfile,
     canPublishShelf,
     canUseShelf,
@@ -59,6 +61,7 @@ const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser");
 const mayChangeAdmin = requirePermission(canChangeAdmin, "targetUser", ForbiddenError);
+const mayChangeAvatar = requirePermission(canChangeAvatar, "targetUser");
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser");
 const mayPublishShelf = requirePermission(canPublishShelf, "shelf", ForbiddenError);
 const mayViewShelf = requirePermission(canViewShelf, "shelf");
@@ -128,6 +131,13 @@ app.post(
 app.get("/users", mustBeSignedIn, requireAdmin, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
+app.post(
+    "/users/:userId/avatar",
+    mustBeSignedIn,
+    withTargetUser,
+    mayChangeAvatar,
+    uploadAvatarController,
+);
 app.post(
     "/users/:userId/publish",
     mustBeSignedIn,
