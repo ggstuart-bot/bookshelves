@@ -5,7 +5,7 @@ import { postButton } from "./partials/postButton.js";
 import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 
 export function myShelfView(ctx) {
-    const { data: { shelf, books } } = ctx;
+    const { data: { shelf, books, errors, values } } = ctx;
 
     return html`
         <section>
@@ -20,7 +20,12 @@ export function myShelfView(ctx) {
         </section>
         <aside>
             <h2>Rename shelf</h2>
-            ${shelfTitleForm(`/shelves/${shelf.id}/edit`, shelf.title, "", "rename")}
+            ${shelfTitleForm(
+                `/shelves/${shelf.id}/edit`,
+                values?.title ?? shelf.title,
+                errors?.title,
+                "rename",
+            )}
         </aside>
     `;
 }
