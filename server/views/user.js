@@ -5,7 +5,8 @@ import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
 import { shelfCard } from "./partials/shelfCard.js";
 
-// Placeholder: this will need to change when users have avatars
+const DEFAULT_AVATAR = "/assets/default-avatar.svg";
+
 export function userView(ctx) {
     const { data: { targetUser, publicShelves }, user: currentUser } = ctx;
     // Only you (or an admin) get controls, so only then is there an aside
@@ -17,6 +18,7 @@ export function userView(ctx) {
                 <h1>${targetUser.username}</h1>
                 ${targetUser.isAdmin ? html`<p><span class="badge">admin</span></p>` : ""}
             </header>
+            ${avatarImage(targetUser, `Avatar for '${targetUser.username}'`)}
             <h2>Public shelves</h2>
             ${cardGrid(publicShelves.map((shelf) => shelfCard(shelf)), "No public shelves")}
         </section>
@@ -31,6 +33,11 @@ export function userView(ctx) {
             `
             : ""}
     `;
+}
+
+function avatarImage({ id, avatarId }, alt) {
+    const src = avatarId ? `/users/${id}/avatar?v=${avatarId}` : DEFAULT_AVATAR;
+    return html`<img class="avatar" src="${src}" alt="${alt}">`;
 }
 
 function visibilityForm(user) {
