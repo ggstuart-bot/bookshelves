@@ -1,3 +1,4 @@
+import { html } from "../tools/html.js";
 import { bookCard } from "./partials/bookCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
@@ -24,10 +25,10 @@ function cardGrid(cards, emptyMessage) {
 // Previous, the current page and next. Nothing at all if there's only one page
 function pagination(q, page, pageCount) {
     if (pageCount <= 1) return "";
-    return `<nav aria-label="Pagination">
-            ${page > 1 ? `<a href="${pageUrl(q, page - 1)}" rel="prev">previous</a>` : ""}
+    return html`<nav aria-label="Pagination">
+            ${page > 1 ? html`<a href="${pageUrl(q, page - 1)}" rel="prev">previous</a>` : ""}
             <a href="${pageUrl(q, page)}" aria-current="page">page ${page} of ${pageCount}</a>
-            ${page < pageCount ? `<a href="${pageUrl(q, page + 1)}" rel="next">next</a>` : ""}
+            ${page < pageCount ? html`<a href="${pageUrl(q, page + 1)}" rel="next">next</a>` : ""}
         </nav>`;
 }
 
