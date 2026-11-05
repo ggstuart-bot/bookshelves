@@ -186,10 +186,19 @@ search > form {
     }
 }
 
-/* A secondary form is padded with rounded corners */
+/* A secondary form is padded with rounded corners, and its errors have an accent bar */
 form.secondary {
     padding: 1.5rem;
     border-radius: 0.5rem;
+    .error {
+        padding-inline-start: 0.5em;
+        border-inline-start: 0.25em solid var(--highlight);
+        font-size: 0.8em;
+        /* An empty error is hidden */
+        &:empty {
+            display: none;
+        }
+    }
 }
 
 /* On wide screens main becomes a two-column grid, so an aside sits beside the section */
