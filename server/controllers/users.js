@@ -50,9 +50,8 @@ export function avatarController(ctx) {
 }
 
 export async function uploadAvatarController(ctx) {
-    const { request, data: { targetUser } } = ctx;
-    const formData = await request.formData();
-    const avatarId = await createFile(formData.get("avatar"));
+    const { validated: { avatar }, data: { targetUser } } = ctx;
+    const avatarId = await createFile(avatar);
     updateUserAvatarById(targetUser.id, avatarId);
     ctx.flash = "Avatar updated";
     return redirect("/profile", ctx);
