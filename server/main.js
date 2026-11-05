@@ -24,6 +24,7 @@ import {
     signupFormController,
     unpublishProfileController,
     userController,
+    usersController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import {
@@ -35,7 +36,7 @@ import {
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
+import { requireAdmin, requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 import {
     canPublishProfile,
@@ -119,6 +120,7 @@ app.post(
     mayUseShelf,
     removeBookController,
 );
+app.get("/users", mustBeSignedIn, requireAdmin, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.post(
     "/users/:userId/publish",
