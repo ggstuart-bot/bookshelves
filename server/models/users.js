@@ -20,14 +20,13 @@ export function updateUserIsPublicById(id, isPublic) {
     ).run({ id, isPublic });
 }
 
-// Placeholder: this will need to change when users have admin rights
-export async function createUser({ username, password, isPublic = 0 }) {
+export async function createUser({ username, password, isAdmin = 0, isPublic = 0 }) {
     const hashedPassword = await hashPassword(password);
     return db.prepare(`
-        INSERT INTO users(username, hashedPassword, isPublic)
-        VALUES (:username, :hashedPassword, :isPublic)
+        INSERT INTO users(username, hashedPassword, isAdmin, isPublic)
+        VALUES (:username, :hashedPassword, :isAdmin, :isPublic)
         RETURNING *
-    `).get({ username, hashedPassword, isPublic });
+    `).get({ username, hashedPassword, isAdmin, isPublic });
 }
 
 export function usernameExists(username) {
