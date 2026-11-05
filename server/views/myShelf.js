@@ -16,7 +16,7 @@ export function myShelfView(ctx) {
                 books.map((book) => bookCard(book, removeForm(shelf, book))),
                 html`No books yet, <a href="/books">find some books</a> to add`,
             )}
-            <p><a href="/shelves">Back to all shelves</a></p>
+            <p><a href="/shelves">Back to my shelves</a></p>
         </section>
         <aside>
             <h2>Rename shelf</h2>
