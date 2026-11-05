@@ -15,11 +15,12 @@ db.exec(`
     )
 `);
 
-// Placeholder: this will need to change when shelves have owners
+// Placeholder: this will need to change when shelves can be public
 db.exec(`
     CREATE TABLE shelves (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL
+        title TEXT NOT NULL,
+        ownerId INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
     )
 `);
 
