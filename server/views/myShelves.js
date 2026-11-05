@@ -6,7 +6,7 @@ import { visibilityButton } from "./partials/visibilityButton.js";
 
 // Placeholder: this will need to change when shelves can be public
 export function myShelvesView(ctx) {
-    const { data: { shelves, errors, values } } = ctx;
+    const { user, data: { shelves, errors, values } } = ctx;
 
     return html`
         <section>
@@ -17,9 +17,12 @@ export function myShelvesView(ctx) {
             <h2>Private shelves</h2>
             <p>Only you can see these shelves</p>
             ${cardGrid(
-                shelves.map((shelf) => shelfCard(shelf, visibilityButton(shelf))),
+                shelves.map((shelf) => shelfCard(shelf, visibilityButton(user, shelf))),
                 "No private shelves yet",
             )}
+            ${user.isPublic
+                ? ""
+                : html`<p><a href="/profile">Publish your profile</a> to share shelves</p>`}
         </section>
         <aside>
             <h2>New shelf</h2>
@@ -41,7 +44,7 @@ function shelfCard(shelf, footer) {
                     <h3><a href="/shelves/${shelf.id}">${shelf.title}</a></h3>
                     <p>${shelf.bookCount} ${shelf.bookCount === 1 ? "book" : "books"}</p>
                 </div>
-                <footer>${footer}</footer>
+                ${footer ? html`<footer>${footer}</footer>` : ""}
             </div>
         </li>
     `;
