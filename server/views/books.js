@@ -1,5 +1,6 @@
 import { html } from "../tools/html.js";
 import { bookCard } from "./partials/bookCard.js";
+import { cardGrid } from "./partials/cardGrid.js";
 import { searchForm } from "./partials/searchForm.js";
 
 export function booksView(ctx) {
@@ -19,10 +20,6 @@ export function booksView(ctx) {
             ${pagination(q, page, pageCount)}
         </section>
     `;
-}
-
-function cardGrid(cards, emptyMessage) {
-    return cards.length ? html`<ul class="grid">${cards}</ul>` : html`<p>${emptyMessage}</p>`;
 }
 
 // Previous, the current page and next. Nothing at all if there's only one page
