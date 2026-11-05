@@ -24,7 +24,8 @@ a {
     text-decoration-thickness: 2px;
 }
 
-/* The flash message and the current page's nav link are filled with the accent */
+/* Badges, the flash message and the current page's nav link are filled with the accent */
+.badge,
 #flash,
 nav a[aria-current="page"] {
     background: var(--highlight);
@@ -265,4 +266,16 @@ form.secondary {
         min-inline-size: 0;
         object-fit: cover;
     }
+}
+
+/* A user card: everything centred */
+.card.user {
+    justify-items: center;
+    text-align: center;
+}
+
+/* A short status label, e.g. admin, public or private */
+.badge {
+    padding: 0 0.5em;
+    border-radius: 1em;
 }
