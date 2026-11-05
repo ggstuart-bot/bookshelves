@@ -19,7 +19,7 @@ export function booksView(ctx) {
 }
 
 function cardGrid(cards, emptyMessage) {
-    return cards.length ? `<ul class="grid">${cards.join("")}</ul>` : `<p>${emptyMessage}</p>`;
+    return cards.length ? html`<ul class="grid">${cards}</ul>` : html`<p>${emptyMessage}</p>`;
 }
 
 // Previous, the current page and next. Nothing at all if there's only one page
