@@ -3,6 +3,7 @@
         {
             "username": "testUser1",
             "password": "testUser1!",
+            "isPublic": 1,
             "shelves": [
                 {
                     "title": "classics",
