@@ -2,7 +2,7 @@ import { createShelf, getShelves } from "../models/shelves.js";
 import { ValidationError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
-import { required } from "../tools/validators.js";
+import { maxLength, minLength, required } from "../tools/validators.js";
 import { myShelvesView } from "../views/myShelves.js";
 
 export function myShelvesController(ctx) {
@@ -17,7 +17,9 @@ export async function createShelfController(ctx) {
     const formData = await request.formData();
     const title = formData.get("title") ?? "";
     try {
-        required("Title", title);
+        for (const validate of [required, minLength(3), maxLength(25)]) {
+            validate("Title", title);
+        }
     } catch (error) {
         if (!(error instanceof ValidationError)) throw error;
         ctx.data.errors = { title: error.message };
