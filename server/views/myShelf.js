@@ -26,6 +26,9 @@ export function myShelfView(ctx) {
                 errors?.title,
                 "rename",
             )}
+            <h2>Delete shelf</h2>
+            <p>The books stay in the catalogue</p>
+            ${postButton(`/shelves/${shelf.id}/delete`, "delete shelf")}
         </aside>
     `;
 }
