@@ -21,3 +21,10 @@ export function getShelves() {
         FROM shelves
     `).all();
 }
+
+// Placeholder: this will need to change when shelves have owners
+export function updateShelfTitleById(id, title) {
+    return db.prepare(
+        `UPDATE shelves SET title=:title WHERE id=:id RETURNING id, title`,
+    ).get({ id, title });
+}
