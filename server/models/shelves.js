@@ -28,3 +28,10 @@ export function updateShelfTitleById(id, title) {
         `UPDATE shelves SET title=:title WHERE id=:id RETURNING id, title`,
     ).get({ id, title });
 }
+
+// Placeholder: this will need to change when shelves have owners
+export function deleteShelfById(id) {
+    return db.prepare(
+        `DELETE FROM shelves WHERE id=:id RETURNING id, title`,
+    ).get({ id });
+}
