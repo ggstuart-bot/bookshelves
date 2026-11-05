@@ -1,8 +1,8 @@
 import { html } from "../tools/html.js";
 
-// Placeholder: this will need to change when we add sign-in
+// Placeholder: this will need to change when we add sign out, admins and avatars
 export function layout(content, ctx) {
-    const { data, url } = ctx;
+    const { data, url, user } = ctx;
     const title = data.title ? `${data.title} | Bookshelves` : "Bookshelves";
 
     return html`
@@ -21,7 +21,7 @@ export function layout(content, ctx) {
                     <nav>
                         ${navLink("/books", "books", url.pathname)}
                         ${navLink("/shelves", "shelves", url.pathname)}
-                        ${navLink("/signin", "sign in", url.pathname)}
+                        ${authLinks(user, url.pathname)}
                     </nav>
                 </header>
                 ${flashMessage(data.flash)}
@@ -29,6 +29,7 @@ export function layout(content, ctx) {
                 ${content}
                 </main>
                 <footer class="secondary">
+                    ${userMessage(user)}
                     <p>
                         &copy; Bookshelves developers
                     </p>
@@ -40,6 +41,16 @@ export function layout(content, ctx) {
 
 function flashMessage(flash) {
     return flash ? html`<p id="flash" role="status" tabindex="0">${flash}</p>` : "";
+}
+
+function userMessage(user) {
+    return user ? html`<p>Signed in as '${user.username}'</p>` : "";
+}
+
+// Placeholder: this will need to change when we add sign out
+function authLinks(user, path) {
+    if (!user) return navLink("/signin", "sign in", path);
+    return "";
 }
 
 // A header link, marked as the current page when it matches the path exactly
