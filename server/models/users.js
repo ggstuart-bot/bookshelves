@@ -30,6 +30,12 @@ export function updateUserIsPublicById(id, isPublic) {
     ).run({ id, isPublic });
 }
 
+export function updateUserAvatarById(id, avatarId) {
+    return db.prepare(
+        `UPDATE users SET avatarId=:avatarId WHERE id=:id`,
+    ).run({ id, avatarId });
+}
+
 export async function createUser({ username, password, isAdmin = 0, isPublic = 0 }) {
     const hashedPassword = await hashPassword(password);
     return db.prepare(`
