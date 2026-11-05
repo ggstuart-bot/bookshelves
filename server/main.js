@@ -1,5 +1,6 @@
 import { homeController } from "./controllers/home.js";
 import { booksController } from "./controllers/books.js";
+import { createShelfController, myShelvesController } from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
 import { notFoundController } from "./controllers/notFound.js";
 import { NotFoundError } from "./tools/errors.js";
@@ -10,6 +11,8 @@ const app = new Router();
 app.get("/assets/*", staticController);
 app.get("/", homeController);
 app.get("/books", booksController);
+app.get("/shelves", myShelvesController);
+app.post("/shelves", createShelfController);
 
 export function server(request) {
     const url = new URL(request.url);
