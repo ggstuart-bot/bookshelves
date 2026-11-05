@@ -59,6 +59,24 @@
                     ]
                 }
             ]
+        },
+        {
+            "username": "adminUser",
+            "password": "adminUser1!",
+            "isAdmin": 1,
+            "isPublic": 1,
+            "shelves": [
+                {
+                    "title": "crime",
+                    "isPublic": 1,
+                    "books": [
+                        "The Girl with the Dragon Tattoo",
+                        "Gone Girl",
+                        "The Da Vinci Code",
+                        "And Then There Were None"
+                    ]
+                }
+            ]
         }
     ]
 }
