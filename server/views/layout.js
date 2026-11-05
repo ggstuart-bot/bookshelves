@@ -1,6 +1,7 @@
 import { html } from "../tools/html.js";
+import { postButton } from "./partials/postButton.js";
 
-// Placeholder: this will need to change when we add sign out, admins and avatars
+// Placeholder: this will need to change when we add admins and avatars
 export function layout(content, ctx) {
     const { data, url, user } = ctx;
     const title = data.title ? `${data.title} | Bookshelves` : "Bookshelves";
@@ -47,10 +48,10 @@ function userMessage(user) {
     return user ? html`<p>Signed in as '${user.username}'</p>` : "";
 }
 
-// Placeholder: this will need to change when we add sign out
+// Placeholder: this will need to change when we add profiles
 function authLinks(user, path) {
     if (!user) return navLink("/signin", "sign in", path);
-    return "";
+    return postButton("/signout", "sign out");
 }
 
 // A header link, marked as the current page when it matches the path exactly
