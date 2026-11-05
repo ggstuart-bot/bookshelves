@@ -28,6 +28,7 @@ import {
     publishProfileController,
     signupFormController,
     unpublishProfileController,
+    uploadAvatarController,
     userController,
     usersController,
 } from "./controllers/users.js";
@@ -45,6 +46,7 @@ import { withSession } from "./middleware/session.js";
 import { requireAdmin, requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import {
     canChangeAdmin,
+    canChangeAvatar,
     canPublishProfile,
     canPublishShelf,
     canUseShelf,
@@ -63,6 +65,7 @@ const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mustBeAdmin = requireAdmin(forbiddenController);
 const mayViewUser = requirePermission(canViewUser, "targetUser", notFoundController);
 const mayChangeAdmin = requirePermission(canChangeAdmin, "targetUser", ownAdminStatusController);
+const mayChangeAvatar = requirePermission(canChangeAvatar, "targetUser", notFoundController);
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser", notFoundController);
 const mayPublishShelf = requirePermission(canPublishShelf, "shelf", profileNotPublicController);
 const mayViewShelf = requirePermission(canViewShelf, "shelf", notFoundController);
@@ -132,6 +135,13 @@ app.post(
 app.get("/users", mustBeSignedIn, mustBeAdmin, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
+app.post(
+    "/users/:userId/avatar",
+    mustBeSignedIn,
+    withTargetUser,
+    mayChangeAvatar,
+    uploadAvatarController,
+);
 app.post(
     "/users/:userId/publish",
     mustBeSignedIn,
