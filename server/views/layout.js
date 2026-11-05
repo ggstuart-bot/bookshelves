@@ -3,12 +3,15 @@ import { avatarImage } from "./partials/avatarImage.js";
 import { postButton } from "./partials/postButton.js";
 
 export function layout(content, ctx) {
+    const { data, url, user } = ctx;
+    const title = data.title ? `${data.title} | Bookshelves` : "Bookshelves";
+
     return html`
         <!DOCTYPE html>
         <html lang="en">
             <head>
                 <meta charset="utf-8">
-                <title>${ctx.data.title ? `${ctx.data.title} | ` : ""}Bookshelves</title>
+                <title>${title}</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <link rel="stylesheet" href="/assets/styles.css">
                 <link rel="icon" href="/assets/icon.svg">
@@ -17,17 +20,17 @@ export function layout(content, ctx) {
             <header class="secondary">
                 <a href="/" class="brand"><img src="/assets/icon.svg" alt=""> Bookshelves</a>
                 <nav>
-                    ${navLink("/books", "books", ctx.url.pathname)}
-                    ${adminLinks(ctx.user, ctx.url.pathname)}
-                    ${authLinks(ctx.user, ctx.url.pathname)}
+                    ${navLink("/books", "books", url.pathname)}
+                    ${adminLinks(user, url.pathname)}
+                    ${authLinks(user, url.pathname)}
                 </nav>
             </header>
-            ${flashMessage(ctx.data.flash)}
+            ${flashMessage(data.flash)}
             <main>
             ${content}
             </main>
             <footer class="secondary">
-                ${userMessage(ctx.user)}
+                ${userMessage(user)}
                 <p>
                     &copy; Bookshelves developers
                 </p>
@@ -50,13 +53,12 @@ function adminLinks(user, path) {
 }
 
 function authLinks(user, path) {
-    return user
-        ? html`
-            ${navLink("/shelves", "my shelves", path)}
-                        ${navLink(`/users/${user.id}`, html`${avatarImage(user)}profile`, path)}
-                        ${postButton("/signout", "sign out")}
-        `
-        : navLink("/signin", "sign in", path);
+    if (!user) return navLink("/signin", "sign in", path);
+    return html`
+        ${navLink("/shelves", "my shelves", path)}
+        ${navLink(`/users/${user.id}`, html`${avatarImage(user)}profile`, path)}
+        ${postButton("/signout", "sign out")}
+    `;
 }
 
 // A header link, marked as the current page when it matches the path exactly
