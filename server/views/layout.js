@@ -1,11 +1,13 @@
 // Placeholder: this will need to change when we add flash messages, sign-in and nav highlighting
-export function layout(content) {
+export function layout(content, page = {}) {
+    const title = page.title ? `${page.title} | Bookshelves` : "Bookshelves";
+
     const document = `
         <!DOCTYPE html>
         <html lang="en">
             <head>
                 <meta charset="utf-8">
-                <title>Bookshelves</title>
+                <title>${title}</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <link rel="stylesheet" href="/assets/styles.css">
                 <link rel="icon" href="/assets/icon.svg">
