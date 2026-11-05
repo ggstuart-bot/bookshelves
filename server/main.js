@@ -27,7 +27,7 @@ import {
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
 import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
-import { canUseShelf, canViewShelf } from "./tools/permissions.js";
+import { canUseShelf, canViewShelf, canViewUser } from "./tools/permissions.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
@@ -37,6 +37,7 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
+const mayViewUser = requirePermission(canViewUser, "targetUser", notFoundController);
 const mayViewShelf = requirePermission(canViewShelf, "shelf", notFoundController);
 const mayUseShelf = requirePermission(canUseShelf, "shelf", notFoundController);
 
@@ -84,7 +85,7 @@ app.post(
     mayUseShelf,
     removeBookController,
 );
-app.get("/users/:userId", withTargetUser, userController);
+app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 
 export async function server(request) {
     const url = new URL(request.url);
