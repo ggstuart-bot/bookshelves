@@ -1,16 +1,22 @@
 import { html } from "../tools/html.js";
+import { canChangeAdmin } from "../tools/permissions.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
 
 export function usersView(ctx) {
-    const { data: { users } } = ctx;
+    const { data: { users }, user: currentUser } = ctx;
 
     return html`
         <section>
             <header>
                 <h1>Users</h1>
             </header>
-            ${cardGrid(users.map((user) => userCard(user, adminButton(user))), "No users")}
+            ${cardGrid(
+                users.map((user) =>
+                    userCard(user, canChangeAdmin(currentUser, user) ? adminButton(user) : "")
+                ),
+                "No users",
+            )}
         </section>
     `;
 }
@@ -27,7 +33,7 @@ function userCard(user, footer) {
                     ${user.isAdmin ? html`<span class="badge">admin</span>` : ""}
                     <span class="badge">${user.isPublic ? "public" : "private"}</span>
                 </p>
-                <footer>${footer}</footer>
+                ${footer ? html`<footer>${footer}</footer>` : ""}
             </div>
         </li>
     `;

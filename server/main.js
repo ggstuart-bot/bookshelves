@@ -21,6 +21,7 @@ import { shelfSchema } from "./schema/shelf.js";
 import {
     createUserController,
     demoteController,
+    ownAdminStatusController,
     profileController,
     promoteController,
     publishProfileController,
@@ -42,6 +43,7 @@ import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
 import { requireAdmin, requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import {
+    canChangeAdmin,
     canPublishProfile,
     canPublishShelf,
     canUseShelf,
@@ -59,6 +61,7 @@ const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mustBeAdmin = requireAdmin(forbiddenController);
 const mayViewUser = requirePermission(canViewUser, "targetUser", notFoundController);
+const mayChangeAdmin = requirePermission(canChangeAdmin, "targetUser", ownAdminStatusController);
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser", notFoundController);
 const mayPublishShelf = requirePermission(canPublishShelf, "shelf", profileNotPublicController);
 const mayViewShelf = requirePermission(canViewShelf, "shelf", notFoundController);
@@ -146,6 +149,7 @@ app.post(
     mustBeSignedIn,
     mustBeAdmin,
     withTargetUser,
+    mayChangeAdmin,
     promoteController,
 );
 app.post(
@@ -153,6 +157,7 @@ app.post(
     mustBeSignedIn,
     mustBeAdmin,
     withTargetUser,
+    mayChangeAdmin,
     demoteController,
 );
 
