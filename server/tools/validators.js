@@ -26,6 +26,18 @@ export function maxLength(len) {
     };
 }
 
+export function hasDigit(name, value) {
+    if (!/\d/.test(value)) {
+        throw new ValidationError(`${name} must include a digit.`);
+    }
+}
+
+export function hasSymbol(name, value) {
+    if (!/[^A-Za-z0-9\s]/.test(value)) {
+        throw new ValidationError(`${name} must include a symbol.`);
+    }
+}
+
 export function unique(exists) {
     return (name, value) => {
         if (exists(value)) {
