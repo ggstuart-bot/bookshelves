@@ -12,7 +12,8 @@ body {
 }
 
 h1,
-h2 {
+h2,
+h3 {
     font-weight: 400;
 }
 
@@ -114,6 +115,7 @@ img {
     }
 
     h2,
+    h3,
     p {
         margin: 0;
         font-size: 1em;
@@ -173,5 +175,24 @@ search > form {
     grid-template-columns: 1fr auto;
     label {
         grid-column: 1 / -1;
+    }
+}
+
+/* A secondary form is a dark panel, padded and rounded like a card */
+form.secondary {
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+/* On wide screens main becomes a two-column grid, so an aside sits beside the section */
+@media (width > 50rem) {
+    main {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        > aside {
+            margin-inline-start: 1rem;
+            padding-inline-start: 1rem;
+            border-inline-start: 1px solid;
+        }
     }
 }
