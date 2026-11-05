@@ -53,13 +53,12 @@ function adminLinks(user, path) {
 }
 
 function authLinks(user, path) {
-    return user
-        ? html`
-            ${navLink("/shelves", "my shelves", path)}
-                        ${navLink(`/users/${user.id}`, html`${avatarImage(user)}profile`, path)}
-                        ${postButton("/signout", "sign out")}
-        `
-        : navLink("/signin", "sign in", path);
+    if (!user) return navLink("/signin", "sign in", path);
+    return html`
+        ${navLink("/shelves", "my shelves", path)}
+        ${navLink(`/users/${user.id}`, html`${avatarImage(user)}profile`, path)}
+        ${postButton("/signout", "sign out")}
+    `;
 }
 
 // A header link, marked as the current page when it matches the path exactly
