@@ -15,7 +15,12 @@ import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
 import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
-import { createUserController, signupFormController, userController } from "./controllers/users.js";
+import {
+    createUserController,
+    profileController,
+    signupFormController,
+    userController,
+} from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import {
     alreadySignedInRedirectController,
@@ -57,6 +62,7 @@ app.post("/signup", mustBeSignedOut, validateNewUser, createUserController);
 app.get("/signin", mustBeSignedOut, signinFormController);
 app.post("/signin", mustBeSignedOut, validateSignin, signinController);
 app.post("/signout", signoutController);
+app.get("/profile", mustBeSignedIn, profileController);
 
 app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
