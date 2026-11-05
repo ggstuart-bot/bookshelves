@@ -22,3 +22,7 @@ export function userController(ctx) {
     ctx.data.title = targetUser.username;
     return render(userView, ctx);
 }
+
+export function profileController(ctx) {
+    return redirect(`/users/${ctx.user.id}`, ctx);
+}
