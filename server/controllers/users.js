@@ -7,7 +7,7 @@ import {
 } from "../models/users.js";
 import { getPublicShelvesByOwnerId, unpublishShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
-import { createFile, getFileById } from "../models/files.js";
+import { createFile, deleteFileById, getFileById } from "../models/files.js";
 import { NotFoundError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
@@ -53,6 +53,9 @@ export async function uploadAvatarController(ctx) {
     const { validated: { avatar }, data: { targetUser } } = ctx;
     const avatarId = await createFile(avatar);
     updateUserAvatarById(targetUser.id, avatarId);
+    if (targetUser.avatarId) {
+        deleteFileById(targetUser.avatarId);
+    }
     ctx.flash = "Avatar updated";
     return redirect("/profile", ctx);
 }
