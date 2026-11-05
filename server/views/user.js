@@ -1,23 +1,34 @@
 import { html } from "../tools/html.js";
-import { canPublishProfile } from "../tools/permissions.js";
+import { canChangeAdmin, canPublishProfile, isSelf } from "../tools/permissions.js";
+import { adminButton } from "./partials/adminButton.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
 import { shelfCard } from "./partials/shelfCard.js";
 
-// Placeholder: this will need to change when we add admins and avatars
+// Placeholder: this will need to change when users have avatars
 export function userView(ctx) {
     const { data: { targetUser, publicShelves }, user: currentUser } = ctx;
+    // Only you (or an admin) get controls, so only then is there an aside
+    const hasControls = isSelf(currentUser, targetUser) || canChangeAdmin(currentUser, targetUser);
 
     return html`
         <section>
             <header>
                 <h1>${targetUser.username}</h1>
+                ${targetUser.isAdmin ? html`<p><span class="badge">admin</span></p>` : ""}
             </header>
             <h2>Public shelves</h2>
             ${cardGrid(publicShelves.map((shelf) => shelfCard(shelf)), "No public shelves")}
         </section>
-        ${canPublishProfile(currentUser, targetUser)
-            ? html`<aside>${visibilityForm(targetUser)}</aside>`
+        ${hasControls
+            ? html`
+                <aside>
+                    ${canChangeAdmin(currentUser, targetUser)
+                        ? html`<h2>Admin status</h2>${adminButton(targetUser)}`
+                        : ""}
+                    ${canPublishProfile(currentUser, targetUser) ? visibilityForm(targetUser) : ""}
+                </aside>
+            `
             : ""}
     `;
 }

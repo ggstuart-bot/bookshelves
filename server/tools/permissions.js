@@ -1,7 +1,6 @@
-const isSelf = (user, targetUser) => user?.id === targetUser.id;
-// Placeholder: this will need to change when users have admin rights
+export const isSelf = (user, targetUser) => user?.id === targetUser.id;
 export const canViewUser = (user, targetUser) =>
-    isSelf(user, targetUser) || Boolean(targetUser.isPublic);
+    isSelf(user, targetUser) || user?.isAdmin || Boolean(targetUser.isPublic);
 export const canChangeAdmin = (user, targetUser) => user?.isAdmin && !isSelf(user, targetUser);
 export const canPublishProfile = (user, targetUser) => isSelf(user, targetUser);
 const isOwner = (user, resource) => user?.id === resource.ownerId;
