@@ -7,10 +7,10 @@ export function getUserByUsername(username) {
     ).get({ username });
 }
 
-// Placeholder: this will need to change when users have admin rights and avatars
+// Placeholder: this will need to change when users have avatars
 export function getUserById(id) {
     return db.prepare(
-        `SELECT id, username, isPublic FROM users WHERE id=:id`,
+        `SELECT id, username, isAdmin, isPublic FROM users WHERE id=:id`,
     ).get({ id });
 }
 
