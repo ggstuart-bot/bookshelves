@@ -1,4 +1,9 @@
-import { createUser, getUsers, updateUserIsPublicById } from "../models/users.js";
+import {
+    createUser,
+    getUsers,
+    updateUserIsAdminById,
+    updateUserIsPublicById,
+} from "../models/users.js";
 import { getPublicShelvesByOwnerId, unpublishShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
 import { redirect } from "../tools/redirect.js";
@@ -34,6 +39,23 @@ export function userController(ctx) {
 
 export function profileController(ctx) {
     return redirect(`/users/${ctx.user.id}`, ctx);
+}
+
+function changeAdminStatus(ctx, isAdmin) {
+    const { data: { targetUser } } = ctx;
+    updateUserIsAdminById(targetUser.id, isAdmin);
+    ctx.flash = isAdmin
+        ? `'${targetUser.username}' is now an admin`
+        : `'${targetUser.username}' is no longer an admin`;
+    return redirect("/users", ctx);
+}
+
+export function promoteController(ctx) {
+    return changeAdminStatus(ctx, 1);
+}
+
+export function demoteController(ctx) {
+    return changeAdminStatus(ctx, 0);
 }
 
 // Unpublishing a profile also unpublishes its shelves,
