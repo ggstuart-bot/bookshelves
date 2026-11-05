@@ -19,7 +19,9 @@ import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
 import {
     createUserController,
+    demoteController,
     profileController,
+    promoteController,
     publishProfileController,
     signupFormController,
     unpublishProfileController,
@@ -135,6 +137,20 @@ app.post(
     withTargetUser,
     mayPublishProfile,
     unpublishProfileController,
+);
+app.post(
+    "/users/:userId/promote",
+    mustBeSignedIn,
+    requireAdmin,
+    withTargetUser,
+    promoteController,
+);
+app.post(
+    "/users/:userId/demote",
+    mustBeSignedIn,
+    requireAdmin,
+    withTargetUser,
+    demoteController,
 );
 
 export function server(request) {
