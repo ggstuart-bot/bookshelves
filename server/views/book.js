@@ -1,5 +1,6 @@
 import { html } from "../tools/html.js";
 import { DEFAULT_COVER } from "./partials/bookCard.js";
+import { postButton } from "./partials/postButton.js";
 
 export function bookView(ctx) {
     const { data: { book, shelves } } = ctx;
@@ -34,12 +35,4 @@ function addToShelfForms(book, shelves) {
             postButton(`/shelves/${shelf.id}/books/${book.id}/add`, html`add to '${shelf.title}'`)
         )
         : html`<p>No shelves yet</p>`;
-}
-
-function postButton(action, label) {
-    return html`
-        <form method="POST" action="${action}">
-            <button>${label}</button>
-        </form>
-    `;
 }
