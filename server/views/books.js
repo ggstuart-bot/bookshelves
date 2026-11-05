@@ -1,3 +1,4 @@
+import { html } from "../tools/html.js";
 import { bookCard } from "./partials/bookCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
@@ -17,5 +18,5 @@ export function booksView(ctx) {
 }
 
 function cardGrid(cards, emptyMessage) {
-    return cards.length ? `<ul class="grid">${cards.join("")}</ul>` : `<p>${emptyMessage}</p>`;
+    return cards.length ? html`<ul class="grid">${cards}</ul>` : html`<p>${emptyMessage}</p>`;
 }
