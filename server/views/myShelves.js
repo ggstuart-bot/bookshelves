@@ -1,6 +1,7 @@
 import { html } from "../tools/html.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { shelfCard } from "./partials/shelfCard.js";
+import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 import { visibilityButton } from "./partials/visibilityButton.js";
 
 export function myShelvesView(ctx) {
@@ -32,13 +33,7 @@ export function myShelvesView(ctx) {
         </section>
         <aside>
             <h2>New shelf</h2>
-            <form class="secondary" method="POST" action="/shelves">
-                <label for="title">Title</label>
-                <input id="title" name="title" value="${values?.title ?? ""}"
-                    aria-describedby="title-error" aria-invalid="${Boolean(errors?.title)}">
-                <span id="title-error" class="error">${errors?.title ?? ""}</span>
-                <button>create</button>
-            </form>
+            ${shelfTitleForm("/shelves", values?.title ?? "", errors?.title, "create")}
         </aside>
     `;
 }

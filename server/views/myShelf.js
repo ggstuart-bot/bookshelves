@@ -3,6 +3,7 @@ import { canPublishShelf } from "../tools/permissions.js";
 import { bookCard } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
+import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 import { visibilityButton } from "./partials/visibilityButton.js";
 
 export function myShelfView(ctx) {
@@ -21,13 +22,12 @@ export function myShelfView(ctx) {
         </section>
         <aside>
             <h2>Rename shelf</h2>
-            <form class="secondary" method="POST" action="/shelves/${shelf.id}/edit">
-                <label for="title">Title</label>
-                <input id="title" name="title" value="${values?.title ?? shelf.title}"
-                    aria-describedby="title-error" aria-invalid="${Boolean(errors?.title)}">
-                <span id="title-error" class="error">${errors?.title ?? ""}</span>
-                <button>rename</button>
-            </form>
+            ${shelfTitleForm(
+                `/shelves/${shelf.id}/edit`,
+                values?.title ?? shelf.title,
+                errors?.title,
+                "rename",
+            )}
             <h2>Visibility</h2>
             ${visibilityControls(user, shelf)}
             <h2>Delete shelf</h2>
