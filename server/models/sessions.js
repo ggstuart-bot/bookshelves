@@ -6,13 +6,13 @@ export function createSession(userId, expires) {
         INSERT INTO sessions(id, userId, expires)
         VALUES (:id, :userId, :expires)
         RETURNING *;
-    `).get({ id, userId, expires });
+    `).get({ id, userId, expires: new Date(expires).toISOString() });
 }
 
 export function getSessionById(id) {
     return db.prepare(
         `SELECT * FROM sessions WHERE id=:id AND expires > :now`,
-    ).get({ id, now: Date.now() });
+    ).get({ id, now: new Date().toISOString() });
 }
 
 export function deleteSessionById(id) {
