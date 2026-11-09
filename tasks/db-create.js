@@ -6,21 +6,22 @@ db.exec("DROP TABLE IF EXISTS shelves");
 db.exec("DROP TABLE IF EXISTS books");
 db.exec("DROP TABLE IF EXISTS users");
 
-// Placeholder: this will need to change when users have public profiles, admin rights and avatars
+// Placeholder: this will need to change when users have admin rights and avatars
 db.exec(`
     CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
-        hashedPassword TEXT NOT NULL
+        hashedPassword TEXT NOT NULL,
+        isPublic INTEGER NOT NULL DEFAULT 0
     )
 `);
 
-// Placeholder: this will need to change when shelves can be public
 db.exec(`
     CREATE TABLE shelves (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
-        ownerId INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
+        ownerId INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        isPublic INTEGER NOT NULL DEFAULT 0
     )
 `);
 
