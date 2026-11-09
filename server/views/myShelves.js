@@ -3,7 +3,7 @@ import { DEFAULT_COVER } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 
-// Placeholder: this will need to change when shelves can be public
+// Placeholder: this will need to change when we add public and private sections
 export function myShelvesView(ctx) {
     const { data: { shelves, errors, values } } = ctx;
 
