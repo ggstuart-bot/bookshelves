@@ -1,12 +1,11 @@
 import { db } from "./db.js";
 
-// Placeholder: this will need to change when shelves can be public
-export function createShelf({ title, ownerId }) {
+export function createShelf({ title, ownerId, isPublic = 0 }) {
     return db.prepare(`
-        INSERT INTO shelves(title, ownerId)
-        VALUES (:title, :ownerId)
+        INSERT INTO shelves(title, ownerId, isPublic)
+        VALUES (:title, :ownerId, :isPublic)
         RETURNING id, title, ownerId
-    `).get({ title, ownerId });
+    `).get({ title, ownerId, isPublic });
 }
 
 // Placeholder: this will need to change when shelves can be public

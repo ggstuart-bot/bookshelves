@@ -14,14 +14,14 @@ export function getUserById(id) {
     ).get({ id });
 }
 
-// Placeholder: this will need to change when users have public profiles and admin rights
-export async function createUser({ username, password }) {
+// Placeholder: this will need to change when users have admin rights
+export async function createUser({ username, password, isPublic = 0 }) {
     const hashedPassword = await hashPassword(password);
     return db.prepare(`
-        INSERT INTO users(username, hashedPassword)
-        VALUES (:username, :hashedPassword)
+        INSERT INTO users(username, hashedPassword, isPublic)
+        VALUES (:username, :hashedPassword, :isPublic)
         RETURNING *
-    `).get({ username, hashedPassword });
+    `).get({ username, hashedPassword, isPublic });
 }
 
 export function usernameExists(username) {
