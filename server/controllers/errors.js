@@ -8,6 +8,13 @@ export function notFoundController(ctx) {
     return render(errorView, ctx);
 }
 
+export function forbiddenController(ctx) {
+    ctx.status = 403;
+    ctx.data.title = "Forbidden";
+    ctx.data.message = "You do not have permission to take the requested action.";
+    return render(errorView, ctx);
+}
+
 export function serverErrorController(ctx) {
     ctx.status = 500;
     ctx.data.title = "Server error";
