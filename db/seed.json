@@ -3,9 +3,11 @@
         {
             "username": "testUser1",
             "password": "testUser1!",
+            "isPublic": 1,
             "shelves": [
                 {
                     "title": "classics",
+                    "isPublic": 1,
                     "books": [
                         "Pride and Prejudice",
                         "Jane Eyre",
@@ -15,6 +17,7 @@
                 },
                 {
                     "title": "fantasy",
+                    "isPublic": 1,
                     "books": [
                         "The Hobbit",
                         "A Game of Thrones",
