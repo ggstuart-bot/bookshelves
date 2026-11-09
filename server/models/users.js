@@ -14,6 +14,12 @@ export function getUserById(id) {
     ).get({ id });
 }
 
+export function updateUserIsPublicById(id, isPublic) {
+    return db.prepare(
+        `UPDATE users SET isPublic=:isPublic WHERE id=:id`,
+    ).run({ id, isPublic });
+}
+
 // Placeholder: this will need to change when users have admin rights
 export async function createUser({ username, password, isPublic = 0 }) {
     const hashedPassword = await hashPassword(password);
