@@ -3,6 +3,7 @@ import { bookCard } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
 import { shelfTitleForm } from "./partials/shelfTitleForm.js";
+import { visibilityButton } from "./partials/visibilityButton.js";
 
 export function myShelfView(ctx) {
     const { data: { shelf, books, errors, values } } = ctx;
@@ -26,11 +27,23 @@ export function myShelfView(ctx) {
                 errors?.title,
                 "rename",
             )}
+            <h2>Visibility</h2>
+            ${visibilityControls(shelf)}
             <h2>Delete shelf</h2>
             <p>The books stay in the catalogue</p>
             ${postButton(`/shelves/${shelf.id}/delete`, "delete shelf")}
         </aside>
     `;
+}
+
+// Who can see the shelf, then the button
+function visibilityControls(shelf) {
+    if (shelf.isPublic) {
+        return html`<p>Anyone can see this shelf</p>
+        ${visibilityButton(shelf)}`;
+    }
+    return html`<p>Only you can see this shelf</p>
+        ${visibilityButton(shelf)}`;
 }
 
 function removeForm(shelf, book) {
