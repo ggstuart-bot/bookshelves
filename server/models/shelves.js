@@ -8,12 +8,13 @@ export function createShelf({ title, ownerId, isPublic = 0 }) {
     `).get({ title, ownerId, isPublic });
 }
 
-// Placeholder: this will need to change when shelves can be public
 export function getShelfById(id) {
-    return db.prepare(`SELECT id, title, ownerId FROM shelves WHERE id=:id`).get({ id });
+    return db.prepare(
+        `SELECT id, title, ownerId, isPublic FROM shelves WHERE id=:id`,
+    ).get({ id });
 }
 
-// Placeholder: this will need to change when shelves can be public
+// Placeholder: this will need to change when we add publishing
 export function getShelvesByOwnerId(ownerId) {
     return db.prepare(`
         SELECT id, title, ownerId,
