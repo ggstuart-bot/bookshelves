@@ -1,5 +1,6 @@
 import { createUser, updateUserIsPublicById } from "../models/users.js";
-import { unpublishShelvesByOwnerId } from "../models/shelves.js";
+import { getPublicShelvesByOwnerId, unpublishShelvesByOwnerId } from "../models/shelves.js";
+import { addThumbnails } from "../models/shelfBooks.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { signupView } from "../views/signup.js";
@@ -17,9 +18,9 @@ export async function createUserController(ctx) {
     return redirect("/signin", ctx);
 }
 
-// Placeholder: this will need to change when we add public shelves to user pages
 export function userController(ctx) {
     const { data: { targetUser } } = ctx;
+    ctx.data.publicShelves = addThumbnails(getPublicShelvesByOwnerId(targetUser.id));
     ctx.data.title = targetUser.username;
     return render(userView, ctx);
 }
