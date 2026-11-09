@@ -10,9 +10,7 @@ export function booksView(ctx) {
                 ${q ? `<p><a href="/books">show all books</a></p>` : ""}
             </header>
             ${searchForm(q)}
-            <ul class="grid">
-                ${books.map(bookCard).join("")}
-            </ul>
+            ${cardGrid(books.map(bookCard), q ? `No books match "${q}"` : "No books found")}
         </section>
     `;
 }
@@ -27,4 +25,8 @@ function searchForm(q) {
             </form>
         </search>
     `;
+}
+
+function cardGrid(cards, emptyMessage) {
+    return cards.length ? `<ul class="grid">${cards.join("")}</ul>` : `<p>${emptyMessage}</p>`;
 }
