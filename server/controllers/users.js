@@ -16,7 +16,7 @@ export async function createUserController(ctx) {
     return redirect("/signin", ctx);
 }
 
-// Placeholder: this will need to change when shelves can be public
+// Placeholder: this will need to change when we add public shelves to user pages
 export function userController(ctx) {
     const { data: { targetUser } } = ctx;
     ctx.data.title = targetUser.username;
