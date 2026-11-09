@@ -1,4 +1,5 @@
 import { createUser, updateUserIsPublicById } from "../models/users.js";
+import { unpublishShelvesByOwnerId } from "../models/shelves.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { signupView } from "../views/signup.js";
@@ -27,10 +28,14 @@ export function profileController(ctx) {
     return redirect(`/users/${ctx.user.id}`, ctx);
 }
 
-// Placeholder: this will need to change when we add the public owner rule for shelves
+// Unpublishing a profile also unpublishes its shelves,
+// so a public shelf always has a public owner
 function changeProfileVisibility(ctx, isPublic) {
     const { data: { targetUser } } = ctx;
     updateUserIsPublicById(targetUser.id, isPublic);
+    if (!isPublic) {
+        unpublishShelvesByOwnerId(targetUser.id);
+    }
     ctx.flash = isPublic ? "Your profile is now public" : "Your profile is now private";
     return redirect("/profile", ctx);
 }
