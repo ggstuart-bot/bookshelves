@@ -7,19 +7,26 @@ export class Router {
         this.middleware = [];
     }
 
-    register(pathname, handler) {
+    register(method, pathname, handler) {
         const pattern = new URLPattern({ pathname });
-        this.routes.push({ pattern, handler });
+        this.routes.push({ method, pattern, handler });
     }
 
     use(fn) {
         this.middleware.push(fn);
     }
 
+    get(...args) {
+        this.register("GET", ...args);
+    }
+    post(...args) {
+        this.register("POST", ...args);
+    }
+
     handle(ctx) {
-        const { url } = ctx;
+        const { url, request } = ctx;
         const route = this.routes.find((route) => {
-            return route.pattern.test(url);
+            return route.method === request.method && route.pattern.test(url);
         });
         if (!route) return this.chain(ctx, [...this.middleware, noMatchingRoute]);
         return this.chain(ctx, [...this.middleware, route.handler]);
@@ -34,6 +41,6 @@ export class Router {
 }
 
 function noMatchingRoute(ctx) {
-    const { url } = ctx;
-    throw new NotFoundError(`${url.pathname} doesn't match any known route`);
+    const { url, request } = ctx;
+    throw new NotFoundError(`${request.method} ${url.pathname} doesn't match any known route`);
 }
