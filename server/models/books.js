@@ -15,3 +15,14 @@ export function searchBooks(q, page, pageSize) {
         LIMIT :limit OFFSET :offset
     `).all({ pattern: `%${q}%`, limit: pageSize, offset: (page - 1) * pageSize });
 }
+
+function countBooks(q) {
+    return db.prepare(`
+        SELECT count(*) AS count FROM books
+        WHERE title LIKE :pattern OR author LIKE :pattern
+    `).get({ pattern: `%${q}%` }).count;
+}
+
+export function countPages(q, pageSize) {
+    return Math.ceil(countBooks(q) / pageSize);
+}
