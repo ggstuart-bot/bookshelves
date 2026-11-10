@@ -12,6 +12,7 @@ class SafeHTML {
 function toHTML(value) {
     if (value === undefined || value === null) return "";
     if (value instanceof SafeHTML) return value.value;
+    if (Array.isArray(value)) return value.map(toHTML).join("\n");
     return escape(String(value));
 }
 
