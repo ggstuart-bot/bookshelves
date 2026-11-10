@@ -1,11 +1,12 @@
+import { html } from "../tools/html.js";
 import { bookCard } from "./partials/bookCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
 export function booksView(ctx) {
     const { data: { title, books, q } } = ctx;
     const results = books.length
-        ? `<ul class="grid">${books.map(bookCard).join("")}</ul>`
-        : `<p>${q ? `No books match "${q}"` : "No books found"}</p>`;
+        ? html`<ul class="grid">${books.map(bookCard)}</ul>`
+        : html`<p>${q ? `No books match "${q}"` : "No books found"}</p>`;
 
     return `
         <section>
