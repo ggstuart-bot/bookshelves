@@ -1,5 +1,7 @@
+import { html } from "../tools/html.js";
+
 export function notFoundView() {
-    return `
+    return html`
         <section>
             <header>
                 <h1>Not found</h1>
