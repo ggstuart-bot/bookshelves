@@ -1,4 +1,5 @@
 import { createShelf, getShelves } from "../models/shelves.js";
+import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { myShelvesView } from "../views/myShelves.js";
 
@@ -8,10 +9,10 @@ export function myShelvesController(ctx) {
     return render(myShelvesView, ctx);
 }
 
-// Placeholder: this will need to change when we add validation
+// Placeholder: this will need to change when we add validation and shelf pages
 export async function createShelfController(ctx) {
     const { request } = ctx;
     const formData = await request.formData();
     createShelf({ title: formData.get("title") });
-    return myShelvesController(ctx);
+    return redirect("/shelves");
 }
