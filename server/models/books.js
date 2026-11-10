@@ -8,9 +8,10 @@ export function createBook({ title, author, year, thumbnailUrl, coverUrl }) {
     `).get({ title, author, year, thumbnailUrl, coverUrl });
 }
 
-// Placeholder: this will need to change when we add search
-export function getBooks() {
+// Placeholder: this will need to change when we add pagination
+export function searchBooks(q) {
     return db.prepare(`
         SELECT id, title, author, year, thumbnailUrl, coverUrl FROM books
-    `).all();
+        WHERE title LIKE :pattern OR author LIKE :pattern
+    `).all({ pattern: `%${q}%` });
 }
