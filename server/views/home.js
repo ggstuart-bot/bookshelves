@@ -1,7 +1,8 @@
+import { html } from "../tools/html.js";
 import { searchForm } from "./partials/searchForm.js";
 
 export function homeView() {
-    return `
+    return html`
         <section>
             <header>
                 <h1>Welcome to Bookshelves</h1>
