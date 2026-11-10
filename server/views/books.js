@@ -5,14 +5,17 @@ import { searchForm } from "./partials/searchForm.js";
 export function booksView(ctx) {
     const { data: { title, books, q } } = ctx;
 
-    return `
+    return html`
         <section>
             <header>
                 <h1>${title}</h1>
-                ${q ? `<p><a href="/books">show all books</a></p>` : ""}
+                ${q ? html`<p><a href="/books">show all books</a></p>` : ""}
             </header>
             ${searchForm(q)}
-            ${cardGrid(books.map(bookCard), q ? `No books match "${q}"` : "No books found")}
+            ${cardGrid(
+                books.map(bookCard),
+                q ? `No books match "${q}"` : "No books found",
+            )}
         </section>
     `;
 }
