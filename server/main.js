@@ -13,7 +13,7 @@ app.register("/books", booksController);
 
 export function server(request) {
     const url = new URL(request.url);
-    const ctx = { request, url };
+    const ctx = { request, url, data: {} };
 
     // Placeholder: this will need to change when we add middleware
     console.log(request.method, url.pathname);
@@ -23,7 +23,7 @@ export function server(request) {
     } catch (error) {
         if (error instanceof NotFoundError) {
             console.log("Not found:", error.message);
-            return notFoundController();
+            return notFoundController(ctx);
         }
         throw error;
     }
