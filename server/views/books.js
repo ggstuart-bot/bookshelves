@@ -3,7 +3,7 @@ import { bookCard } from "./partials/bookCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
 export function booksView(ctx) {
-    const { data: { title, books, q } } = ctx;
+    const { data: { title, books, q, page, pageCount } } = ctx;
 
     return html`
         <section>
@@ -16,10 +16,21 @@ export function booksView(ctx) {
                 books.map(bookCard),
                 q ? `No books match "${q}"` : "No books found",
             )}
+            ${pagination(page, pageCount)}
         </section>
     `;
 }
 
 function cardGrid(cards, emptyMessage) {
     return cards.length ? html`<ul class="grid">${cards}</ul>` : html`<p>${emptyMessage}</p>`;
+}
+
+// Previous, the current page and next. Nothing at all if there's only one page
+function pagination(page, pageCount) {
+    if (pageCount <= 1) return "";
+    return html`<nav aria-label="Pagination">
+            ${page > 1 ? html`<a href="/books?page=${page - 1}" rel="prev">previous</a>` : ""}
+            <a href="/books?page=${page}" aria-current="page">page ${page} of ${pageCount}</a>
+            ${page < pageCount ? html`<a href="/books?page=${page + 1}" rel="next">next</a>` : ""}
+        </nav>`;
 }
