@@ -1,5 +1,7 @@
+import { html } from "../../tools/html.js";
+
 export function bookCard(book) {
-    return `
+    return html`
         <li class="card book">
             <img class="cover" src="${book.coverUrl}" alt="" width="200" height="300" loading="lazy">
             <div>
