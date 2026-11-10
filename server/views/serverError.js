@@ -1,5 +1,7 @@
+import { html } from "../tools/html.js";
+
 export function serverErrorView() {
-    return `
+    return html`
         <section>
             <header>
                 <h1>Server error</h1>
