@@ -7,6 +7,6 @@ export function booksController(ctx) {
     const q = url.searchParams.get("q") ?? "";
     ctx.data.q = q;
     ctx.data.books = searchBooks(q);
-    ctx.data.title = "Books";
+    ctx.data.title = q ? `Books matching "${q}"` : "Books";
     return render(booksView, ctx);
 }
