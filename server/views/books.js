@@ -1,4 +1,5 @@
 import { bookCard } from "./partials/bookCard.js";
+import { searchForm } from "./partials/searchForm.js";
 
 export function booksView(ctx) {
     const { data: { title, books, q } } = ctx;
@@ -15,17 +16,5 @@ export function booksView(ctx) {
             ${searchForm(q)}
             ${results}
         </section>
-    `;
-}
-
-function searchForm(q) {
-    return `
-        <search>
-            <form method="GET" action="/books">
-                <label for="q">Search by title or author</label>
-                <input id="q" type="search" name="q" value="${q}">
-                <button>search</button>
-            </form>
-        </search>
     `;
 }
