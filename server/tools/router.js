@@ -21,9 +21,7 @@ export class Router {
         const route = this.routes.find((route) => {
             return route.pattern.test(url);
         });
-        if (!route) {
-            throw new NotFoundError(`${url.pathname} doesn't match any known route`);
-        }
+        if (!route) return this.chain(ctx, [...this.middleware, noMatchingRoute]);
         return this.chain(ctx, [...this.middleware, route.handler]);
     }
 
@@ -33,4 +31,9 @@ export class Router {
         const next = (ctx) => this.chain(ctx, remaining);
         return fn(ctx, next);
     }
+}
+
+function noMatchingRoute(ctx) {
+    const { url } = ctx;
+    throw new NotFoundError(`${url.pathname} doesn't match any known route`);
 }
