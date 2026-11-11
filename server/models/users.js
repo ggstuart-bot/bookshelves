@@ -1,9 +1,8 @@
 import { hashPassword } from "../tools/hash.js";
 import { db } from "./db.js";
 
-// Placeholder: this will need to change when users have avatars
 export function getUsers() {
-    return db.prepare(`SELECT id, username, isAdmin, isPublic FROM users;`).all();
+    return db.prepare(`SELECT id, username, isAdmin, avatarId, isPublic FROM users;`).all();
 }
 
 export function getUserByUsername(username) {
