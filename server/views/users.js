@@ -1,6 +1,7 @@
 import { html } from "../tools/html.js";
 import { canChangeAdmin } from "../tools/permissions.js";
 import { adminButton } from "./partials/adminButton.js";
+import { avatarImage } from "./partials/avatarImage.js";
 import { cardGrid } from "./partials/cardGrid.js";
 
 export function usersView(ctx) {
@@ -21,12 +22,12 @@ export function usersView(ctx) {
     `;
 }
 
-// A user as a card in a .grid list.
+// A user as a card in a .grid list, with their avatar as the picture.
 // Pass extra content (e.g. the admin button) to show it in the card footer
-// Placeholder: this will need to change when users have avatars
 function userCard(user, footer) {
     return html`
         <li class="card user">
+            ${avatarImage(user)}
             <div>
                 <h2><a href="/users/${user.id}">${user.username}</a></h2>
                 <p>

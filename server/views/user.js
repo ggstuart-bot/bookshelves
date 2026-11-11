@@ -7,11 +7,10 @@ import {
 } from "../tools/permissions.js";
 import { adminButton } from "./partials/adminButton.js";
 import { cardGrid } from "./partials/cardGrid.js";
+import { avatarImage } from "./partials/avatarImage.js";
 import { postButton } from "./partials/postButton.js";
 import { shelfCard } from "./partials/shelfCard.js";
 import { AVATAR_TYPES } from "../schema/avatar.js";
-
-const DEFAULT_AVATAR = "/assets/default-avatar.svg";
 
 export function userView(ctx) {
     const { data: { targetUser, publicShelves, errors }, user: currentUser } = ctx;
@@ -42,11 +41,6 @@ export function userView(ctx) {
             `
             : ""}
     `;
-}
-
-function avatarImage({ id, avatarId }, alt) {
-    const src = avatarId ? `/users/${id}/avatar?v=${avatarId}` : DEFAULT_AVATAR;
-    return html`<img class="avatar" src="${src}" alt="${alt}">`;
 }
 
 function avatarForm(user, errors) {
