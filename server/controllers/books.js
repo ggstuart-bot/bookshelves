@@ -2,6 +2,7 @@ import { countPages, searchBooks } from "../models/books.js";
 import { render } from "../tools/render.js";
 import { NotFoundError } from "../tools/errors.js";
 import { booksView } from "../views/books.js";
+import { bookView } from "../views/book.js";
 
 const PAGE_SIZE = 16;
 
@@ -20,4 +21,9 @@ export function booksController(ctx) {
     ctx.data.pageCount = pageCount;
     ctx.data.title = q ? `Books matching "${q}"` : "Books";
     return render(booksView, ctx);
+}
+
+export function bookController(ctx) {
+    ctx.data.title = ctx.data.book.title;
+    return render(bookView, ctx);
 }
