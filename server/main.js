@@ -12,7 +12,8 @@ export function server(request) {
                 <title>Bookshelves</title>
             </head>
             <body>
-                <h1>hello world</h1>
+                <h1>Welcome to Bookshelves</h1>
+                <p>Organise your books with bookshelves.</p>
             </body>
         </html>
     `;
