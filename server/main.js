@@ -7,8 +7,11 @@ export function server(request) {
     console.log(request.method, url.pathname);
 
     // Placeholder: this will need to change when we add a router
-    if (url.pathname !== "/") {
-        return serveDir(request);
+    if (url.pathname.startsWith("/assets/")) {
+        return serveDir(request, {
+            fsRoot: "public",
+            urlRoot: "assets",
+        });
     }
 
     // Placeholder: this will need to change when we add HTML views
@@ -19,7 +22,7 @@ export function server(request) {
             <head>
                 <meta charset="utf-8">
                 <title>Bookshelves</title>
-                <link rel="icon" href="/icon.svg">
+                <link rel="icon" href="/assets/icon.svg">
             </head>
             <body>
                 <h1>Welcome to Bookshelves</h1>
