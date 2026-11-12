@@ -4,7 +4,7 @@ export function booksView({ data: { books } }) {
             <header>
                 <h1>Books</h1>
             </header>
-            <ul>
+            <ul class="grid">
                 ${books.map(bookItem).join("")}
             </ul>
         </section>
