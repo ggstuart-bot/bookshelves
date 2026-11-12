@@ -1,0 +1,9 @@
+{
+    "tasks": {
+        "serve": "deno -A tasks/server.js",
+        "dev": "deno --watch -A tasks/server.js"
+    },
+    "imports": {
+        "@std/http": "jsr:@std/http@^1.1.4"
+    }
+}
