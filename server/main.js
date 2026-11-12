@@ -1,3 +1,5 @@
 export function server() {
-    return new Response("hello world");
+    // Placeholder: this will need to change when we add HTML views
+    const headers = new Headers({ "content-type": "text/html" });
+    return new Response("<h1>hello world</h1>", { headers });
 }
