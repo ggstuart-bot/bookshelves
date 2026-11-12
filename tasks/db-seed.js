@@ -11,13 +11,16 @@ for (const book of books) {
     bookIds[book.title] = id;
 }
 
-// Placeholder: this will need to change when users have public profiles, avatars and admin rights
+// Placeholder: this will need to change when users have avatars and admin rights
 for (const user of seed.users) {
     const { id: userId } = await createUser(user);
 
-    // Placeholder: this will need to change when shelves can be public
     for (const shelf of user.shelves) {
-        const { id: shelfId } = createShelf({ title: shelf.title, ownerId: userId });
+        const { id: shelfId } = createShelf({
+            title: shelf.title,
+            ownerId: userId,
+            isPublic: shelf.isPublic,
+        });
         for (const title of shelf.books) {
             const bookId = bookIds[title];
             if (!bookId) {

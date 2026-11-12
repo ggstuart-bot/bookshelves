@@ -6,15 +6,25 @@ import {
     deleteShelfController,
     editShelfController,
     myShelvesController,
+    publishShelfController,
     shelfController,
+    unpublishShelfController,
 } from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
+import { ForbiddenError } from "./tools/errors.js";
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
 import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
-import { createUserController, signupFormController } from "./controllers/users.js";
+import {
+    createUserController,
+    profileController,
+    publishProfileController,
+    signupFormController,
+    unpublishProfileController,
+    userController,
+} from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import {
     alreadySignedInRedirectController,
@@ -26,8 +36,14 @@ import {
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
 import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
-import { withBook, withShelf } from "./middleware/resources.js";
-import { canUseShelf, canViewShelf } from "./tools/permissions.js";
+import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
+import {
+    canPublishProfile,
+    canPublishShelf,
+    canUseShelf,
+    canViewShelf,
+    canViewUser,
+} from "./tools/permissions.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
@@ -36,6 +52,9 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
+const mayViewUser = requirePermission(canViewUser, "targetUser");
+const mayPublishProfile = requirePermission(canPublishProfile, "targetUser");
+const mayPublishShelf = requirePermission(canPublishShelf, "shelf", ForbiddenError);
 const mayViewShelf = requirePermission(canViewShelf, "shelf");
 const mayUseShelf = requirePermission(canUseShelf, "shelf");
 
@@ -55,6 +74,7 @@ app.post("/signup", mustBeSignedOut, validateNewUser, createUserController);
 app.get("/signin", mustBeSignedOut, signinFormController);
 app.post("/signin", mustBeSignedOut, validateSignin, signinController);
 app.post("/signout", signoutController);
+app.get("/profile", mustBeSignedIn, profileController);
 
 app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
@@ -66,6 +86,21 @@ app.post(
     mayUseShelf,
     validateEditShelf,
     editShelfController,
+);
+app.post(
+    "/shelves/:shelfId/publish",
+    mustBeSignedIn,
+    withShelf,
+    mayUseShelf,
+    mayPublishShelf,
+    publishShelfController,
+);
+app.post(
+    "/shelves/:shelfId/unpublish",
+    mustBeSignedIn,
+    withShelf,
+    mayUseShelf,
+    unpublishShelfController,
 );
 app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, deleteShelfController);
 app.post(
@@ -83,6 +118,21 @@ app.post(
     withBook,
     mayUseShelf,
     removeBookController,
+);
+app.get("/users/:userId", withTargetUser, mayViewUser, userController);
+app.post(
+    "/users/:userId/publish",
+    mustBeSignedIn,
+    withTargetUser,
+    mayPublishProfile,
+    publishProfileController,
+);
+app.post(
+    "/users/:userId/unpublish",
+    mustBeSignedIn,
+    withTargetUser,
+    mayPublishProfile,
+    unpublishProfileController,
 );
 
 export function server(request) {

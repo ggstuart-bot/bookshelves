@@ -14,10 +14,10 @@ export function requireGuest(fallback) {
     };
 }
 
-export function requirePermission(predicate, key) {
+export function requirePermission(predicate, key, DeadEnd = NotFoundError) {
     return (ctx, next) => {
         if (predicate(ctx.user, ctx.data[key])) return next(ctx);
         const { url, request } = ctx;
-        throw new NotFoundError(`${request.method} ${url.pathname} is not permitted`);
+        throw new DeadEnd(`${request.method} ${url.pathname} is not permitted`);
     };
 }
