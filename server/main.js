@@ -12,6 +12,7 @@ export function server(request) {
             <head>
                 <meta charset="utf-8">
                 <title>Bookshelves</title>
+                <link rel="icon" href="/icon.svg">
             </head>
             <body>
                 <h1>Welcome to Bookshelves</h1>
