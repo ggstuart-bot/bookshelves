@@ -16,16 +16,21 @@ import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
 import { createUserController, signupFormController } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
+import { signinController, signinFormController } from "./controllers/sessions.js";
+import { signinSchema } from "./schema/signin.js";
+import { withSession } from "./middleware/session.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
 const validateNewUser = withValidation(userSchema, signupFormController);
+const validateSignin = withValidation(signinSchema, signinFormController);
 
 const app = new Router();
 
 app.use(withLogs);
 app.use(withErrors);
+app.use(withSession);
 
 app.get("/assets/*", staticController);
 app.get("/", homeController);
@@ -34,6 +39,8 @@ app.get("/books/:bookId", withBook, bookController);
 
 app.get("/signup", signupFormController);
 app.post("/signup", validateNewUser, createUserController);
+app.get("/signin", signinFormController);
+app.post("/signin", validateSignin, signinController);
 
 app.get("/shelves", myShelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
