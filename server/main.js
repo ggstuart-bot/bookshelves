@@ -1,26 +1,20 @@
-import { serveDir } from "@std/http";
-import { render } from "./tools/render.js";
-import { homeView } from "./views/home.js";
-import { notFoundView } from "./views/notFound.js";
+import { homeController } from "./controllers/home.js";
+import { staticController } from "./controllers/static.js";
+import { notFoundController } from "./controllers/notFound.js";
 
 export function server(request) {
     const url = new URL(request.url);
+    const ctx = { request };
 
     // Placeholder: this will need to change when we add middleware
     console.log(request.method, url.pathname);
 
     // Placeholder: this will need to change when we add a router
     if (url.pathname.startsWith("/assets/")) {
-        return serveDir(request, {
-            fsRoot: "public",
-            urlRoot: "assets",
-        });
+        return staticController(ctx);
     }
     if (url.pathname === "/") {
-        // Placeholder: this will need to change when we add controllers
-        return render(homeView);
+        return homeController(ctx);
     }
-
-    // Placeholder: this will need to change when we add controllers
-    return render(notFoundView, { status: 404, title: "Not found" });
+    return notFoundController(ctx);
 }
