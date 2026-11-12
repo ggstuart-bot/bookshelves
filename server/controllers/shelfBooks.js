@@ -1,16 +1,18 @@
 import { addBookToShelf, removeBookFromShelf } from "../models/shelfBooks.js";
 import { redirect } from "../tools/redirect.js";
 
-// Placeholder: this will need to change when we add flash messages
 export function addBookController(ctx) {
     const { data: { shelf, book } } = ctx;
-    addBookToShelf(shelf.id, book.id);
-    return redirect(`/books/${book.id}`);
+    const changes = addBookToShelf(shelf.id, book.id);
+    ctx.flash = changes
+        ? `Book '${book.title}' added to '${shelf.title}'`
+        : `Book '${book.title}' is already on '${shelf.title}'`;
+    return redirect(`/books/${book.id}`, ctx);
 }
 
-// Placeholder: this will need to change when we add flash messages
 export function removeBookController(ctx) {
     const { data: { shelf, book } } = ctx;
     removeBookFromShelf(shelf.id, book.id);
-    return redirect(`/shelves/${shelf.id}`);
+    ctx.flash = `Book '${book.title}' removed`;
+    return redirect(`/shelves/${shelf.id}`, ctx);
 }
