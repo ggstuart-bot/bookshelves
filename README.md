@@ -1,3 +1,0 @@
-# Bookshelves
-
-A demo application
