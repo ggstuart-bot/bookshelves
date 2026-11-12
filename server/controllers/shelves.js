@@ -9,10 +9,9 @@ export function myShelvesController(ctx) {
     return render(myShelvesView, ctx);
 }
 
-// Placeholder: this will need to change when we add validation and shelf pages
-export async function createShelfController(ctx) {
-    const { request } = ctx;
-    const formData = await request.formData();
-    createShelf({ title: formData.get("title") });
+// Placeholder: this will need to change when we add shelf pages
+export function createShelfController(ctx) {
+    const { validated } = ctx;
+    createShelf({ title: validated.title });
     return redirect("/shelves");
 }
