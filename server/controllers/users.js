@@ -1,11 +1,14 @@
 import {
     createUser,
     getUsers,
+    updateUserAvatarById,
     updateUserIsAdminById,
     updateUserIsPublicById,
 } from "../models/users.js";
 import { getPublicShelvesByOwnerId, unpublishShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
+import { createFile, deleteFileById, getFileById } from "../models/files.js";
+import { NotFoundError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { signupView } from "../views/signup.js";
@@ -35,6 +38,26 @@ export function userController(ctx) {
     ctx.data.publicShelves = addThumbnails(getPublicShelvesByOwnerId(targetUser.id));
     ctx.data.title = targetUser.username;
     return render(userView, ctx);
+}
+
+export function avatarController(ctx) {
+    const { data: { targetUser } } = ctx;
+    const avatarFile = targetUser.avatarId && getFileById(targetUser.avatarId);
+    if (!avatarFile) {
+        throw new NotFoundError(`No avatar for user ${targetUser.id}`);
+    }
+    return new Response(avatarFile);
+}
+
+export async function uploadAvatarController(ctx) {
+    const { validated: { avatar }, data: { targetUser } } = ctx;
+    const avatarId = await createFile(avatar);
+    updateUserAvatarById(targetUser.id, avatarId);
+    if (targetUser.avatarId) {
+        deleteFileById(targetUser.avatarId);
+    }
+    ctx.flash = "Avatar updated";
+    return redirect("/profile", ctx);
 }
 
 export function profileController(ctx) {

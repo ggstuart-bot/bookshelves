@@ -18,6 +18,7 @@ import { withErrors } from "./middleware/errors.js";
 import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
 import {
+    avatarController,
     createUserController,
     demoteController,
     profileController,
@@ -25,10 +26,12 @@ import {
     publishProfileController,
     signupFormController,
     unpublishProfileController,
+    uploadAvatarController,
     userController,
     usersController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
+import { avatarSchema } from "./schema/avatar.js";
 import {
     alreadySignedInRedirectController,
     signinController,
@@ -42,6 +45,7 @@ import { requireAdmin, requireGuest, requirePermission, requireUser } from "./mi
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 import {
     canChangeAdmin,
+    canChangeAvatar,
     canPublishProfile,
     canPublishShelf,
     canUseShelf,
@@ -53,11 +57,13 @@ const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
 const validateNewUser = withValidation(userSchema, signupFormController);
 const validateSignin = withValidation(signinSchema, signinFormController);
+const validateAvatar = withValidation(avatarSchema, userController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser");
 const mayChangeAdmin = requirePermission(canChangeAdmin, "targetUser", ForbiddenError);
+const mayChangeAvatar = requirePermission(canChangeAvatar, "targetUser");
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser");
 const mayPublishShelf = requirePermission(canPublishShelf, "shelf", ForbiddenError);
 const mayViewShelf = requirePermission(canViewShelf, "shelf");
@@ -126,6 +132,15 @@ app.post(
 );
 app.get("/users", mustBeSignedIn, requireAdmin, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
+app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
+app.post(
+    "/users/:userId/avatar",
+    mustBeSignedIn,
+    withTargetUser,
+    mayChangeAvatar,
+    validateAvatar,
+    uploadAvatarController,
+);
 app.post(
     "/users/:userId/publish",
     mustBeSignedIn,

@@ -1,9 +1,8 @@
 import { hashPassword } from "../tools/hash.js";
 import { db } from "./db.js";
 
-// Placeholder: this will need to change when users have avatars
 export function getUsers() {
-    return db.prepare(`SELECT id, username, isAdmin, isPublic FROM users;`).all();
+    return db.prepare(`SELECT id, username, isAdmin, avatarId, isPublic FROM users;`).all();
 }
 
 export function getUserByUsername(username) {
@@ -12,10 +11,9 @@ export function getUserByUsername(username) {
     ).get({ username });
 }
 
-// Placeholder: this will need to change when users have avatars
 export function getUserById(id) {
     return db.prepare(
-        `SELECT id, username, isAdmin, isPublic FROM users WHERE id=:id`,
+        `SELECT id, username, isAdmin, avatarId, isPublic FROM users WHERE id=:id`,
     ).get({ id });
 }
 
@@ -29,6 +27,12 @@ export function updateUserIsPublicById(id, isPublic) {
     return db.prepare(
         `UPDATE users SET isPublic=:isPublic WHERE id=:id`,
     ).run({ id, isPublic });
+}
+
+export function updateUserAvatarById(id, avatarId) {
+    return db.prepare(
+        `UPDATE users SET avatarId=:avatarId WHERE id=:id`,
+    ).run({ id, avatarId });
 }
 
 export async function createUser({ username, password, isAdmin = 0, isPublic = 0 }) {

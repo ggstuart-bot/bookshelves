@@ -3,6 +3,7 @@
         {
             "username": "testUser1",
             "password": "testUser1!",
+            "avatar": "testUser1.webp",
             "isPublic": 1,
             "shelves": [
                 {
@@ -38,6 +39,7 @@
         {
             "username": "testUser2",
             "password": "testUser2!",
+            "avatar": "testUser2.webp",
             "shelves": [
                 {
                     "title": "sci-fi",
@@ -64,6 +66,7 @@
             "username": "adminUser",
             "password": "adminUser1!",
             "isAdmin": 1,
+            "avatar": "adminUser.webp",
             "isPublic": 1,
             "shelves": [
                 {
