@@ -19,11 +19,14 @@ import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
 import {
     createUserController,
+    demoteController,
     profileController,
+    promoteController,
     publishProfileController,
     signupFormController,
     unpublishProfileController,
     userController,
+    usersController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import {
@@ -35,9 +38,10 @@ import {
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
+import { requireAdmin, requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 import {
+    canChangeAdmin,
     canPublishProfile,
     canPublishShelf,
     canUseShelf,
@@ -53,6 +57,7 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser");
+const mayChangeAdmin = requirePermission(canChangeAdmin, "targetUser", ForbiddenError);
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser");
 const mayPublishShelf = requirePermission(canPublishShelf, "shelf", ForbiddenError);
 const mayViewShelf = requirePermission(canViewShelf, "shelf");
@@ -119,6 +124,7 @@ app.post(
     mayUseShelf,
     removeBookController,
 );
+app.get("/users", mustBeSignedIn, requireAdmin, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.post(
     "/users/:userId/publish",
@@ -133,6 +139,22 @@ app.post(
     withTargetUser,
     mayPublishProfile,
     unpublishProfileController,
+);
+app.post(
+    "/users/:userId/promote",
+    mustBeSignedIn,
+    requireAdmin,
+    withTargetUser,
+    mayChangeAdmin,
+    promoteController,
+);
+app.post(
+    "/users/:userId/demote",
+    mustBeSignedIn,
+    requireAdmin,
+    withTargetUser,
+    mayChangeAdmin,
+    demoteController,
 );
 
 export function server(request) {

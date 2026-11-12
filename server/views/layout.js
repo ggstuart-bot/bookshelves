@@ -1,7 +1,6 @@
 import { html } from "../tools/html.js";
 import { postButton } from "./partials/postButton.js";
 
-// Placeholder: this will need to change when we add admins and avatars
 export function layout(content, ctx) {
     const { data, url, user } = ctx;
     const title = data.title ? `${data.title} | Bookshelves` : "Bookshelves";
@@ -21,6 +20,7 @@ export function layout(content, ctx) {
                     <a href="/" class="brand"><img src="/assets/icon.svg" alt=""> Bookshelves</a>
                     <nav>
                         ${navLink("/books", "books", url.pathname)}
+                        ${adminLinks(user, url.pathname)}
                         ${authLinks(user, url.pathname)}
                     </nav>
                 </header>
@@ -45,6 +45,10 @@ function flashMessage(flash) {
 
 function userMessage(user) {
     return user ? html`<p>Signed in as '${user.username}'</p>` : "";
+}
+
+function adminLinks(user, path) {
+    return user?.isAdmin ? navLink("/users", "users", path) : "";
 }
 
 // Placeholder: this will need to change when users have avatars
