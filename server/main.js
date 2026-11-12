@@ -33,5 +33,23 @@ export function server(request) {
         `;
         return new Response(document, { headers });
     }
-    return new Response("Not found", { status: 404 });
+
+    // Placeholder: this will need to change when we add HTML views
+    const headers = new Headers({ "content-type": "text/html" });
+    const document = `
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <title>Bookshelves</title>
+                <link rel="stylesheet" href="/assets/styles.css">
+                <link rel="icon" href="/assets/icon.svg">
+            </head>
+            <body>
+                <h1>Not found</h1>
+                <p>The requested resource was not found.</p>
+            </body>
+        </html>
+    `;
+    return new Response(document, { headers, status: 404 });
 }
