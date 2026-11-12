@@ -22,5 +22,5 @@ export function server(request) {
     }
 
     // Placeholder: this will need to change when we add controllers
-    return render(notFoundView(), { status: 404 });
+    return render(notFoundView(), { status: 404, title: "Not found" });
 }
