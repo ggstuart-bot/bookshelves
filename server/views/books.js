@@ -3,7 +3,7 @@ import { bookCard } from "./partials/bookCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
 export function booksView(ctx) {
-    const { data: { title, books, q } } = ctx;
+    const { data: { title, books, q, page, pageCount } } = ctx;
     const results = books.length
         ? html`<ul class="grid">${books.map(bookCard)}</ul>`
         : html`<p>${q ? `No books match "${q}"` : "No books found"}</p>`;
@@ -16,6 +16,23 @@ export function booksView(ctx) {
             </header>
             ${searchForm(q)}
             ${results}
+            ${pagination(q, page, pageCount)}
         </section>
     `;
+}
+
+// Previous, the current page and next. Nothing at all if there's only one page
+function pagination(q, page, pageCount) {
+    if (pageCount <= 1) return "";
+    return html`<nav aria-label="Pagination">
+            ${page > 1 ? html`<a href="${pageUrl(q, page - 1)}" rel="prev">previous</a>` : ""}
+            <a href="${pageUrl(q, page)}" aria-current="page">page ${page} of ${pageCount}</a>
+            ${page < pageCount ? html`<a href="${pageUrl(q, page + 1)}" rel="next">next</a>` : ""}
+        </nav>`;
+}
+
+// Only keep q in the link if there's a search
+function pageUrl(q, page) {
+    const params = q ? { q, page } : { page };
+    return `/books?${new URLSearchParams(params)}`;
 }
