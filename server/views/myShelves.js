@@ -1,4 +1,5 @@
 import { html } from "../tools/html.js";
+import { DEFAULT_COVER } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 
 export function myShelvesView(ctx) {
@@ -25,13 +26,26 @@ export function myShelvesView(ctx) {
     `;
 }
 
+// A shelf as a card in a .grid list, with a fanned row of its first few covers.
 // Shelf lists always sit under an <h2>, so the title is an <h3>
 function shelfCard(shelf) {
     return html`
         <li class="card shelf">
+            ${shelf.thumbnails.length
+                ? html`<div class="covers">${shelf.thumbnails.map(coverImage)}</div>`
+                : html`<p class="covers">No books yet</p>`}
             <div>
-                <h3><a href="/shelves/${shelf.id}">${shelf.title}</a></h3>
+                <div class="row">
+                    <h3><a href="/shelves/${shelf.id}">${shelf.title}</a></h3>
+                    <p>${shelf.bookCount} ${shelf.bookCount === 1 ? "book" : "books"}</p>
+                </div>
             </div>
         </li>
     `;
+}
+
+function coverImage(book) {
+    return html`<img src="${
+        book.thumbnailUrl ?? DEFAULT_COVER
+    }" alt="" width="64" height="96" loading="lazy">`;
 }

@@ -1,5 +1,6 @@
 import { homeController } from "./controllers/home.js";
 import { bookController, booksController } from "./controllers/books.js";
+import { addBookController, removeBookController } from "./controllers/shelfBooks.js";
 import {
     createShelfController,
     myShelvesController,
@@ -27,6 +28,8 @@ app.get("/books/:bookId", withBook, bookController);
 app.get("/shelves", myShelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
+app.post("/shelves/:shelfId/books/:bookId/add", withShelf, withBook, addBookController);
+app.post("/shelves/:shelfId/books/:bookId/delete", withShelf, withBook, removeBookController);
 
 export function server(request) {
     const url = new URL(request.url);
