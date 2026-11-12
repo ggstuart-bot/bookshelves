@@ -2,9 +2,10 @@ import { html } from "../tools/html.js";
 import { bookCard } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
+import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 
 export function myShelfView(ctx) {
-    const { data: { shelf, books } } = ctx;
+    const { data: { shelf, books, errors, values } } = ctx;
 
     return html`
         <section>
@@ -17,6 +18,18 @@ export function myShelfView(ctx) {
             )}
             <p><a href="/shelves">Back to all shelves</a></p>
         </section>
+        <aside>
+            <h2>Rename shelf</h2>
+            ${shelfTitleForm(
+                `/shelves/${shelf.id}/edit`,
+                values?.title ?? shelf.title,
+                errors?.title,
+                "rename",
+            )}
+            <h2>Delete shelf</h2>
+            <p>The books stay in the catalogue</p>
+            ${postButton(`/shelves/${shelf.id}/delete`, "delete shelf")}
+        </aside>
     `;
 }
 
