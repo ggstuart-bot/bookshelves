@@ -1,6 +1,8 @@
 export function server(request) {
+    const url = new URL(request.url);
+
     // Placeholder: this will need to change when we add middleware
-    console.log(request.method, request.url);
+    console.log(request.method, url.pathname);
 
     // Placeholder: this will need to change when we add HTML views
     const headers = new Headers({ "content-type": "text/html" });
