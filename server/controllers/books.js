@@ -1,9 +1,12 @@
-import { getBooks } from "../models/books.js";
+import { searchBooks } from "../models/books.js";
 import { render } from "../tools/render.js";
 import { booksView } from "../views/books.js";
 
 export function booksController(ctx) {
-    ctx.data.books = getBooks();
-    ctx.data.title = "Books";
+    const { url } = ctx;
+    const q = url.searchParams.get("q") ?? "";
+    ctx.data.q = q;
+    ctx.data.books = searchBooks(q);
+    ctx.data.title = q ? `Books matching "${q}"` : "Books";
     return render(booksView, ctx);
 }
