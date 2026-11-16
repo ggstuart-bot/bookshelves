@@ -17,6 +17,10 @@ export class Router {
     }
 
     handle(ctx) {
+        return this.chain(ctx, [...this.middleware, (ctx) => this.dispatch(ctx)]);
+    }
+
+    dispatch(ctx) {
         const { url } = ctx;
         const route = this.routes.find((route) => {
             return route.pattern.test(url);
@@ -24,7 +28,7 @@ export class Router {
         if (!route) {
             throw new NotFoundError(`${url.pathname} doesn't match any known route`);
         }
-        return this.chain(ctx, [...this.middleware, route.handler]);
+        return route.handler(ctx);
     }
 
     chain(ctx, handlers) {
