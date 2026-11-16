@@ -5,7 +5,11 @@ import { booksView } from "../views/books.js";
 const PAGE_SIZE = 16;
 
 export function booksController(ctx) {
-    ctx.data.books = getBooks(PAGE_SIZE);
+    const { url } = ctx;
+    const pageParam = url.searchParams.get("page");
+    let page = pageParam === null ? 1 : Number(pageParam);
+    if (!Number.isSafeInteger(page) || page < 1) page = 1;
+    ctx.data.books = getBooks(page, PAGE_SIZE);
     ctx.data.title = "Books";
     return render(booksView, ctx);
 }
