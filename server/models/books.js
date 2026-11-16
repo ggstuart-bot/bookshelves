@@ -16,3 +16,13 @@ export function getBooks(page, pageSize) {
         LIMIT :limit OFFSET :offset
     `).all({ limit: pageSize, offset: (page - 1) * pageSize });
 }
+
+function countBooks() {
+    return db.prepare(`
+        SELECT count(*) AS count FROM books
+    `).get().count;
+}
+
+export function countPages(pageSize) {
+    return Math.ceil(countBooks() / pageSize);
+}
