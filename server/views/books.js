@@ -1,10 +1,18 @@
-export function booksView() {
+export function booksView({ data: { books } }) {
     return `
         <section>
             <header>
                 <h1>Books</h1>
-                <p>All the books in Bookshelves.</p>
             </header>
+            <ul>
+                ${books.map(bookItem).join("")}
+            </ul>
         </section>
+    `;
+}
+
+function bookItem(book) {
+    return `
+        <li>${book.title}</li>
     `;
 }
