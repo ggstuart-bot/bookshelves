@@ -152,3 +152,25 @@ nav a {
         text-decoration: underline var(--highlight) 2px;
     }
 }
+
+/* min-width: 0 lets an input shrink below its default width to fit its container */
+input {
+    min-width: 0;
+}
+
+/* Buttons and inputs use the page font rather than the browser's */
+button,
+input {
+    font: inherit;
+}
+
+/* A form is a one-column grid: each label, input and button on its own row */
+form {
+    display: grid;
+    gap: 0.5rem;
+    max-inline-size: 30rem;
+    /* A button is only as wide as its text */
+    button {
+        justify-self: start;
+    }
+}
