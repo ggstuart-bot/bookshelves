@@ -1,5 +1,5 @@
 import { serveDir } from "@std/http";
-import { layout } from "./views/layout.js";
+import { render } from "./tools/render.js";
 import { homeView } from "./views/home.js";
 import { notFoundView } from "./views/notFound.js";
 
@@ -18,11 +18,9 @@ export function server(request) {
     }
     if (url.pathname === "/") {
         // Placeholder: this will need to change when we add controllers
-        const headers = new Headers({ "content-type": "text/html" });
-        return new Response(layout(homeView()), { headers });
+        return render(homeView());
     }
 
     // Placeholder: this will need to change when we add controllers
-    const headers = new Headers({ "content-type": "text/html" });
-    return new Response(layout(notFoundView()), { headers, status: 404 });
+    return render(notFoundView(), { status: 404 });
 }
