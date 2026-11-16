@@ -4,6 +4,7 @@ import { staticController } from "./controllers/static.js";
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
+import { withBook } from "./middleware/resources.js";
 
 const app = new Router();
 
@@ -13,7 +14,7 @@ app.use(withErrors);
 app.register("/assets/*", staticController);
 app.register("/", homeController);
 app.register("/books", booksController);
-app.register("/books/:bookId", bookController);
+app.register("/books/:bookId", withBook, bookController);
 
 export function server(request) {
     const url = new URL(request.url);

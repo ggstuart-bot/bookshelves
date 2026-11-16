@@ -6,9 +6,9 @@ export class Router {
         this.middleware = [];
     }
 
-    register(pathname, handler) {
+    register(pathname, ...handlers) {
         const pattern = new URLPattern({ pathname });
-        this.routes.push({ pattern, handler });
+        this.routes.push({ pattern, handlers });
     }
 
     use(fn) {
@@ -28,7 +28,7 @@ export class Router {
             throw new NotFoundError(`${url.pathname} doesn't match any known route`);
         }
         ctx.params = route.pattern.exec(url).pathname.groups;
-        return route.handler(ctx);
+        return this.chain(ctx, route.handlers);
     }
 
     chain(ctx, handlers) {
