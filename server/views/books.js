@@ -5,14 +5,19 @@ export function booksView({ data: { books } }) {
                 <h1>Books</h1>
             </header>
             <ul class="grid">
-                ${books.map(bookItem).join("")}
+                ${books.map(bookCard).join("")}
             </ul>
         </section>
     `;
 }
 
-function bookItem(book) {
+function bookCard(book) {
     return `
-        <li>${book.title}</li>
+        <li class="card">
+            <div>
+                <h2>${book.title}</h2>
+                <p>${book.author} (${book.year})</p>
+            </div>
+        </li>
     `;
 }
