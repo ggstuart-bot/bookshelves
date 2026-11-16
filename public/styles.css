@@ -13,7 +13,8 @@ body {
 }
 
 /* Headings are a little heavier than the light body text */
-h1 {
+h1,
+h2 {
     font-weight: 400;
 }
 
@@ -87,4 +88,21 @@ nav {
     gap: 1rem;
     padding: 0;
     list-style: none;
+}
+
+/* A card is a bordered box with rounded corners */
+.card {
+    border: 1px solid;
+    border-radius: 0.5rem;
+
+    > div:last-child {
+        padding: 0.5rem;
+    }
+
+    /* Headings and paragraphs in a card have no margins and stay at the text size */
+    h2,
+    p {
+        margin: 0;
+        font-size: 1em;
+    }
 }
