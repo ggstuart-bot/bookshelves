@@ -7,8 +7,10 @@ export function bookView(ctx) {
         <section>
             <header>
                 <h1>${book.title}</h1>
+                <p>by ${book.author}</p>
             </header>
-            <p>Book ${book.id}</p>
+            ${book.year ? html`<p>Published ${book.year}</p>` : ""}
+            <p><a href="/books">Back to all books</a></p>
         </section>
     `;
 }
