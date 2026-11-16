@@ -6,8 +6,8 @@ const DEFAULT_COVER = "/assets/default-cover.svg";
 export function booksView(ctx) {
     const { data: { title, books, q, page, pageCount } } = ctx;
     const results = books.length
-        ? `<ul class="grid">${books.map(bookCard).join("")}</ul>`
-        : `<p>${q ? `No books match "${q}"` : "No books found"}</p>`;
+        ? html`<ul class="grid">${books.map(bookCard)}</ul>`
+        : html`<p>${q ? `No books match "${q}"` : "No books found"}</p>`;
 
     return `
         <section>
