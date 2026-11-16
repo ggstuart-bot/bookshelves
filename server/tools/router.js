@@ -8,4 +8,15 @@ export class Router {
         const pattern = new URLPattern({ pathname });
         this.routes.push({ pattern, handler });
     }
+
+    handle(ctx) {
+        const { url } = ctx;
+        const route = this.routes.find((route) => {
+            return route.pattern.test(url);
+        });
+        if (!route) {
+            return;
+        }
+        return route.handler(ctx);
+    }
 }
