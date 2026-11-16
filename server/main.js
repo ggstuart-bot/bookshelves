@@ -1,4 +1,5 @@
 import { homeController } from "./controllers/home.js";
+import { booksController } from "./controllers/books.js";
 import { staticController } from "./controllers/static.js";
 import { notFoundController } from "./controllers/notFound.js";
 
@@ -15,6 +16,9 @@ export function server(request) {
     }
     if (url.pathname === "/") {
         return homeController(ctx);
+    }
+    if (url.pathname === "/books") {
+        return booksController(ctx);
     }
     return notFoundController(ctx);
 }
