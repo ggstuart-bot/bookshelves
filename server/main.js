@@ -12,20 +12,10 @@ app.register("/books", booksController);
 
 export function server(request) {
     const url = new URL(request.url);
-    const ctx = { request };
+    const ctx = { request, url };
 
     // Placeholder: this will need to change when we add middleware
     console.log(request.method, url.pathname);
 
-    // Placeholder: this will need to change when we add a router
-    if (url.pathname.startsWith("/assets/")) {
-        return staticController(ctx);
-    }
-    if (url.pathname === "/") {
-        return homeController(ctx);
-    }
-    if (url.pathname === "/books") {
-        return booksController(ctx);
-    }
-    return notFoundController(ctx);
+    return app.handle(ctx) ?? notFoundController();
 }
