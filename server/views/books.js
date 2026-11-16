@@ -1,8 +1,7 @@
 import { html } from "../tools/html.js";
+import { bookCard } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { searchForm } from "./partials/searchForm.js";
-
-export const DEFAULT_COVER = "/assets/default-cover.svg";
 
 export function booksView(ctx) {
     const { data: { title, books, q, page, pageCount } } = ctx;
@@ -20,19 +19,6 @@ export function booksView(ctx) {
             )}
             ${pagination(q, page, pageCount)}
         </section>
-    `;
-}
-
-function bookCard(book) {
-    const cover = book.coverUrl ?? DEFAULT_COVER;
-    return html`
-        <li class="card book">
-            <img class="cover" src="${cover}" alt="" width="200" height="300" loading="lazy">
-            <div>
-                <h2><a href="/books/${book.id}">${book.title}</a></h2>
-                <p>${book.author}${book.year ? ` (${book.year})` : ""}</p>
-            </div>
-        </li>
     `;
 }
 
