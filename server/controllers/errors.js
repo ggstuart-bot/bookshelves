@@ -1,8 +1,9 @@
 import { render } from "../tools/render.js";
-import { notFoundView } from "../views/notFound.js";
+import { errorView } from "../views/error.js";
 
 export function notFoundController(ctx) {
     ctx.status = 404;
     ctx.data.title = "Not found";
-    return render(notFoundView, ctx);
+    ctx.data.message = "The requested resource was not found.";
+    return render(errorView, ctx);
 }

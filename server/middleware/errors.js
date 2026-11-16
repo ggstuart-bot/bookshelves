@@ -1,5 +1,5 @@
 import { NotFoundError } from "../tools/errors.js";
-import { notFoundController } from "../controllers/notFound.js";
+import { notFoundController } from "../controllers/errors.js";
 
 export async function withErrors(ctx, next) {
     try {
