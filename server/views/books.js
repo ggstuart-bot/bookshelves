@@ -1,29 +1,52 @@
+import { html } from "../tools/html.js";
+import { searchForm } from "./partials/searchForm.js";
+
 const DEFAULT_COVER = "/assets/default-cover.svg";
 
 export function booksView(ctx) {
-    const { data: { books } } = ctx;
+    const { data: { title, books, q, page, pageCount } } = ctx;
+    const results = books.length
+        ? html`<ul class="grid">${books.map(bookCard)}</ul>`
+        : html`<p>${q ? `No books match "${q}"` : "No books found"}</p>`;
 
-    return `
+    return html`
         <section>
             <header>
-                <h1>Books</h1>
+                <h1>${title}</h1>
+                ${q ? html`<p><a href="/books">show all books</a></p>` : ""}
             </header>
-            <ul class="grid">
-                ${books.map(bookCard).join("")}
-            </ul>
+            ${searchForm(q)}
+            ${results}
+            ${pagination(q, page, pageCount)}
         </section>
     `;
 }
 
 function bookCard(book) {
     const cover = book.coverUrl ?? DEFAULT_COVER;
-    return `
+    return html`
         <li class="card book">
             <img class="cover" src="${cover}" alt="" width="200" height="300" loading="lazy">
             <div>
                 <h2>${book.title}</h2>
-                <p>${book.author} (${book.year})</p>
+                <p>${book.author}${book.year ? ` (${book.year})` : ""}</p>
             </div>
         </li>
     `;
+}
+
+// Previous, the current page and next. Nothing at all if there's only one page
+function pagination(q, page, pageCount) {
+    if (pageCount <= 1) return "";
+    return html`<nav aria-label="Pagination">
+            ${page > 1 ? html`<a href="${pageUrl(q, page - 1)}" rel="prev">previous</a>` : ""}
+            <a href="${pageUrl(q, page)}" aria-current="page">page ${page} of ${pageCount}</a>
+            ${page < pageCount ? html`<a href="${pageUrl(q, page + 1)}" rel="next">next</a>` : ""}
+        </nav>`;
+}
+
+// Only keep q in the link if there's a search
+function pageUrl(q, page) {
+    const params = q ? { q, page } : { page };
+    return `/books?${new URLSearchParams(params)}`;
 }

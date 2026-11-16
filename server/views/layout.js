@@ -1,9 +1,11 @@
+import { html } from "../tools/html.js";
+
 // Placeholder: this will need to change when we add flash messages and sign-in
 export function layout(content, ctx) {
     const { data, url } = ctx;
     const title = data.title ? `${data.title} | Bookshelves` : "Bookshelves";
 
-    return `
+    return html`
         <!DOCTYPE html>
         <html lang="en">
             <head>
@@ -35,5 +37,7 @@ export function layout(content, ctx) {
 
 // A header link, marked as the current page when it matches the path exactly
 function navLink(href, content, path) {
-    return `<a href="${href}" aria-current="${href === path ? "page" : "false"}">${content}</a>`;
+    return html`<a href="${href}" aria-current="${
+        href === path ? "page" : "false"
+    }">${content}</a>`;
 }
