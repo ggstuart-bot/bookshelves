@@ -1,4 +1,5 @@
 import { serveDir } from "@std/http";
+import { layout } from "./views/layout.js";
 
 export function server(request) {
     const url = new URL(request.url);
@@ -16,40 +17,18 @@ export function server(request) {
     if (url.pathname === "/") {
         // Placeholder: this will need to change when we add HTML views
         const headers = new Headers({ "content-type": "text/html" });
-        const document = `
-            <!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset="utf-8">
-                    <title>Bookshelves</title>
-                    <link rel="stylesheet" href="/assets/styles.css">
-                    <link rel="icon" href="/assets/icon.svg">
-                </head>
-                <body>
-                    <h1>Welcome to Bookshelves</h1>
-                    <p>Organise your books with bookshelves.</p>
-                </body>
-            </html>
+        const content = `
+            <h1>Welcome to Bookshelves</h1>
+            <p>Organise your books with bookshelves.</p>
         `;
-        return new Response(document, { headers });
+        return new Response(layout(content), { headers });
     }
 
     // Placeholder: this will need to change when we add HTML views
     const headers = new Headers({ "content-type": "text/html" });
-    const document = `
-        <!DOCTYPE html>
-        <html lang="en">
-            <head>
-                <meta charset="utf-8">
-                <title>Bookshelves</title>
-                <link rel="stylesheet" href="/assets/styles.css">
-                <link rel="icon" href="/assets/icon.svg">
-            </head>
-            <body>
-                <h1>Not found</h1>
-                <p>The requested resource was not found.</p>
-            </body>
-        </html>
+    const content = `
+        <h1>Not found</h1>
+        <p>The requested resource was not found.</p>
     `;
-    return new Response(document, { headers, status: 404 });
+    return new Response(layout(content), { headers, status: 404 });
 }
