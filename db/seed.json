@@ -1,7 +1,30 @@
 {
     "shelves": [
-        { "title": "classics" },
-        { "title": "fantasy" },
-        { "title": "to read" }
+        {
+            "title": "classics",
+            "books": [
+                "Pride and Prejudice",
+                "Jane Eyre",
+                "The Great Gatsby",
+                "To Kill a Mockingbird"
+            ]
+        },
+        {
+            "title": "fantasy",
+            "books": [
+                "The Hobbit",
+                "A Game of Thrones",
+                "The Name of the Wind",
+                "The Way of Kings"
+            ]
+        },
+        {
+            "title": "to read",
+            "books": [
+                "The Book Thief",
+                "The Kite Runner",
+                "Life of Pi"
+            ]
+        }
     ]
 }
