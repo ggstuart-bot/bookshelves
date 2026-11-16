@@ -25,6 +25,12 @@ a {
     text-decoration-thickness: 2px;
 }
 
+/* The current page's nav link is filled with the accent */
+nav a[aria-current="page"] {
+    background: var(--highlight);
+    color: contrast-color(var(--highlight)); /* black or white, whichever is easier to read */
+}
+
 /* A secondary panel is dark, with light text */
 .secondary {
     background: #333;
