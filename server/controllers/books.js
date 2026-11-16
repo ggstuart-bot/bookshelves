@@ -4,7 +4,8 @@ import { booksView } from "../views/books.js";
 
 const PAGE_SIZE = 16;
 
-export function booksController() {
-    const books = getBooks(PAGE_SIZE);
-    return render(booksView, { title: "Books", data: { books } });
+export function booksController(ctx) {
+    ctx.data.books = getBooks(PAGE_SIZE);
+    ctx.data.title = "Books";
+    return render(booksView, ctx);
 }

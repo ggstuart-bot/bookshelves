@@ -1,6 +1,7 @@
 // Placeholder: this will need to change when we add flash messages, sign-in and nav highlighting
-export function layout(content, page = {}) {
-    const title = page.title ? `${page.title} | Bookshelves` : "Bookshelves";
+export function layout(content, ctx) {
+    const { data } = ctx;
+    const title = data.title ? `${data.title} | Bookshelves` : "Bookshelves";
 
     const document = `
         <!DOCTYPE html>

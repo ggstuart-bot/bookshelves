@@ -1,4 +1,6 @@
-export function booksView({ data: { books } }) {
+export function booksView(ctx) {
+    const { data: { books } } = ctx;
+
     return `
         <section>
             <header>
