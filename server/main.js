@@ -14,12 +14,12 @@ app.register("/assets/*", staticController);
 app.register("/", homeController);
 app.register("/books", booksController);
 
-export function server(request) {
+export async function server(request) {
     const url = new URL(request.url);
     const ctx = { request, url, data: {} };
 
     try {
-        return app.handle(ctx);
+        return await app.handle(ctx);
     } catch (error) {
         if (error instanceof NotFoundError) {
             console.log("Not found:", error.message);
