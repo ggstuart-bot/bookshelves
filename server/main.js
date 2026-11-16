@@ -1,5 +1,5 @@
 import { homeController } from "./controllers/home.js";
-import { booksController } from "./controllers/books.js";
+import { bookController, booksController } from "./controllers/books.js";
 import { staticController } from "./controllers/static.js";
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
@@ -13,6 +13,7 @@ app.use(withErrors);
 app.register("/assets/*", staticController);
 app.register("/", homeController);
 app.register("/books", booksController);
+app.register("/books/:bookId", bookController);
 
 export function server(request) {
     const url = new URL(request.url);

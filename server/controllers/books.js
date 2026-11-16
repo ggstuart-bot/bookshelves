@@ -1,7 +1,8 @@
-import { countPages, searchBooks } from "../models/books.js";
+import { countPages, getBookById, searchBooks } from "../models/books.js";
 import { render } from "../tools/render.js";
 import { NotFoundError } from "../tools/errors.js";
 import { booksView } from "../views/books.js";
+import { bookView } from "../views/book.js";
 
 const PAGE_SIZE = 16;
 
@@ -20,4 +21,15 @@ export function booksController(ctx) {
     ctx.data.pageCount = pageCount;
     ctx.data.title = q ? `Books matching "${q}"` : "Books";
     return render(booksView, ctx);
+}
+
+export function bookController(ctx) {
+    const { params: { bookId } } = ctx;
+    const book = getBookById(Number(bookId));
+    if (!book) {
+        throw new NotFoundError(`Book ${bookId} not found`);
+    }
+    ctx.data.book = book;
+    ctx.data.title = book.title;
+    return render(bookView, ctx);
 }

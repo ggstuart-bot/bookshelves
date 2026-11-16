@@ -8,6 +8,12 @@ export function createBook({ title, author, year, thumbnailUrl, coverUrl }) {
     `).get({ title, author, year, thumbnailUrl, coverUrl });
 }
 
+export function getBookById(id) {
+    return db.prepare(
+        `SELECT id, title, author, year, thumbnailUrl, coverUrl FROM books WHERE id=:id`,
+    ).get({ id });
+}
+
 export function searchBooks(q, page, pageSize) {
     return db.prepare(`
         SELECT id, title, author, year, thumbnailUrl, coverUrl FROM books
