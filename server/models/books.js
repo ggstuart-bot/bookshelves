@@ -9,10 +9,10 @@ export function createBook({ title, author, year, thumbnailUrl, coverUrl }) {
 }
 
 // Placeholder: this will need to change when we add search
-export function getBooks(limit) {
+export function getBooks(page, pageSize) {
     return db.prepare(`
         SELECT id, title, author, year, thumbnailUrl, coverUrl FROM books
         ORDER BY title
-        LIMIT :limit
-    `).all({ limit });
+        LIMIT :limit OFFSET :offset
+    `).all({ limit: pageSize, offset: (page - 1) * pageSize });
 }
