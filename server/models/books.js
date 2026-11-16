@@ -1,4 +1,3 @@
-import books from "../../db/books.json" with { type: "json" };
 import { db } from "./db.js";
 
 export function createBook({ title, author, year, thumbnailUrl, coverUrl }) {
@@ -11,5 +10,8 @@ export function createBook({ title, author, year, thumbnailUrl, coverUrl }) {
 
 // Placeholder: this will need to change when we add search
 export function getBooks(limit) {
-    return books.slice(0, limit);
+    return db.prepare(`
+        SELECT id, title, author, year, thumbnailUrl, coverUrl FROM books
+        LIMIT :limit
+    `).all({ limit });
 }
