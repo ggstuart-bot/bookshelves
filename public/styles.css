@@ -174,3 +174,12 @@ form {
         justify-self: start;
     }
 }
+
+/* The search box and its button share a row, under the label */
+search > form {
+    grid-template-columns: 1fr auto;
+    /* The label spans both columns */
+    label {
+        grid-column: 1 / -1;
+    }
+}
