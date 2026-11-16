@@ -5,7 +5,7 @@ import { staticController } from "./controllers/static.js";
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
-import { withBook } from "./middleware/resources.js";
+import { withBook, withShelf } from "./middleware/resources.js";
 
 const app = new Router();
 
@@ -17,7 +17,7 @@ app.register("/", homeController);
 app.register("/books", booksController);
 app.register("/books/:bookId", withBook, bookController);
 app.register("/shelves", myShelvesController);
-app.register("/shelves/:shelfId", shelfController);
+app.register("/shelves/:shelfId", withShelf, shelfController);
 
 export function server(request) {
     const url = new URL(request.url);
