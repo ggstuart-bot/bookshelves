@@ -1,7 +1,7 @@
 const DEFAULT_COVER = "/assets/default-cover.svg";
 
 export function booksView(ctx) {
-    const { data: { books } } = ctx;
+    const { data: { books, page, pageCount } } = ctx;
 
     return `
         <section>
@@ -11,6 +11,7 @@ export function booksView(ctx) {
             <ul class="grid">
                 ${books.map(bookCard).join("")}
             </ul>
+            ${pagination(page, pageCount)}
         </section>
     `;
 }
@@ -26,4 +27,14 @@ function bookCard(book) {
             </div>
         </li>
     `;
+}
+
+// Previous, the current page and next. Nothing at all if there's only one page
+function pagination(page, pageCount) {
+    if (pageCount <= 1) return "";
+    return `<nav aria-label="Pagination">
+            ${page > 1 ? `<a href="/books?page=${page - 1}" rel="prev">previous</a>` : ""}
+            <a href="/books?page=${page}" aria-current="page">page ${page} of ${pageCount}</a>
+            ${page < pageCount ? `<a href="/books?page=${page + 1}" rel="next">next</a>` : ""}
+        </nav>`;
 }
