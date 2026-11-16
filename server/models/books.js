@@ -12,6 +12,7 @@ export function createBook({ title, author, year, thumbnailUrl, coverUrl }) {
 export function getBooks(limit) {
     return db.prepare(`
         SELECT id, title, author, year, thumbnailUrl, coverUrl FROM books
+        ORDER BY title
         LIMIT :limit
     `).all({ limit });
 }
