@@ -137,3 +137,17 @@ img {
 .card.book {
     grid-template-columns: 2fr 3fr;
 }
+
+/* Nav links are outlined pills, underlined on hover */
+nav a {
+    padding: 0.25em 0.75em;
+    border: 1px solid;
+    border-radius: 1em;
+    background: none;
+    color: inherit;
+    text-decoration: none;
+    /* Hovering adds an accent underline */
+    &:hover {
+        text-decoration: underline var(--highlight) 2px;
+    }
+}
