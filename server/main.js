@@ -18,9 +18,9 @@ export function server(request) {
     }
     if (url.pathname === "/") {
         // Placeholder: this will need to change when we add controllers
-        return render(homeView());
+        return render(homeView);
     }
 
     // Placeholder: this will need to change when we add controllers
-    return render(notFoundView(), { status: 404, title: "Not found" });
+    return render(notFoundView, { status: 404, title: "Not found" });
 }
