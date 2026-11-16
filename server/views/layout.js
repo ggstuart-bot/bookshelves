@@ -20,6 +20,7 @@ export function layout(content, ctx) {
                     <a href="/" class="brand"><img src="/assets/icon.svg" alt=""> Bookshelves</a>
                     <nav>
                         ${navLink("/books", "books", url.pathname)}
+                        ${navLink("/shelves", "shelves", url.pathname)}
                     </nav>
                 </header>
                 <main>
