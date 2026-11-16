@@ -14,7 +14,7 @@ export function booksView(ctx) {
             </header>
             ${searchForm(q)}
             ${results}
-            ${pagination(page, pageCount)}
+            ${pagination(q, page, pageCount)}
         </section>
     `;
 }
@@ -33,13 +33,19 @@ function bookCard(book) {
 }
 
 // Previous, the current page and next. Nothing at all if there's only one page
-function pagination(page, pageCount) {
+function pagination(q, page, pageCount) {
     if (pageCount <= 1) return "";
     return `<nav aria-label="Pagination">
-            ${page > 1 ? `<a href="/books?page=${page - 1}" rel="prev">previous</a>` : ""}
-            <a href="/books?page=${page}" aria-current="page">page ${page} of ${pageCount}</a>
-            ${page < pageCount ? `<a href="/books?page=${page + 1}" rel="next">next</a>` : ""}
+            ${page > 1 ? `<a href="${pageUrl(q, page - 1)}" rel="prev">previous</a>` : ""}
+            <a href="${pageUrl(q, page)}" aria-current="page">page ${page} of ${pageCount}</a>
+            ${page < pageCount ? `<a href="${pageUrl(q, page + 1)}" rel="next">next</a>` : ""}
         </nav>`;
+}
+
+// Only keep q in the link if there's a search
+function pageUrl(q, page) {
+    const params = q ? { q, page } : { page };
+    return `/books?${new URLSearchParams(params)}`;
 }
 
 function searchForm(q) {
