@@ -1,7 +1,8 @@
 {
     "tasks": {
         "serve": "deno -A tasks/server.js",
-        "dev": "deno --watch -A tasks/server.js"
+        "dev": "deno --watch -A tasks/server.js",
+        "db:create": "deno -A tasks/db-create.js"
     },
     "imports": {
         "@db/sqlite": "jsr:@db/sqlite@^0.12.0",
