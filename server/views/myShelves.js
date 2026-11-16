@@ -1,4 +1,5 @@
 import { html } from "../tools/html.js";
+import { cardGrid } from "./partials/cardGrid.js";
 
 export function myShelvesView(ctx) {
     const { data: { shelves } } = ctx;
@@ -9,7 +10,7 @@ export function myShelvesView(ctx) {
                 <h1>Shelves</h1>
             </header>
             <h2>All shelves</h2>
-            <ul class="grid">${shelves.map(shelfCard)}</ul>
+            ${cardGrid(shelves.map(shelfCard), "No shelves yet")}
         </section>
     `;
 }
