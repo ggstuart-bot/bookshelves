@@ -1,3 +1,5 @@
+import { searchForm } from "./partials/searchForm.js";
+
 const DEFAULT_COVER = "/assets/default-cover.svg";
 
 export function booksView(ctx) {
@@ -46,16 +48,4 @@ function pagination(q, page, pageCount) {
 function pageUrl(q, page) {
     const params = q ? { q, page } : { page };
     return `/books?${new URLSearchParams(params)}`;
-}
-
-function searchForm(q) {
-    return `
-        <search>
-            <form method="GET" action="/books">
-                <label for="q">Search by title or author</label>
-                <input id="q" type="search" name="q" value="${q}">
-                <button>search</button>
-            </form>
-        </search>
-    `;
 }
