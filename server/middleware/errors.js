@@ -1,5 +1,5 @@
-import { NotFoundError } from "../tools/errors.js";
-import { notFoundController } from "../controllers/errors.js";
+import { NotFoundError, UnexpectedError } from "../tools/errors.js";
+import { notFoundController, serverErrorController } from "../controllers/errors.js";
 
 export async function withErrors(ctx, next) {
     try {
@@ -7,6 +7,7 @@ export async function withErrors(ctx, next) {
     } catch (error) {
         ctx.error = error;
         if (error instanceof NotFoundError) return notFoundController(ctx);
-        throw error;
+        ctx.error = new UnexpectedError("Unexpected error", { cause: error });
+        return serverErrorController(ctx);
     }
 }
