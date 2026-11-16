@@ -7,3 +7,10 @@ export function notFoundController(ctx) {
     ctx.data.message = "The requested resource was not found.";
     return render(errorView, ctx);
 }
+
+export function serverErrorController(ctx) {
+    ctx.status = 500;
+    ctx.data.title = "Server error";
+    ctx.data.message = "Something went wrong on the server.";
+    return render(errorView, ctx);
+}
