@@ -1,9 +1,10 @@
+import { getFlash } from "./flash.js";
 import { layout } from "../views/layout.js";
 
-// Placeholder: this will need to change when we add flash messages and sign-in
 export function render(view, ctx) {
-    const { status } = ctx;
-    const headers = new Headers({ "content-type": "text/html" });
+    const { headers, status } = ctx;
+    headers.set("content-type", "text/html");
+    getFlash(ctx);
     const content = view(ctx);
     const html = layout(content, ctx);
     return new Response(html, { headers, status });
