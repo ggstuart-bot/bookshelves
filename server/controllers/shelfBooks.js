@@ -20,3 +20,9 @@ export function addBookController(ctx) {
         : `Book '${book.title}' is already on '${shelf.title}'`;
     return redirect(`/books/${book.id}`, ctx);
 }
+
+export function removeBookController(ctx) {
+    const { params: { shelfId, bookId } } = ctx;
+    ctx.flash = `Ignored request to remove book ${bookId} from shelf ${shelfId}`;
+    return redirect(`/shelves/${shelfId}`, ctx);
+}
