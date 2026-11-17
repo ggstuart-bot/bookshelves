@@ -1,13 +1,14 @@
 import { html } from "../tools/html.js";
 
 export function shelfView(ctx) {
-    const { params: { shelfId } } = ctx;
+    const { data: { shelf } } = ctx;
 
     return html`
         <section>
             <header>
-                <h1>Shelf ${shelfId}</h1>
+                <h1>${shelf.title}</h1>
             </header>
+            <p><a href="/shelves">Back to all shelves</a></p>
         </section>
     `;
 }
