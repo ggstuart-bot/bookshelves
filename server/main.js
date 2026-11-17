@@ -1,6 +1,10 @@
 import { homeController } from "./controllers/home.js";
 import { bookController, booksController } from "./controllers/books.js";
-import { shelfController, shelvesController } from "./controllers/shelves.js";
+import {
+    createShelfController,
+    shelfController,
+    shelvesController,
+} from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
@@ -16,7 +20,7 @@ app.register("GET", "/", homeController);
 app.register("GET", "/books", booksController);
 app.register("GET", "/books/:bookId", bookController);
 app.register("GET", "/shelves", shelvesController);
-app.register("POST", "/shelves", shelvesController);
+app.register("POST", "/shelves", createShelfController);
 app.register("GET", "/shelves/:shelfId", shelfController);
 
 export function server(request) {

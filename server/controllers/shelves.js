@@ -6,16 +6,17 @@ import { NotFoundError } from "../tools/errors.js";
 import { shelvesView } from "../views/shelves.js";
 import { shelfView } from "../views/shelf.js";
 
-export async function shelvesController(ctx) {
-    const { request } = ctx;
-    if (request.method === "POST") {
-        const formData = await request.formData();
-        const shelf = createShelf({ title: formData.get("title") });
-        return redirect(`/shelves/${shelf.id}`);
-    }
+export function shelvesController(ctx) {
     ctx.data.shelves = addThumbnails(getShelves());
     ctx.data.title = "Shelves";
     return render(shelvesView, ctx);
+}
+
+export async function createShelfController(ctx) {
+    const { request } = ctx;
+    const formData = await request.formData();
+    const shelf = createShelf({ title: formData.get("title") });
+    return redirect(`/shelves/${shelf.id}`);
 }
 
 export function shelfController(ctx) {
