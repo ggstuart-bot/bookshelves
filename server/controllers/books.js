@@ -1,4 +1,5 @@
 import { countPages, getBookById, searchBooks } from "../models/books.js";
+import { getShelves } from "../models/shelves.js";
 import { render } from "../tools/render.js";
 import { NotFoundError } from "../tools/errors.js";
 import { booksView } from "../views/books.js";
@@ -30,6 +31,7 @@ export function bookController(ctx) {
         throw new NotFoundError(`Book ${bookId} not found`);
     }
     ctx.data.book = book;
+    ctx.data.shelves = getShelves();
     ctx.data.title = book.title;
     return render(bookView, ctx);
 }
