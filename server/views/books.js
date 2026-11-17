@@ -1,13 +1,11 @@
 import { html } from "../tools/html.js";
+import { cardGrid } from "./partials/cardGrid.js";
 import { searchForm } from "./partials/searchForm.js";
 
 export const DEFAULT_COVER = "/assets/default-cover.svg";
 
 export function booksView(ctx) {
     const { data: { title, books, q, page, pageCount } } = ctx;
-    const results = books.length
-        ? html`<ul class="grid">${books.map(bookCard)}</ul>`
-        : html`<p>${q ? `No books match "${q}"` : "No books found"}</p>`;
 
     return html`
         <section>
@@ -16,7 +14,10 @@ export function booksView(ctx) {
                 ${q ? html`<p><a href="/books">show all books</a></p>` : ""}
             </header>
             ${searchForm(q)}
-            ${results}
+            ${cardGrid(
+                books.map(bookCard),
+                q ? `No books match "${q}"` : "No books found",
+            )}
             ${pagination(q, page, pageCount)}
         </section>
     `;
