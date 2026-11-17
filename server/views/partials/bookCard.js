@@ -1,0 +1,17 @@
+import { html } from "../../tools/html.js";
+
+export const DEFAULT_COVER = "/assets/default-cover.svg";
+
+// A book as a card in a .grid list
+export function bookCard(book) {
+    const cover = book.coverUrl ?? DEFAULT_COVER;
+    return html`
+        <li class="card book">
+            <img class="cover" src="${cover}" alt="" width="200" height="300" loading="lazy">
+            <div>
+                <h2><a href="/books/${book.id}">${book.title}</a></h2>
+                <p>${book.author}${book.year ? ` (${book.year})` : ""}</p>
+            </div>
+        </li>
+    `;
+}
