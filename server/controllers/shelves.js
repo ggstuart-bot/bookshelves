@@ -25,3 +25,8 @@ export function shelfController(ctx) {
     ctx.data.books = getBooksByShelfId(shelf.id);
     return render(shelfView, ctx);
 }
+
+export function deleteShelfController(ctx) {
+    const { data: { shelf } } = ctx;
+    return new Response(`Delete shelf '${shelf.title}'`);
+}
