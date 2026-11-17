@@ -1,6 +1,6 @@
 import { html } from "../tools/html.js";
 
-// Placeholder: this will need to change when we add flash messages and sign-in
+// Placeholder: this will need to change when we add sign-in
 export function layout(content, ctx) {
     const { data, url } = ctx;
     const title = data.title ? `${data.title} | Bookshelves` : "Bookshelves";
@@ -23,6 +23,7 @@ export function layout(content, ctx) {
                         ${navLink("/shelves", "shelves", url.pathname)}
                     </nav>
                 </header>
+                ${flashMessage(data.flash)}
                 <main>
                 ${content}
                 </main>
@@ -34,6 +35,10 @@ export function layout(content, ctx) {
             </body>
         </html>
     `;
+}
+
+function flashMessage(flash) {
+    return flash ? html`<p id="flash" role="status" tabindex="0">${flash}</p>` : "";
 }
 
 // A header link, marked as the current page when it matches the path exactly
