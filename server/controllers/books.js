@@ -1,4 +1,4 @@
-import { countPages, searchBooks } from "../models/books.js";
+import { countPages, getBookById, searchBooks } from "../models/books.js";
 import { render } from "../tools/render.js";
 import { NotFoundError } from "../tools/errors.js";
 import { booksView } from "../views/books.js";
@@ -24,5 +24,12 @@ export function booksController(ctx) {
 }
 
 export function bookController(ctx) {
+    const { params: { bookId } } = ctx;
+    const book = getBookById(Number(bookId));
+    if (!book) {
+        throw new NotFoundError(`Book ${bookId} not found`);
+    }
+    ctx.data.book = book;
+    ctx.data.title = book.title;
     return render(bookView, ctx);
 }

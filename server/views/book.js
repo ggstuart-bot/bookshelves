@@ -1,12 +1,12 @@
 import { html } from "../tools/html.js";
 
 export function bookView(ctx) {
-    const { params: { bookId } } = ctx;
+    const { data: { book } } = ctx;
 
     return html`
         <section>
             <header>
-                <h1>Book ${bookId}</h1>
+                <h1>${book.title}</h1>
             </header>
         </section>
     `;
