@@ -1,6 +1,5 @@
 import { NotFoundError } from "./errors.js";
 
-// Placeholder: this will need to change when we add URL parameters
 export class Router {
     constructor() {
         this.routes = [];
@@ -28,6 +27,7 @@ export class Router {
         if (!route) {
             throw new NotFoundError(`${url.pathname} doesn't match any known route`);
         }
+        ctx.params = route.pattern.exec(url).pathname.groups;
         return route.handler(ctx);
     }
 
