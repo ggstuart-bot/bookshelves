@@ -15,6 +15,13 @@ export class Router {
         this.middleware.push(fn);
     }
 
+    get(...args) {
+        this.register("GET", ...args);
+    }
+    post(...args) {
+        this.register("POST", ...args);
+    }
+
     handle(ctx) {
         return this.chain(ctx, [...this.middleware, (ctx) => this.dispatch(ctx)]);
     }
