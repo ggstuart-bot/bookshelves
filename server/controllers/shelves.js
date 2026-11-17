@@ -1,4 +1,5 @@
 import { getShelfById, getShelves } from "../models/shelves.js";
+import { getBooksByShelfId } from "../models/shelfBooks.js";
 import { render } from "../tools/render.js";
 import { NotFoundError } from "../tools/errors.js";
 import { shelvesView } from "../views/shelves.js";
@@ -18,5 +19,6 @@ export function shelfController(ctx) {
     }
     ctx.data.shelf = shelf;
     ctx.data.title = shelf.title;
+    ctx.data.books = getBooksByShelfId(shelf.id);
     return render(shelfView, ctx);
 }
