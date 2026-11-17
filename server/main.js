@@ -11,12 +11,13 @@ const app = new Router();
 app.use(withLogs);
 app.use(withErrors);
 
-app.register("/assets/*", staticController);
-app.register("/", homeController);
-app.register("/books", booksController);
-app.register("/books/:bookId", bookController);
-app.register("/shelves", shelvesController);
-app.register("/shelves/:shelfId", shelfController);
+app.register("GET", "/assets/*", staticController);
+app.register("GET", "/", homeController);
+app.register("GET", "/books", booksController);
+app.register("GET", "/books/:bookId", bookController);
+app.register("GET", "/shelves", shelvesController);
+app.register("POST", "/shelves", shelvesController);
+app.register("GET", "/shelves/:shelfId", shelfController);
 
 export function server(request) {
     const url = new URL(request.url);

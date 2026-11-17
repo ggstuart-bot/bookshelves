@@ -6,9 +6,9 @@ export class Router {
         this.middleware = [];
     }
 
-    register(pathname, handler) {
+    register(method, pathname, handler) {
         const pattern = new URLPattern({ pathname });
-        this.routes.push({ pattern, handler });
+        this.routes.push({ method, pattern, handler });
     }
 
     use(fn) {
@@ -20,12 +20,14 @@ export class Router {
     }
 
     dispatch(ctx) {
-        const { url } = ctx;
+        const { url, request } = ctx;
         const route = this.routes.find((route) => {
-            return route.pattern.test(url);
+            return route.method === request.method && route.pattern.test(url);
         });
         if (!route) {
-            throw new NotFoundError(`${url.pathname} doesn't match any known route`);
+            throw new NotFoundError(
+                `${request.method} ${url.pathname} doesn't match any known route`,
+            );
         }
         ctx.params = route.pattern.exec(url).pathname.groups;
         return route.handler(ctx);
