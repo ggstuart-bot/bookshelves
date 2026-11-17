@@ -25,3 +25,9 @@ export function shelfController(ctx) {
     ctx.data.books = getBooksByShelfId(shelf.id);
     return render(shelfView, ctx);
 }
+
+export function deleteShelfController(ctx) {
+    const { data: { shelf } } = ctx;
+    ctx.flash = `Ignored request to delete shelf '${shelf.title}'`;
+    return redirect(`/shelves/${shelf.id}`, ctx);
+}

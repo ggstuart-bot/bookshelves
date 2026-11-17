@@ -3,6 +3,7 @@ import { bookController, booksController } from "./controllers/books.js";
 import { addBookController, removeBookController } from "./controllers/shelfBooks.js";
 import {
     createShelfController,
+    deleteShelfController,
     shelfController,
     shelvesController,
 } from "./controllers/shelves.js";
@@ -24,6 +25,7 @@ app.get("/books/:bookId", withBook, bookController);
 app.get("/shelves", shelvesController);
 app.post("/shelves", createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
+app.post("/shelves/:shelfId/delete", withShelf, deleteShelfController);
 app.post("/shelves/:shelfId/books/:bookId/add", withShelf, withBook, addBookController);
 app.post("/shelves/:shelfId/books/:bookId/delete", withShelf, withBook, removeBookController);
 
