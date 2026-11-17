@@ -14,7 +14,7 @@ export function booksView(ctx) {
             </header>
             ${searchForm(q)}
             ${cardGrid(
-                books.map(bookCard),
+                books.map((book) => bookCard(book)),
                 q ? `No books match "${q}"` : "No books found",
             )}
             ${pagination(q, page, pageCount)}
