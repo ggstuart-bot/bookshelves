@@ -1,6 +1,6 @@
 import { getBookById } from "../models/books.js";
 import { getShelfById } from "../models/shelves.js";
-import { addBookToShelf } from "../models/shelfBooks.js";
+import { addBookToShelf, removeBookFromShelf } from "../models/shelfBooks.js";
 import { NotFoundError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 
@@ -23,5 +23,15 @@ export function addBookController(ctx) {
 
 export function removeBookController(ctx) {
     const { params: { shelfId, bookId } } = ctx;
-    return new Response(`Remove book ${bookId} from shelf ${shelfId}`);
+    const shelf = getShelfById(Number(shelfId));
+    if (!shelf) {
+        throw new NotFoundError(`Shelf ${shelfId} not found`);
+    }
+    const book = getBookById(Number(bookId));
+    if (!book) {
+        throw new NotFoundError(`Book ${bookId} not found`);
+    }
+    removeBookFromShelf(shelf.id, book.id);
+    ctx.flash = `Book '${book.title}' removed`;
+    return redirect(`/shelves/${shelf.id}`, ctx);
 }

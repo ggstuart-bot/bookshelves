@@ -14,6 +14,12 @@ export function addBookToShelf(shelfId, bookId) {
     ).run({ shelfId, bookId });
 }
 
+export function removeBookFromShelf(shelfId, bookId) {
+    return db.prepare(
+        `DELETE FROM shelfBooks WHERE shelfId=:shelfId AND bookId=:bookId`,
+    ).run({ shelfId, bookId });
+}
+
 // Up to 5 small covers to show on a shelf card
 function getThumbnailsByShelfId(shelfId) {
     return db.prepare(`
