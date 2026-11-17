@@ -16,7 +16,7 @@ export async function createShelfController(ctx) {
     const { request } = ctx;
     const formData = await request.formData();
     const shelf = createShelf({ title: formData.get("title") });
-    return redirect(`/shelves/${shelf.id}`);
+    return redirect(`/shelves/${shelf.id}`, ctx);
 }
 
 export function shelfController(ctx) {

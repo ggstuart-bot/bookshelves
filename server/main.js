@@ -25,6 +25,7 @@ app.get("/shelves/:shelfId", shelfController);
 
 export function server(request) {
     const url = new URL(request.url);
-    const ctx = { request, url, data: {} };
+    const headers = new Headers();
+    const ctx = { request, url, data: {}, headers };
     return app.handle(ctx);
 }
