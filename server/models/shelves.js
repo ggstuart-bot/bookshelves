@@ -1,0 +1,10 @@
+import { db } from "./db.js";
+
+// Placeholder: this will need to change when shelves have owners
+export function createShelf({ title }) {
+    return db.prepare(`
+        INSERT INTO shelves(title)
+        VALUES (:title)
+        RETURNING id, title
+    `).get({ title });
+}
