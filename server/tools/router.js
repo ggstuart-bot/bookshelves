@@ -6,9 +6,9 @@ export class Router {
         this.middleware = [];
     }
 
-    register(method, pathname, handler) {
+    register(method, pathname, ...handlers) {
         const pattern = new URLPattern({ pathname });
-        this.routes.push({ method, pattern, handler });
+        this.routes.push({ method, pattern, handlers });
     }
 
     use(fn) {
@@ -37,7 +37,7 @@ export class Router {
             );
         }
         ctx.params = route.pattern.exec(url).pathname.groups;
-        return route.handler(ctx);
+        return this.chain(ctx, route.handlers);
     }
 
     chain(ctx, handlers) {
