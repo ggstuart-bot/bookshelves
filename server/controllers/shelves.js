@@ -1,4 +1,4 @@
-import { createShelf, getShelves } from "../models/shelves.js";
+import { createShelf, deleteShelfById, getShelves } from "../models/shelves.js";
 import { addThumbnails, getBooksByShelfId } from "../models/shelfBooks.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
@@ -27,6 +27,8 @@ export function shelfController(ctx) {
 }
 
 export function deleteShelfController(ctx) {
-    const { data: { shelf } } = ctx;
-    return new Response(`Delete shelf '${shelf.title}'`);
+    const { data: { shelf: { id } } } = ctx;
+    const shelf = deleteShelfById(id);
+    ctx.flash = `Shelf '${shelf.title}' deleted`;
+    return redirect("/shelves", ctx);
 }
