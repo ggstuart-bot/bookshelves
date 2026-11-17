@@ -1,6 +1,7 @@
 import { html } from "../tools/html.js";
 import { bookCard } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
+import { postButton } from "./partials/postButton.js";
 
 export function shelfView(ctx) {
     const { data: { shelf, books } } = ctx;
@@ -11,10 +12,19 @@ export function shelfView(ctx) {
                 <h1>${shelf.title}</h1>
             </header>
             ${cardGrid(
-                books.map(bookCard),
+                books.map((book) => bookCard(book, removeForm(shelf, book))),
                 html`No books yet, <a href="/books">find some books</a> to add`,
             )}
             <p><a href="/shelves">Back to all shelves</a></p>
         </section>
+        <aside>
+            <h2>Delete shelf</h2>
+            <p>The books stay in the catalogue</p>
+            ${postButton(`/shelves/${shelf.id}/delete`, "delete shelf")}
+        </aside>
     `;
+}
+
+function removeForm(shelf, book) {
+    return postButton(`/shelves/${shelf.id}/books/${book.id}/delete`, "remove");
 }
