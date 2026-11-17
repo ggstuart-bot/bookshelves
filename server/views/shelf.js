@@ -17,6 +17,11 @@ export function shelfView(ctx) {
             )}
             <p><a href="/shelves">Back to all shelves</a></p>
         </section>
+        <aside>
+            <h2>Delete shelf</h2>
+            <p>The books stay in the catalogue</p>
+            ${postButton(`/shelves/${shelf.id}/delete`, "delete shelf")}
+        </aside>
     `;
 }
 
