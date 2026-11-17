@@ -1,7 +1,7 @@
 import { html } from "../tools/html.js";
 import { searchForm } from "./partials/searchForm.js";
 
-const DEFAULT_COVER = "/assets/default-cover.svg";
+export const DEFAULT_COVER = "/assets/default-cover.svg";
 
 export function booksView(ctx) {
     const { data: { title, books, q, page, pageCount } } = ctx;
