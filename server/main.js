@@ -12,7 +12,11 @@ import { createUserController, signupFormController } from "./controllers/users.
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
+import { withValidation } from "./middleware/validation.js";
+import { shelfSchema } from "./schema/shelf.js";
 import { withBook, withShelf } from "./middleware/resources.js";
+
+const validateNewShelf = withValidation(shelfSchema, shelvesController);
 
 const app = new Router();
 
@@ -26,7 +30,7 @@ app.get("/books/:bookId", withBook, bookController);
 app.get("/signup", signupFormController);
 app.post("/signup", createUserController);
 app.get("/shelves", shelvesController);
-app.post("/shelves", createShelfController);
+app.post("/shelves", validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
 app.post("/shelves/:shelfId/delete", withShelf, deleteShelfController);
 app.post("/shelves/:shelfId/books/:bookId/add", withShelf, withBook, addBookController);
