@@ -280,3 +280,13 @@ form.secondary {
         object-fit: cover;
     }
 }
+
+/* A square picture with 50% rounded corners is a circle */
+.avatar {
+    inline-size: 8rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: middle; /* lines up with the middle of the text beside it */
+    background: gray; /* grey shows behind a transparent picture, or until it loads */
+}
