@@ -1,4 +1,5 @@
 import { html } from "../tools/html.js";
+import { postButton } from "./partials/postButton.js";
 
 export function layout(content, ctx) {
     const { data, url, user } = ctx;
@@ -48,7 +49,7 @@ function userMessage(user) {
 
 function authLinks(user, path) {
     if (!user) return navLink("/signin", "sign in", path);
-    return "";
+    return postButton("/signout", "sign out");
 }
 
 // A header link, marked as the current page when it matches the path exactly
