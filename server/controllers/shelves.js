@@ -14,7 +14,12 @@ export function shelvesController(ctx) {
 export async function createShelfController(ctx) {
     const { request } = ctx;
     const formData = await request.formData();
-    const shelf = createShelf({ title: formData.get("title") });
+    const title = formData.get("title") ?? "";
+    if (!title) {
+        ctx.status = 400;
+        return shelvesController(ctx);
+    }
+    const shelf = createShelf({ title });
     ctx.flash = `Shelf '${shelf.title}' created`;
     return redirect(`/shelves/${shelf.id}`, ctx);
 }
