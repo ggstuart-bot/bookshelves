@@ -1,4 +1,5 @@
 import { getUserByUsername } from "../models/users.js";
+import { signin } from "../tools/authentication.js";
 import { verifyPassword } from "../tools/hash.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
@@ -18,6 +19,7 @@ export async function signinController(ctx) {
         ctx.status = 401;
         return signinFormController(ctx);
     }
+    signin(user.id, ctx);
     ctx.flash = `Signed in as '${username}'`;
     return redirect("/", ctx);
 }
