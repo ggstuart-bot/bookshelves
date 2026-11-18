@@ -5,10 +5,12 @@ import {
     updateShelfTitleById,
 } from "../models/shelves.js";
 import { addThumbnails, getBooksByShelfId } from "../models/shelfBooks.js";
+import { getUserById } from "../models/users.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { myShelvesView } from "../views/myShelves.js";
-import { shelfView } from "../views/shelf.js";
+import { myShelfView } from "../views/myShelf.js";
+import { publicShelfView } from "../views/publicShelf.js";
 
 export function myShelvesController(ctx) {
     const { user } = ctx;
@@ -25,10 +27,14 @@ export function createShelfController(ctx) {
 }
 
 export function shelfController(ctx) {
-    const { data: { shelf } } = ctx;
+    const { user, data: { shelf } } = ctx;
     ctx.data.title = shelf.title;
     ctx.data.books = getBooksByShelfId(shelf.id);
-    return render(shelfView, ctx);
+    if (user?.id === shelf.ownerId) {
+        return render(myShelfView, ctx);
+    }
+    ctx.data.owner = getUserById(shelf.ownerId);
+    return render(publicShelfView, ctx);
 }
 
 export function editShelfController(ctx) {
