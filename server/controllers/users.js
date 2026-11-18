@@ -1,7 +1,9 @@
 import { createUser } from "../models/users.js";
 import { getShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
+import { getFileById } from "../models/files.js";
 import { signin } from "../tools/authentication.js";
+import { NotFoundError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { signupView } from "../views/signup.js";
@@ -25,4 +27,13 @@ export function userController(ctx) {
     ctx.data.shelves = addThumbnails(getShelvesByOwnerId(targetUser.id));
     ctx.data.title = targetUser.username;
     return render(userView, ctx);
+}
+
+export function avatarController(ctx) {
+    const { data: { targetUser } } = ctx;
+    const avatarFile = targetUser.avatarId && getFileById(targetUser.avatarId);
+    if (!avatarFile) {
+        throw new NotFoundError(`No avatar for user ${targetUser.id}`);
+    }
+    return new Response(avatarFile);
 }
