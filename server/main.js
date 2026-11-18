@@ -33,7 +33,7 @@ import {
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { mayUseShelf, requireGuest, requireUser } from "./middleware/access.js";
+import { mayChangeAvatar, mayUseShelf, requireGuest, requireUser } from "./middleware/access.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
@@ -70,7 +70,7 @@ app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withB
 app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, withBook, mayUseShelf, removeBookController);
 app.get("/users/:userId", withTargetUser, userController);
 app.get("/users/:userId/avatar", withTargetUser, avatarController);
-app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, validateAvatar, uploadAvatarController);
+app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, mayChangeAvatar, validateAvatar, uploadAvatarController);
 
 export function server(request) {
     const url = new URL(request.url);
