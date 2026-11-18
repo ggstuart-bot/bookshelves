@@ -8,6 +8,11 @@ export function getUserByUsername(username) {
 }
 
 // Placeholder: this will need to change when users get more columns
+export function getUserById(id) {
+    return db.prepare(`SELECT id, username FROM users WHERE id=:id`).get({ id });
+}
+
+// Placeholder: this will need to change when users get more columns
 export async function createUser({ username, password }) {
     const hashedPassword = await hashPassword(password);
     return db.prepare(`
