@@ -5,6 +5,7 @@ import {
     updateShelfTitleById,
 } from "../models/shelves.js";
 import { addThumbnails, getBooksByShelfId } from "../models/shelfBooks.js";
+import { NotFoundError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { myShelvesView } from "../views/myShelves.js";
@@ -25,7 +26,10 @@ export function createShelfController(ctx) {
 }
 
 export function shelfController(ctx) {
-    const { data: { shelf } } = ctx;
+    const { user, data: { shelf } } = ctx;
+    if (user?.id !== shelf.ownerId) {
+        throw new NotFoundError(`Shelf ${shelf.id} not found`);
+    }
     ctx.data.title = shelf.title;
     ctx.data.books = getBooksByShelfId(shelf.id);
     return render(shelfView, ctx);
