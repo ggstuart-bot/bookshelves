@@ -15,6 +15,7 @@ import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
 import { createUserController, signupFormController } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
+import { signinFormController } from "./controllers/sessions.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, shelvesController);
@@ -31,6 +32,7 @@ app.get("/books", booksController);
 app.get("/books/:bookId", withBook, bookController);
 app.get("/signup", signupFormController);
 app.post("/signup", validateNewUser, createUserController);
+app.get("/signin", signinFormController);
 app.get("/shelves", shelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
