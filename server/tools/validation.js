@@ -9,8 +9,10 @@ export function validateField(name, value, validators) {
 export function validateSchema(formData, schema) {
     const errors = {};
     const validated = {};
+    const values = {};
     for (const [key, { validators, displayName }] of Object.entries(schema)) {
         const value = formData.get(key) ?? "";
+        values[key] = value;
         try {
             validateField(displayName || key, value, validators);
             validated[key] = value;
@@ -20,7 +22,7 @@ export function validateSchema(formData, schema) {
         }
     }
     if (Object.keys(errors).length) {
-        throw new SchemaValidationError(errors);
+        throw new SchemaValidationError(errors, values);
     }
     return validated;
 }
