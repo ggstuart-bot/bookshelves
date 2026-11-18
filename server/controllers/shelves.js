@@ -17,7 +17,11 @@ export function shelvesController(ctx) {
 }
 
 export function createShelfController(ctx) {
-    const { validated } = ctx;
+    const { validated, user } = ctx;
+    if (!user) {
+        ctx.flash = "Please sign in to continue";
+        return redirect("/signin", ctx);
+    }
     const shelf = createShelf({ title: validated.title });
     ctx.flash = `Shelf '${shelf.title}' created`;
     return redirect(`/shelves/${shelf.id}`, ctx);
