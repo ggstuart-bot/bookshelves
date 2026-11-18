@@ -12,17 +12,15 @@ for (const book of books) {
 }
 
 for (const user of seed.users) {
-    await createUser(user);
-}
-
-// Temporary: these shelves will belong to users once there are users
-for (const shelf of seed.shelves) {
-    const { id: shelfId } = createShelf({ title: shelf.title });
-    for (const title of shelf.books) {
-        const bookId = bookIds[title];
-        if (!bookId) {
-            throw new Error(`Book '${title}' not found in books.json`);
+    const { id: userId } = await createUser(user);
+    for (const shelf of user.shelves) {
+        const { id: shelfId } = createShelf({ title: shelf.title, ownerId: userId });
+        for (const title of shelf.books) {
+            const bookId = bookIds[title];
+            if (!bookId) {
+                throw new Error(`Book '${title}' not found in books.json`);
+            }
+            addBookToShelf(shelfId, bookId);
         }
-        addBookToShelf(shelfId, bookId);
     }
 }
