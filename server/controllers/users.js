@@ -1,4 +1,4 @@
-import { ValidationError } from "../tools/errors.js";
+import { SchemaValidationError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { validateSchema } from "../tools/validation.js";
@@ -18,7 +18,8 @@ export async function createUserController(ctx) {
         ctx.flash = `Ignored registration for '${username}'`;
         return redirect("/signup", ctx);
     } catch (error) {
-        if (!(error instanceof ValidationError)) throw error;
+        if (!(error instanceof SchemaValidationError)) throw error;
+        ctx.data.errors = error.errors;
         ctx.status = 400;
         return signupFormController(ctx);
     }

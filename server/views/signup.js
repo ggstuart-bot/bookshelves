@@ -1,6 +1,7 @@
 import { html } from "../tools/html.js";
 
-export function signupView() {
+export function signupView(ctx) {
+    const { data: { errors } } = ctx;
     return html`
         <section>
             <header>
@@ -9,9 +10,13 @@ export function signupView() {
             </header>
             <form class="secondary" method="POST">
                 <label for="username">Username</label>
-                <input id="username" name="username" autocomplete="username">
+                <input id="username" name="username" autocomplete="username"
+                    aria-describedby="username-error" aria-invalid="${Boolean(errors?.username)}">
+                <span id="username-error" class="error">${errors?.username ?? ""}</span>
                 <label for="password">Password</label>
-                <input id="password" type="password" name="password" autocomplete="new-password">
+                <input id="password" type="password" name="password" autocomplete="new-password"
+                    aria-describedby="password-error" aria-invalid="${Boolean(errors?.password)}">
+                <span id="password-error" class="error">${errors?.password ?? ""}</span>
                 <button>sign up</button>
             </form>
         </section>
