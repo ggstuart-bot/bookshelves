@@ -1,6 +1,17 @@
+import { getUserById } from "../models/users.js";
 import { getShelfById } from "../models/shelves.js";
 import { getBookById } from "../models/books.js";
 import { NotFoundError } from "../tools/errors.js";
+
+export function withTargetUser(ctx, next) {
+    const { params: { userId } } = ctx;
+    const targetUser = getUserById(Number(userId));
+    if (!targetUser) {
+        throw new NotFoundError(`User ${userId} not found`);
+    }
+    ctx.data.targetUser = targetUser;
+    return next(ctx);
+}
 
 export function withShelf(ctx, next) {
     const { params: { shelfId } } = ctx;
