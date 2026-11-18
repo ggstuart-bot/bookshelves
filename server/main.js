@@ -25,7 +25,7 @@ import {
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { requireGuest, requireUser } from "./middleware/access.js";
+import { mayUseShelf, requireGuest, requireUser } from "./middleware/access.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
@@ -54,10 +54,10 @@ app.post("/signout", signoutController);
 app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
-app.post("/shelves/:shelfId/edit", mustBeSignedIn, withShelf, validateEditShelf, editShelfController);
-app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, deleteShelfController);
-app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withBook, addBookController);
-app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, withBook, removeBookController);
+app.post("/shelves/:shelfId/edit", mustBeSignedIn, withShelf, mayUseShelf, validateEditShelf, editShelfController);
+app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, deleteShelfController);
+app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withBook, mayUseShelf, addBookController);
+app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, withBook, mayUseShelf, removeBookController);
 
 export function server(request) {
     const url = new URL(request.url);
