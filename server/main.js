@@ -5,8 +5,8 @@ import {
     createShelfController,
     deleteShelfController,
     editShelfController,
+    myShelvesController,
     shelfController,
-    shelvesController,
 } from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
 import { Router } from "./tools/router.js";
@@ -28,7 +28,7 @@ import { withSession } from "./middleware/session.js";
 import { requireGuest, requireUser } from "./middleware/access.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
-const validateNewShelf = withValidation(shelfSchema, shelvesController);
+const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
 const validateNewUser = withValidation(userSchema, signupFormController);
 const validateSignin = withValidation(signinSchema, signinFormController);
@@ -51,7 +51,7 @@ app.post("/signup", mustBeSignedOut, validateNewUser, createUserController);
 app.get("/signin", mustBeSignedOut, signinFormController);
 app.post("/signin", mustBeSignedOut, validateSignin, signinController);
 app.post("/signout", signoutController);
-app.get("/shelves", shelvesController);
+app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
 app.post("/shelves/:shelfId/edit", mustBeSignedIn, withShelf, validateEditShelf, editShelfController);

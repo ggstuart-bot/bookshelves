@@ -1,19 +1,20 @@
 import {
     createShelf,
     deleteShelfById,
-    getShelves,
+    getShelvesByOwnerId,
     updateShelfTitleById,
 } from "../models/shelves.js";
 import { addThumbnails, getBooksByShelfId } from "../models/shelfBooks.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
-import { shelvesView } from "../views/shelves.js";
+import { myShelvesView } from "../views/myShelves.js";
 import { shelfView } from "../views/shelf.js";
 
-export function shelvesController(ctx) {
-    ctx.data.shelves = addThumbnails(getShelves());
-    ctx.data.title = "Shelves";
-    return render(shelvesView, ctx);
+export function myShelvesController(ctx) {
+    const { user } = ctx;
+    ctx.data.shelves = addThumbnails(getShelvesByOwnerId(user.id));
+    ctx.data.title = "My shelves";
+    return render(myShelvesView, ctx);
 }
 
 export function createShelfController(ctx) {
