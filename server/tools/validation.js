@@ -1,6 +1,6 @@
 import { SchemaValidationError, ValidationError } from "./errors.js";
 
-export function validateField(name, value, validators) {
+function validateField(name, value, validators) {
     for (const validate of validators) {
         validate(name, value);
     }
