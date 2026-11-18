@@ -20,7 +20,6 @@ export function layout(content, ctx) {
                     <a href="/" class="brand"><img src="/assets/icon.svg" alt=""> Bookshelves</a>
                     <nav>
                         ${navLink("/books", "books", url.pathname)}
-                        ${navLink("/shelves", "shelves", url.pathname)}
                         ${authLinks(user, url.pathname)}
                     </nav>
                 </header>
@@ -49,7 +48,10 @@ function userMessage(user) {
 
 function authLinks(user, path) {
     if (!user) return navLink("/signin", "sign in", path);
-    return postButton("/signout", "sign out");
+    return html`
+        ${navLink("/shelves", "my shelves", path)}
+        ${postButton("/signout", "sign out")}
+    `;
 }
 
 // A header link, marked as the current page when it matches the path exactly

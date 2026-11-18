@@ -1,33 +1,40 @@
 import {
     createShelf,
     deleteShelfById,
-    getShelves,
+    getShelvesByOwnerId,
     updateShelfTitleById,
 } from "../models/shelves.js";
 import { addThumbnails, getBooksByShelfId } from "../models/shelfBooks.js";
+import { getUserById } from "../models/users.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
-import { shelvesView } from "../views/shelves.js";
-import { shelfView } from "../views/shelf.js";
+import { myShelvesView } from "../views/myShelves.js";
+import { myShelfView } from "../views/myShelf.js";
+import { publicShelfView } from "../views/publicShelf.js";
 
-export function shelvesController(ctx) {
-    ctx.data.shelves = addThumbnails(getShelves());
-    ctx.data.title = "Shelves";
-    return render(shelvesView, ctx);
+export function myShelvesController(ctx) {
+    const { user } = ctx;
+    ctx.data.shelves = addThumbnails(getShelvesByOwnerId(user.id));
+    ctx.data.title = "My shelves";
+    return render(myShelvesView, ctx);
 }
 
 export function createShelfController(ctx) {
-    const { validated } = ctx;
-    const shelf = createShelf({ title: validated.title });
+    const { validated, user } = ctx;
+    const shelf = createShelf({ title: validated.title, ownerId: user.id });
     ctx.flash = `Shelf '${shelf.title}' created`;
     return redirect(`/shelves/${shelf.id}`, ctx);
 }
 
 export function shelfController(ctx) {
-    const { data: { shelf } } = ctx;
+    const { user, data: { shelf } } = ctx;
     ctx.data.title = shelf.title;
     ctx.data.books = getBooksByShelfId(shelf.id);
-    return render(shelfView, ctx);
+    if (user?.id === shelf.ownerId) {
+        return render(myShelfView, ctx);
+    }
+    ctx.data.owner = getUserById(shelf.ownerId);
+    return render(publicShelfView, ctx);
 }
 
 export function editShelfController(ctx) {
