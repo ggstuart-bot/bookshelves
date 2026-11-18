@@ -14,8 +14,7 @@ export async function createUserController(ctx) {
     const { request } = ctx;
     const formData = await request.formData();
     try {
-        validateSchema(formData, userSchema);
-        const username = formData.get("username") ?? "";
+        const { username } = validateSchema(formData, userSchema);
         ctx.flash = `Ignored registration for '${username}'`;
         return redirect("/signup", ctx);
     } catch (error) {
