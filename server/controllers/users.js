@@ -20,6 +20,7 @@ export async function createUserController(ctx) {
     } catch (error) {
         if (!(error instanceof SchemaValidationError)) throw error;
         ctx.data.errors = error.errors;
+        ctx.data.values = { username: error.values.username };
         ctx.status = 400;
         return signupFormController(ctx);
     }
