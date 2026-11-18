@@ -4,15 +4,26 @@ import { addBookController, removeBookController } from "./controllers/shelfBook
 import {
     createShelfController,
     deleteShelfController,
+    editShelfController,
     shelfController,
     shelvesController,
 } from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
-import { createUserController, signupFormController } from "./controllers/users.js";
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
+import { withValidation } from "./middleware/validation.js";
+import { shelfSchema } from "./schema/shelf.js";
+import { createUserController, signupFormController } from "./controllers/users.js";
+import { userSchema } from "./schema/user.js";
+import { signinController, signinFormController } from "./controllers/sessions.js";
+import { signinSchema } from "./schema/signin.js";
 import { withBook, withShelf } from "./middleware/resources.js";
+
+const validateNewShelf = withValidation(shelfSchema, shelvesController);
+const validateEditShelf = withValidation(shelfSchema, shelfController);
+const validateNewUser = withValidation(userSchema, signupFormController);
+const validateSignin = withValidation(signinSchema, signinFormController);
 
 const app = new Router();
 
@@ -24,10 +35,13 @@ app.get("/", homeController);
 app.get("/books", booksController);
 app.get("/books/:bookId", withBook, bookController);
 app.get("/signup", signupFormController);
-app.post("/signup", createUserController);
+app.post("/signup", validateNewUser, createUserController);
+app.get("/signin", signinFormController);
+app.post("/signin", validateSignin, signinController);
 app.get("/shelves", shelvesController);
-app.post("/shelves", createShelfController);
+app.post("/shelves", validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
+app.post("/shelves/:shelfId/edit", withShelf, validateEditShelf, editShelfController);
 app.post("/shelves/:shelfId/delete", withShelf, deleteShelfController);
 app.post("/shelves/:shelfId/books/:bookId/add", withShelf, withBook, addBookController);
 app.post("/shelves/:shelfId/books/:bookId/delete", withShelf, withBook, removeBookController);
