@@ -19,16 +19,20 @@ import { userSchema } from "./schema/user.js";
 import {
     signinController,
     signinFormController,
+    signinRedirectController,
     signoutController,
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
+import { requireUser } from "./middleware/access.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, shelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
 const validateNewUser = withValidation(userSchema, signupFormController);
 const validateSignin = withValidation(signinSchema, signinFormController);
+
+const mustBeSignedIn = requireUser(signinRedirectController);
 
 const app = new Router();
 
@@ -46,12 +50,12 @@ app.get("/signin", signinFormController);
 app.post("/signin", validateSignin, signinController);
 app.post("/signout", signoutController);
 app.get("/shelves", shelvesController);
-app.post("/shelves", validateNewShelf, createShelfController);
+app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
-app.post("/shelves/:shelfId/edit", withShelf, validateEditShelf, editShelfController);
-app.post("/shelves/:shelfId/delete", withShelf, deleteShelfController);
-app.post("/shelves/:shelfId/books/:bookId/add", withShelf, withBook, addBookController);
-app.post("/shelves/:shelfId/books/:bookId/delete", withShelf, withBook, removeBookController);
+app.post("/shelves/:shelfId/edit", mustBeSignedIn, withShelf, validateEditShelf, editShelfController);
+app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, deleteShelfController);
+app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withBook, addBookController);
+app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, withBook, removeBookController);
 
 export function server(request) {
     const url = new URL(request.url);
