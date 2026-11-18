@@ -3,7 +3,7 @@ import { DEFAULT_COVER } from "./partials/bookCard.js";
 import { postButton } from "./partials/postButton.js";
 
 export function bookView(ctx) {
-    const { data: { book, shelves } } = ctx;
+    const { user, data: { book, shelves } } = ctx;
 
     return html`
         <section>
@@ -23,7 +23,9 @@ export function bookView(ctx) {
         <aside>
             <h2>Add to a shelf</h2>
             <div class="grid">
-            ${addToShelfForms(book, shelves)}
+            ${user
+                ? addToShelfForms(book, shelves)
+                : html`<p><a href="/signin">Sign in</a> to add this book to a shelf</p>`}
             </div>
         </aside>
     `;
