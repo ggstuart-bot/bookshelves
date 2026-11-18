@@ -1,8 +1,19 @@
 import { db } from "../server/models/db.js";
 
+db.exec("DROP TABLE IF EXISTS sessions");
 db.exec("DROP TABLE IF EXISTS shelfBooks");
 db.exec("DROP TABLE IF EXISTS shelves");
 db.exec("DROP TABLE IF EXISTS books");
+db.exec("DROP TABLE IF EXISTS users");
+
+// Placeholder: this will need more columns later
+db.exec(`
+    CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        hashedPassword TEXT NOT NULL
+    )
+`);
 
 // Placeholder: this will need to change when shelves have owners
 db.exec(`
@@ -28,5 +39,14 @@ db.exec(`
         shelfId INTEGER NOT NULL REFERENCES shelves(id) ON DELETE CASCADE,
         bookId INTEGER NOT NULL REFERENCES books(id) ON DELETE CASCADE,
         PRIMARY KEY (shelfId, bookId)
+    )
+`);
+
+db.exec(`
+    CREATE TABLE sessions (
+        id TEXT PRIMARY KEY,
+        userId INTEGER NOT NULL,
+        expires TEXT NOT NULL,
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
     )
 `);

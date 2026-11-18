@@ -1,4 +1,14 @@
 {
+    "users": [
+        {
+            "username": "testUser1",
+            "password": "testUser1!"
+        },
+        {
+            "username": "testUser2",
+            "password": "testUser2!"
+        }
+    ],
     "shelves": [
         {
             "title": "classics",
