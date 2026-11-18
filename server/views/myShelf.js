@@ -4,7 +4,7 @@ import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
 import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 
-export function shelfView(ctx) {
+export function myShelfView(ctx) {
     const { data: { shelf, books, errors, values } } = ctx;
 
     return html`
@@ -16,7 +16,7 @@ export function shelfView(ctx) {
                 books.map((book) => bookCard(book, removeForm(shelf, book))),
                 html`No books yet, <a href="/books">find some books</a> to add`,
             )}
-            <p><a href="/shelves">Back to all shelves</a></p>
+            <p><a href="/shelves">Back to my shelves</a></p>
         </section>
         <aside>
             <h2>Rename shelf</h2>

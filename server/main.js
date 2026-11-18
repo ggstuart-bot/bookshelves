@@ -25,8 +25,9 @@ import {
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { requireGuest, requireUser } from "./middleware/access.js";
+import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import { withBook, withShelf } from "./middleware/resources.js";
+import { canUseShelf } from "./tools/permissions.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
@@ -35,6 +36,7 @@ const validateSignin = withValidation(signinSchema, signinFormController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
+const mayUseShelf = requirePermission(canUseShelf, "shelf");
 
 const app = new Router();
 
@@ -53,20 +55,22 @@ app.post("/signin", mustBeSignedOut, validateSignin, signinController);
 app.post("/signout", signoutController);
 app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
-app.get("/shelves/:shelfId", withShelf, shelfController);
+app.get("/shelves/:shelfId", withShelf, mayUseShelf, shelfController);
 app.post(
     "/shelves/:shelfId/edit",
     mustBeSignedIn,
     withShelf,
+    mayUseShelf,
     validateEditShelf,
     editShelfController,
 );
-app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, deleteShelfController);
+app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, deleteShelfController);
 app.post(
     "/shelves/:shelfId/books/:bookId/add",
     mustBeSignedIn,
     withShelf,
     withBook,
+    mayUseShelf,
     addBookController,
 );
 app.post(
@@ -74,6 +78,7 @@ app.post(
     mustBeSignedIn,
     withShelf,
     withBook,
+    mayUseShelf,
     removeBookController,
 );
 
