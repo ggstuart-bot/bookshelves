@@ -4,6 +4,7 @@ import { addBookController, removeBookController } from "./controllers/shelfBook
 import {
     createShelfController,
     deleteShelfController,
+    editShelfController,
     shelfController,
     shelvesController,
 } from "./controllers/shelves.js";
@@ -20,6 +21,7 @@ import { signinSchema } from "./schema/signin.js";
 import { withBook, withShelf } from "./middleware/resources.js";
 
 const validateNewShelf = withValidation(shelfSchema, shelvesController);
+const validateEditShelf = withValidation(shelfSchema, shelfController);
 const validateNewUser = withValidation(userSchema, signupFormController);
 const validateSignin = withValidation(signinSchema, signinFormController);
 
@@ -39,6 +41,7 @@ app.post("/signin", validateSignin, signinController);
 app.get("/shelves", shelvesController);
 app.post("/shelves", validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
+app.post("/shelves/:shelfId/edit", withShelf, validateEditShelf, editShelfController);
 app.post("/shelves/:shelfId/delete", withShelf, deleteShelfController);
 app.post("/shelves/:shelfId/books/:bookId/add", withShelf, withBook, addBookController);
 app.post("/shelves/:shelfId/books/:bookId/delete", withShelf, withBook, removeBookController);
