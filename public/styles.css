@@ -204,10 +204,19 @@ search > form {
     }
 }
 
-/* A secondary form is padded with rounded corners */
+/* A secondary form is padded with rounded corners, and its errors have an accent bar */
 form.secondary {
     padding: 1.5rem;
     border-radius: 0.5rem;
+    .error {
+        padding-inline-start: 0.5em;
+        border-inline-start: 0.25em solid var(--highlight);
+        font-size: 0.8em;
+        /* An empty error is hidden */
+        &:empty {
+            display: none;
+        }
+    }
 }
 
 /* Fixed, so the page never moves. Hover or focus brings it back */
