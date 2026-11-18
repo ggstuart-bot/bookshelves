@@ -16,9 +16,13 @@ export function homeView(ctx) {
             ${searchForm()}
             <h2>Everyone's shelves</h2>
             ${cardGrid(
-                shelves.map((shelf) => shelfCard(shelf, shelf.username)),
+                shelves.map((shelf) => shelfCard(shelf, ownerLink(shelf))),
                 "Nobody has made a shelf yet",
             )}
         </section>
     `;
+}
+
+function ownerLink(shelf) {
+    return html`<a href="/users/${shelf.ownerId}">${shelf.username}</a>`;
 }
