@@ -1,4 +1,4 @@
-import { maxLength, minLength, required } from "../tools/validators.js";
+import { hasDigit, hasSymbol, maxLength, minLength, required } from "../tools/validators.js";
 
 export const userSchema = {
     username: {
@@ -7,6 +7,6 @@ export const userSchema = {
     },
     password: {
         displayName: "Password",
-        validators: [required, minLength(8)],
+        validators: [required, minLength(8), hasDigit, hasSymbol],
     },
 };
