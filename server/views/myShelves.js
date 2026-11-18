@@ -13,6 +13,7 @@ export function myShelvesView(ctx) {
                 <p>Make a shelf, then add books to it from any book's page.</p>
             </header>
             <h2>Private shelves</h2>
+            <p>Only you can see these shelves</p>
             ${cardGrid(shelves.map(shelfCard), "No private shelves yet")}
         </section>
         <aside>
