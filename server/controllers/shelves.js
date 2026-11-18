@@ -1,9 +1,11 @@
 import { createShelf, deleteShelfById, getShelves } from "../models/shelves.js";
 import { addThumbnails, getBooksByShelfId } from "../models/shelfBooks.js";
+import { ValidationError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { shelvesView } from "../views/shelves.js";
 import { shelfView } from "../views/shelf.js";
+import { required } from "../tools/validators.js";
 
 export function shelvesController(ctx) {
     ctx.data.shelves = addThumbnails(getShelves());
@@ -15,8 +17,11 @@ export async function createShelfController(ctx) {
     const { request } = ctx;
     const formData = await request.formData();
     const title = formData.get("title") ?? "";
-    if (!title) {
-        ctx.data.errors = { title: "Title is a required field." };
+    try {
+        required("Title", title);
+    } catch (error) {
+        if (!(error instanceof ValidationError)) throw error;
+        ctx.data.errors = { title: error.message };
         ctx.status = 400;
         return shelvesController(ctx);
     }
