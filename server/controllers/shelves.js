@@ -16,6 +16,7 @@ export async function createShelfController(ctx) {
     const formData = await request.formData();
     const title = formData.get("title") ?? "";
     if (!title) {
+        ctx.data.errors = { title: "Title is a required field." };
         ctx.status = 400;
         return shelvesController(ctx);
     }
