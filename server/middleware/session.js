@@ -1,9 +1,8 @@
-import { getCookies } from "@std/http";
+import { currentSession } from "../tools/authentication.js";
 import { getUserById } from "../models/users.js";
 
 export function withSession(ctx, next) {
-    const { request } = ctx;
-    const { userId } = getCookies(request.headers);
-    ctx.user = userId && getUserById(userId);
+    ctx.session = currentSession(ctx);
+    ctx.user = ctx.session && getUserById(ctx.session.userId);
     return next(ctx);
 }
