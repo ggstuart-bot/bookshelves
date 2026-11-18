@@ -21,6 +21,7 @@ export function layout(content, ctx) {
                     <nav>
                         ${navLink("/books", "books", url.pathname)}
                         ${navLink("/shelves", "shelves", url.pathname)}
+                        ${navLink("/signup", "sign up", url.pathname)}
                     </nav>
                 </header>
                 ${flashMessage(data.flash)}
