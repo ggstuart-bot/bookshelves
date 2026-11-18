@@ -3,7 +3,7 @@ import { DEFAULT_COVER } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 
 export function shelvesView(ctx) {
-    const { data: { shelves } } = ctx;
+    const { data: { shelves, errors, values } } = ctx;
 
     return html`
         <section>
@@ -17,7 +17,9 @@ export function shelvesView(ctx) {
             <h2>New shelf</h2>
             <form class="secondary" method="POST" action="/shelves">
                 <label for="title">Title</label>
-                <input id="title" name="title">
+                <input id="title" name="title" value="${values?.title ?? ""}"
+                    aria-describedby="title-error" aria-invalid="${Boolean(errors?.title)}">
+                <span id="title-error" class="error">${errors?.title ?? ""}</span>
                 <button>create</button>
             </form>
         </aside>

@@ -8,6 +8,7 @@ import {
     shelvesController,
 } from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
+import { createUserController, signupFormController } from "./controllers/users.js";
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
@@ -22,6 +23,8 @@ app.get("/assets/*", staticController);
 app.get("/", homeController);
 app.get("/books", booksController);
 app.get("/books/:bookId", withBook, bookController);
+app.get("/signup", signupFormController);
+app.post("/signup", createUserController);
 app.get("/shelves", shelvesController);
 app.post("/shelves", createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
