@@ -1,8 +1,8 @@
 import { html } from "../tools/html.js";
 import { cardGrid } from "./partials/cardGrid.js";
-import { postButton } from "./partials/postButton.js";
 import { shelfCard } from "./partials/shelfCard.js";
 import { shelfTitleForm } from "./partials/shelfTitleForm.js";
+import { visibilityButton } from "./partials/visibilityButton.js";
 
 export function myShelvesView(ctx) {
     const { data: { shelves, errors, values } } = ctx;
@@ -18,17 +18,13 @@ export function myShelvesView(ctx) {
             <h2>Public shelves</h2>
             <p>Anyone can see these shelves</p>
             ${cardGrid(
-                publicShelves.map((shelf) =>
-                    shelfCard(shelf, postButton(`/shelves/${shelf.id}/unpublish`, "make private"))
-                ),
+                publicShelves.map((shelf) => shelfCard(shelf, visibilityButton(shelf))),
                 "No public shelves yet",
             )}
             <h2>Private shelves</h2>
             <p>Only you can see these shelves</p>
             ${cardGrid(
-                privateShelves.map((shelf) =>
-                    shelfCard(shelf, postButton(`/shelves/${shelf.id}/publish`, "make public"))
-                ),
+                privateShelves.map((shelf) => shelfCard(shelf, visibilityButton(shelf))),
                 "No private shelves yet",
             )}
         </section>
