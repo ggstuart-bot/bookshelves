@@ -27,7 +27,7 @@ export function getShelvesByOwnerId(ownerId) {
 // Placeholder: this will need to change when shelves can be public
 export function getShelves() {
     return db.prepare(`
-        SELECT shelves.id, title, ownerId, username,
+        SELECT shelves.id, title, ownerId, username, avatarId,
             (SELECT count(*) FROM shelfBooks WHERE shelfId = shelves.id) AS bookCount
         FROM shelves JOIN users ON users.id = shelves.ownerId
     `).all();
