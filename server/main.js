@@ -33,14 +33,9 @@ import {
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import {
-    mayChangeAvatar,
-    mayUseShelf,
-    mayViewUser,
-    requireGuest,
-    requireUser,
-} from "./middleware/access.js";
+import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
+import { canChangeAvatar, canUseShelf, canViewUser } from "./tools/permissions.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
@@ -50,6 +45,9 @@ const validateAvatar = withValidation(avatarSchema, userController);
 
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
+const mayViewUser = requirePermission(canViewUser, "targetUser");
+const mayChangeAvatar = requirePermission(canChangeAvatar, "targetUser");
+const mayUseShelf = requirePermission(canUseShelf, "shelf");
 
 const app = new Router();
 

@@ -6,6 +6,7 @@ import {
 } from "../models/shelves.js";
 import { addThumbnails, getBooksByShelfId } from "../models/shelfBooks.js";
 import { getUserById } from "../models/users.js";
+import { canUseShelf } from "../tools/permissions.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { myShelvesView } from "../views/myShelves.js";
@@ -30,7 +31,7 @@ export function shelfController(ctx) {
     const { user, data: { shelf } } = ctx;
     ctx.data.title = shelf.title;
     ctx.data.books = getBooksByShelfId(shelf.id);
-    if (user?.id === shelf.ownerId) {
+    if (canUseShelf(user, shelf)) {
         return render(myShelfView, ctx);
     }
     ctx.data.owner = getUserById(shelf.ownerId);
