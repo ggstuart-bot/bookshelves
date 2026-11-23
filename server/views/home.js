@@ -15,7 +15,10 @@ export function homeView(ctx) {
             <h2>Find a book</h2>
             ${searchForm()}
             <h2>Everyone's shelves</h2>
-            ${cardGrid(shelves.map(shelfCard), "Nobody has made a shelf yet")}
+            ${cardGrid(
+                shelves.map((shelf) => shelfCard(shelf, shelf.username)),
+                "Nobody has made a shelf yet",
+            )}
         </section>
     `;
 }

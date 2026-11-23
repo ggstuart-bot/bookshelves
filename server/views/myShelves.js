@@ -13,7 +13,7 @@ export function myShelvesView(ctx) {
                 <p>Make a shelf, then add books to it from any book's page.</p>
             </header>
             <h2>Your shelves</h2>
-            ${cardGrid(shelves.map(shelfCard), "No shelves yet")}
+            ${cardGrid(shelves.map((shelf) => shelfCard(shelf)), "No shelves yet")}
         </section>
         <aside>
             <h2>New shelf</h2>
