@@ -2,6 +2,7 @@ import {
     createShelf,
     deleteShelfById,
     getShelvesByOwnerId,
+    updateShelfIsPublicById,
     updateShelfTitleById,
 } from "../models/shelves.js";
 import { addThumbnails, getBooksByShelfId } from "../models/shelfBooks.js";
@@ -43,6 +44,14 @@ export function editShelfController(ctx) {
     const shelf = updateShelfTitleById(id, validated.title);
     ctx.flash = `Shelf renamed to '${shelf.title}'`;
     return redirect(`/shelves/${shelf.id}`, ctx);
+}
+
+export function publishShelfController(ctx) {
+    const { data: { shelf: { id } } } = ctx;
+    const shelf = updateShelfIsPublicById(id, 1);
+    ctx.flash = `Shelf '${shelf.title}' is now public`;
+    // Back to My shelves, where the shelf has moved to its new section
+    return redirect("/shelves", ctx);
 }
 
 export function deleteShelfController(ctx) {
