@@ -1,5 +1,5 @@
 import { createUser, updateUserAvatarById, updateUserIsPublicById } from "../models/users.js";
-import { getShelvesByOwnerId } from "../models/shelves.js";
+import { getPublicShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
 import { createFile, deleteFileById, getFileById } from "../models/files.js";
 import { signin } from "../tools/authentication.js";
@@ -24,7 +24,7 @@ export async function createUserController(ctx) {
 
 export function userController(ctx) {
     const { data: { targetUser } } = ctx;
-    ctx.data.shelves = addThumbnails(getShelvesByOwnerId(targetUser.id));
+    ctx.data.publicShelves = addThumbnails(getPublicShelvesByOwnerId(targetUser.id));
     ctx.data.title = targetUser.username;
     return render(userView, ctx);
 }
