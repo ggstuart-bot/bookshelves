@@ -14,7 +14,12 @@ import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
 import { withValidation } from "./middleware/validation.js";
 import { shelfSchema } from "./schema/shelf.js";
-import { createUserController, signupFormController, userController } from "./controllers/users.js";
+import {
+    avatarController,
+    createUserController,
+    signupFormController,
+    userController,
+} from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import {
     alreadySignedInRedirectController,
@@ -59,6 +64,7 @@ app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, del
 app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withBook, mayUseShelf, addBookController);
 app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, withBook, mayUseShelf, removeBookController);
 app.get("/users/:userId", withTargetUser, userController);
+app.get("/users/:userId/avatar", withTargetUser, avatarController);
 
 export function server(request) {
     const url = new URL(request.url);

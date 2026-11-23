@@ -9,3 +9,11 @@ export async function createFile(file) {
     `).get({ name: file.name, bytes, type: file.type });
     return id;
 }
+
+export function getFileById(id) {
+    const row = db.prepare(
+        `SELECT name, bytes, type FROM files WHERE id=:id`,
+    ).get({ id });
+    if (!row) return null;
+    return new File([row.bytes], row.name, { type: row.type });
+}
