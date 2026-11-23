@@ -5,13 +5,24 @@ db.exec("DROP TABLE IF EXISTS shelfBooks");
 db.exec("DROP TABLE IF EXISTS shelves");
 db.exec("DROP TABLE IF EXISTS books");
 db.exec("DROP TABLE IF EXISTS users");
+db.exec("DROP TABLE IF EXISTS files");
+
+db.exec(`
+    CREATE TABLE files (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        bytes BLOB NOT NULL,
+        type TEXT NOT NULL
+    )
+`);
 
 // Placeholder: this will need more columns later
 db.exec(`
     CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
-        hashedPassword TEXT NOT NULL
+        hashedPassword TEXT NOT NULL,
+        avatarId INTEGER REFERENCES files(id) ON DELETE SET NULL
     )
 `);
 
