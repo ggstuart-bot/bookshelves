@@ -17,7 +17,12 @@ export function myShelvesView(ctx) {
             </header>
             <h2>Public shelves</h2>
             <p>Anyone can see these shelves</p>
-            ${cardGrid(publicShelves.map((shelf) => shelfCard(shelf)), "No public shelves yet")}
+            ${cardGrid(
+                publicShelves.map((shelf) =>
+                    shelfCard(shelf, postButton(`/shelves/${shelf.id}/unpublish`, "make private"))
+                ),
+                "No public shelves yet",
+            )}
             <h2>Private shelves</h2>
             <p>Only you can see these shelves</p>
             ${cardGrid(

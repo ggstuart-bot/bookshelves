@@ -46,12 +46,22 @@ export function editShelfController(ctx) {
     return redirect(`/shelves/${shelf.id}`, ctx);
 }
 
-export function publishShelfController(ctx) {
+function changeShelfVisibility(ctx, isPublic) {
     const { data: { shelf: { id } } } = ctx;
-    const shelf = updateShelfIsPublicById(id, 1);
-    ctx.flash = `Shelf '${shelf.title}' is now public`;
+    const shelf = updateShelfIsPublicById(id, isPublic);
+    ctx.flash = isPublic
+        ? `Shelf '${shelf.title}' is now public`
+        : `Shelf '${shelf.title}' is now private`;
     // Back to My shelves, where the shelf has moved to its new section
     return redirect("/shelves", ctx);
+}
+
+export function publishShelfController(ctx) {
+    return changeShelfVisibility(ctx, 1);
+}
+
+export function unpublishShelfController(ctx) {
+    return changeShelfVisibility(ctx, 0);
 }
 
 export function deleteShelfController(ctx) {
