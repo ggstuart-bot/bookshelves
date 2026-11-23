@@ -75,7 +75,7 @@ app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, del
 app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withBook, mayUseShelf, addBookController);
 app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, withBook, mayUseShelf, removeBookController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
-app.get("/users/:userId/avatar", withTargetUser, avatarController);
+app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
 app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, mayChangeAvatar, validateAvatar, uploadAvatarController);
 
 export function server(request) {
