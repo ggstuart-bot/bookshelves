@@ -1,4 +1,5 @@
 import { html } from "../tools/html.js";
+import { canChangeAvatar, isSelf } from "../tools/permissions.js";
 import { avatarImage } from "./partials/avatarImage.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { shelfCard } from "./partials/shelfCard.js";
@@ -6,6 +7,8 @@ import { AVATAR_TYPES } from "../schema/avatar.js";
 
 export function userView(ctx) {
     const { data: { targetUser, shelves, errors }, user: currentUser } = ctx;
+    // Only you get controls, so only then is there an aside
+    const hasControls = isSelf(currentUser, targetUser);
 
     return html`
         <section>
@@ -16,10 +19,12 @@ export function userView(ctx) {
             <h2>Shelves</h2>
             ${cardGrid(shelves.map((shelf) => shelfCard(shelf)), "No shelves yet")}
         </section>
-        ${currentUser?.id === targetUser.id
+        ${hasControls
             ? html`
                 <aside>
-                    ${avatarForm(targetUser, errors)}
+                    ${canChangeAvatar(currentUser, targetUser)
+                        ? avatarForm(targetUser, errors)
+                        : ""}
                     ${visibilityForm(targetUser)}
                 </aside>
             `

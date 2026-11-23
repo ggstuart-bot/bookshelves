@@ -1,4 +1,5 @@
 import { NotFoundError } from "../tools/errors.js";
+import { canChangeAvatar, canViewUser } from "../tools/permissions.js";
 
 export function requireUser(fallback) {
     return (ctx, next) => {
@@ -21,13 +22,13 @@ export function mayUseShelf(ctx, next) {
 }
 
 export function mayChangeAvatar(ctx, next) {
-    if (ctx.user?.id === ctx.data.targetUser.id) return next(ctx);
+    if (canChangeAvatar(ctx.user, ctx.data.targetUser)) return next(ctx);
     const { url, request } = ctx;
     throw new NotFoundError(`${request.method} ${url.pathname} is not permitted`);
 }
 
 export function mayViewUser(ctx, next) {
-    if (ctx.user?.id === ctx.data.targetUser.id || ctx.data.targetUser.isPublic) return next(ctx);
+    if (canViewUser(ctx.user, ctx.data.targetUser)) return next(ctx);
     const { url, request } = ctx;
     throw new NotFoundError(`${request.method} ${url.pathname} is not permitted`);
 }
