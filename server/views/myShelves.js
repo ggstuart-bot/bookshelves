@@ -1,5 +1,6 @@
 import { html } from "../tools/html.js";
 import { cardGrid } from "./partials/cardGrid.js";
+import { postButton } from "./partials/postButton.js";
 import { shelfCard } from "./partials/shelfCard.js";
 import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 
@@ -19,7 +20,12 @@ export function myShelvesView(ctx) {
             ${cardGrid(publicShelves.map((shelf) => shelfCard(shelf)), "No public shelves yet")}
             <h2>Private shelves</h2>
             <p>Only you can see these shelves</p>
-            ${cardGrid(privateShelves.map((shelf) => shelfCard(shelf)), "No private shelves yet")}
+            ${cardGrid(
+                privateShelves.map((shelf) =>
+                    shelfCard(shelf, postButton(`/shelves/${shelf.id}/publish`, "make public"))
+                ),
+                "No private shelves yet",
+            )}
         </section>
         <aside>
             <h2>New shelf</h2>
