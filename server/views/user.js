@@ -2,6 +2,7 @@ import { html } from "../tools/html.js";
 import { canChangeAvatar, isSelf } from "../tools/permissions.js";
 import { avatarImage } from "./partials/avatarImage.js";
 import { cardGrid } from "./partials/cardGrid.js";
+import { postButton } from "./partials/postButton.js";
 import { shelfCard } from "./partials/shelfCard.js";
 import { AVATAR_TYPES } from "../schema/avatar.js";
 
@@ -50,5 +51,6 @@ function visibilityForm(user) {
     return html`
         <h2>Profile is ${user.isPublic ? "public" : "private"}</h2>
         <p>${user.isPublic ? "Anyone" : "Only you"} can see your profile</p>
+        ${user.isPublic ? "" : postButton(`/users/${user.id}/publish`, "make profile public")}
     `;
 }
