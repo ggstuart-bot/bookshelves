@@ -50,6 +50,7 @@ function authLinks(user, path) {
     if (!user) return navLink("/signin", "sign in", path);
     return html`
         ${navLink("/shelves", "my shelves", path)}
+        ${navLink(`/users/${user.id}`, "profile", path)}
         ${postButton("/signout", "sign out")}
     `;
 }
