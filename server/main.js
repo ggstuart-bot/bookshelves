@@ -18,6 +18,7 @@ import {
     avatarController,
     createUserController,
     profileController,
+    publishProfileController,
     signupFormController,
     uploadAvatarController,
     userController,
@@ -35,7 +36,12 @@ import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
 import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
-import { canChangeAvatar, canUseShelf, canViewUser } from "./tools/permissions.js";
+import {
+    canChangeAvatar,
+    canPublishProfile,
+    canUseShelf,
+    canViewUser,
+} from "./tools/permissions.js";
 
 const validateNewShelf = withValidation(shelfSchema, myShelvesController);
 const validateEditShelf = withValidation(shelfSchema, shelfController);
@@ -47,6 +53,7 @@ const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser");
 const mayChangeAvatar = requirePermission(canChangeAvatar, "targetUser");
+const mayPublishProfile = requirePermission(canPublishProfile, "targetUser");
 const mayUseShelf = requirePermission(canUseShelf, "shelf");
 
 const app = new Router();
@@ -75,6 +82,7 @@ app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, wi
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
 app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, mayChangeAvatar, validateAvatar, uploadAvatarController);
+app.post("/users/:userId/publish", mustBeSignedIn, withTargetUser, mayPublishProfile, publishProfileController);
 
 export function server(request) {
     const url = new URL(request.url);

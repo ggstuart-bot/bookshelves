@@ -1,4 +1,4 @@
-import { createUser, updateUserAvatarById } from "../models/users.js";
+import { createUser, updateUserAvatarById, updateUserIsPublicById } from "../models/users.js";
 import { getShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
 import { createFile, deleteFileById, getFileById } from "../models/files.js";
@@ -51,4 +51,11 @@ export async function uploadAvatarController(ctx) {
 
 export function profileController(ctx) {
     return redirect(`/users/${ctx.user.id}`, ctx);
+}
+
+export function publishProfileController(ctx) {
+    const { data: { targetUser } } = ctx;
+    updateUserIsPublicById(targetUser.id, 1);
+    ctx.flash = "Your profile is now public";
+    return redirect("/profile", ctx);
 }

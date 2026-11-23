@@ -1,5 +1,5 @@
 import { html } from "../tools/html.js";
-import { canChangeAvatar, isSelf } from "../tools/permissions.js";
+import { canChangeAvatar, canPublishProfile, isSelf } from "../tools/permissions.js";
 import { avatarImage } from "./partials/avatarImage.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
@@ -26,7 +26,7 @@ export function userView(ctx) {
                     ${canChangeAvatar(currentUser, targetUser)
                         ? avatarForm(targetUser, errors)
                         : ""}
-                    ${visibilityForm(targetUser)}
+                    ${canPublishProfile(currentUser, targetUser) ? visibilityForm(targetUser) : ""}
                 </aside>
             `
             : ""}

@@ -14,6 +14,12 @@ export function getUserById(id) {
     ).get({ id });
 }
 
+export function updateUserIsPublicById(id, isPublic) {
+    return db.prepare(
+        `UPDATE users SET isPublic=:isPublic WHERE id=:id`,
+    ).run({ id, isPublic });
+}
+
 export function updateUserAvatarById(id, avatarId) {
     return db.prepare(
         `UPDATE users SET avatarId=:avatarId WHERE id=:id`,
