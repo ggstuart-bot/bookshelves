@@ -22,7 +22,8 @@ export function userView(ctx) {
 function avatarForm(user) {
     return html`
         <h2>Change avatar</h2>
-        <form class="secondary" method="POST" action="/users/${user.id}/avatar">
+        <form class="secondary" method="POST" action="/users/${user.id}/avatar"
+            enctype="multipart/form-data">
             <label for="avatar">Avatar</label>
             <input id="avatar" type="file" name="avatar" accept="image/png,image/jpeg,image/webp"
                 required>
