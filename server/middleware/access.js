@@ -25,3 +25,9 @@ export function mayChangeAvatar(ctx, next) {
     const { url, request } = ctx;
     throw new NotFoundError(`${request.method} ${url.pathname} is not permitted`);
 }
+
+export function mayViewUser(ctx, next) {
+    if (ctx.user?.id === ctx.data.targetUser.id || ctx.data.targetUser.isPublic) return next(ctx);
+    const { url, request } = ctx;
+    throw new NotFoundError(`${request.method} ${url.pathname} is not permitted`);
+}
