@@ -22,13 +22,13 @@ export function getShelvesByOwnerId(ownerId) {
     `).all({ ownerId });
 }
 
-// All shelves, with the owner's username for display.
-// Placeholder: this will need to change when shelves can be public
-export function getShelves() {
+// All public shelves, with the owner's username for display
+export function getPublicShelves() {
     return db.prepare(`
         SELECT shelves.id, title, ownerId, username, avatarId,
             (SELECT count(*) FROM shelfBooks WHERE shelfId = shelves.id) AS bookCount
         FROM shelves JOIN users ON users.id = shelves.ownerId
+        WHERE shelves.isPublic = 1
     `).all();
 }
 
