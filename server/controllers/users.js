@@ -1,4 +1,6 @@
 import { createUser } from "../models/users.js";
+import { getShelvesByOwnerId } from "../models/shelves.js";
+import { addThumbnails } from "../models/shelfBooks.js";
 import { signin } from "../tools/authentication.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
@@ -20,6 +22,7 @@ export async function createUserController(ctx) {
 
 export function userController(ctx) {
     const { data: { targetUser } } = ctx;
+    ctx.data.shelves = addThumbnails(getShelvesByOwnerId(targetUser.id));
     ctx.data.title = targetUser.username;
     return render(userView, ctx);
 }
