@@ -1,5 +1,6 @@
 import { html } from "../tools/html.js";
 import { cardGrid } from "./partials/cardGrid.js";
+import { avatarImage } from "./partials/avatarImage.js";
 import { shelfCard } from "./partials/shelfCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
@@ -24,5 +25,7 @@ export function homeView(ctx) {
 }
 
 function ownerLink(shelf) {
-    return html`<a href="/users/${shelf.ownerId}">${shelf.username}</a>`;
+    return html`<a href="/users/${shelf.ownerId}">${
+        avatarImage({ id: shelf.ownerId, avatarId: shelf.avatarId })
+    }${shelf.username}</a>`;
 }
