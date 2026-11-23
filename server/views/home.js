@@ -5,7 +5,7 @@ import { shelfCard } from "./partials/shelfCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
 export function homeView(ctx) {
-    const { data: { shelves } } = ctx;
+    const { data: { publicShelves } } = ctx;
 
     return html`
         <section>
@@ -15,10 +15,10 @@ export function homeView(ctx) {
             </header>
             <h2>Find a book</h2>
             ${searchForm()}
-            <h2>Everyone's shelves</h2>
+            <h2>Public shelves</h2>
             ${cardGrid(
-                shelves.map((shelf) => shelfCard(shelf, ownerLink(shelf))),
-                "Nobody has made a shelf yet",
+                publicShelves.map((shelf) => shelfCard(shelf, ownerLink(shelf))),
+                "Nobody has shared a shelf yet",
             )}
         </section>
     `;

@@ -22,16 +22,17 @@ db.exec(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         hashedPassword TEXT NOT NULL,
-        avatarId INTEGER REFERENCES files(id) ON DELETE SET NULL
+        avatarId INTEGER REFERENCES files(id) ON DELETE SET NULL,
+        isPublic INTEGER NOT NULL DEFAULT 0
     )
 `);
 
-// Placeholder: this will need to change when shelves can be public
 db.exec(`
     CREATE TABLE shelves (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
-        ownerId INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
+        ownerId INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        isPublic INTEGER NOT NULL DEFAULT 0
     )
 `);
 

@@ -1,11 +1,15 @@
 import { html } from "../tools/html.js";
+import { canChangeAvatar, canPublishProfile, isSelf } from "../tools/permissions.js";
 import { avatarImage } from "./partials/avatarImage.js";
 import { cardGrid } from "./partials/cardGrid.js";
+import { postButton } from "./partials/postButton.js";
 import { shelfCard } from "./partials/shelfCard.js";
 import { AVATAR_TYPES } from "../schema/avatar.js";
 
 export function userView(ctx) {
-    const { data: { targetUser, shelves, errors }, user: currentUser } = ctx;
+    const { data: { targetUser, publicShelves, errors }, user: currentUser } = ctx;
+    // Only you get controls, so only then is there an aside
+    const hasControls = isSelf(currentUser, targetUser);
 
     return html`
         <section>
@@ -13,11 +17,18 @@ export function userView(ctx) {
                 <h1>${targetUser.username}</h1>
             </header>
             ${avatarImage(targetUser, `Avatar for '${targetUser.username}'`)}
-            <h2>Shelves</h2>
-            ${cardGrid(shelves.map((shelf) => shelfCard(shelf)), "No shelves yet")}
+            <h2>Public shelves</h2>
+            ${cardGrid(publicShelves.map((shelf) => shelfCard(shelf)), "No public shelves")}
         </section>
-        ${currentUser?.id === targetUser.id
-            ? html`<aside>${avatarForm(targetUser, errors)}</aside>`
+        ${hasControls
+            ? html`
+                <aside>
+                    ${canChangeAvatar(currentUser, targetUser)
+                        ? avatarForm(targetUser, errors)
+                        : ""}
+                    ${canPublishProfile(currentUser, targetUser) ? visibilityForm(targetUser) : ""}
+                </aside>
+            `
             : ""}
     `;
 }
@@ -33,5 +44,15 @@ function avatarForm(user, errors) {
             <span id="avatar-error" class="error">${errors?.avatar ?? ""}</span>
             <button>upload avatar</button>
         </form>
+    `;
+}
+
+function visibilityForm(user) {
+    const action = user.isPublic ? "unpublish" : "publish";
+    const label = user.isPublic ? "make profile private" : "make profile public";
+    return html`
+        <h2>Profile is ${user.isPublic ? "public" : "private"}</h2>
+        <p>${user.isPublic ? "Anyone" : "Only you"} can see your profile and public shelves</p>
+        ${postButton(`/users/${user.id}/${action}`, label)}
     `;
 }
