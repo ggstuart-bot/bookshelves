@@ -37,3 +37,11 @@ export function avatarController(ctx) {
     }
     return new Response(avatarFile);
 }
+
+export async function uploadAvatarController(ctx) {
+    const { request, data: { targetUser } } = ctx;
+    const formData = await request.formData();
+    console.log(formData);
+    ctx.flash = `Ignored avatar upload for '${targetUser.username}'`;
+    return redirect(`/users/${targetUser.id}`, ctx);
+}

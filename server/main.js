@@ -18,6 +18,7 @@ import {
     avatarController,
     createUserController,
     signupFormController,
+    uploadAvatarController,
     userController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
@@ -65,6 +66,7 @@ app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withB
 app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, withBook, mayUseShelf, removeBookController);
 app.get("/users/:userId", withTargetUser, userController);
 app.get("/users/:userId/avatar", withTargetUser, avatarController);
+app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, uploadAvatarController);
 
 export function server(request) {
     const url = new URL(request.url);
