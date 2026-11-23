@@ -17,3 +17,7 @@ export function getFileById(id) {
     if (!row) return null;
     return new File([row.bytes], row.name, { type: row.type });
 }
+
+export function deleteFileById(id) {
+    return db.prepare(`DELETE FROM files WHERE id=:id`).run({ id });
+}

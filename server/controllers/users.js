@@ -1,7 +1,7 @@
 import { createUser, updateUserAvatarById } from "../models/users.js";
 import { getShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
-import { createFile, getFileById } from "../models/files.js";
+import { createFile, deleteFileById, getFileById } from "../models/files.js";
 import { signin } from "../tools/authentication.js";
 import { NotFoundError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
@@ -43,6 +43,13 @@ export async function uploadAvatarController(ctx) {
     const formData = await request.formData();
     const avatarId = await createFile(formData.get("avatar"));
     updateUserAvatarById(targetUser.id, avatarId);
+    if (targetUser.avatarId) {
+        deleteFileById(targetUser.avatarId);
+    }
     ctx.flash = "Avatar updated";
-    return redirect(`/users/${targetUser.id}`, ctx);
+    return redirect("/profile", ctx);
+}
+
+export function profileController(ctx) {
+    return redirect(`/users/${ctx.user.id}`, ctx);
 }

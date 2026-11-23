@@ -17,6 +17,7 @@ import { shelfSchema } from "./schema/shelf.js";
 import {
     avatarController,
     createUserController,
+    profileController,
     signupFormController,
     uploadAvatarController,
     userController,
@@ -57,6 +58,7 @@ app.post("/signup", mustBeSignedOut, validateNewUser, createUserController);
 app.get("/signin", mustBeSignedOut, signinFormController);
 app.post("/signin", mustBeSignedOut, validateSignin, signinController);
 app.post("/signout", signoutController);
+app.get("/profile", mustBeSignedIn, profileController);
 app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, shelfController);
