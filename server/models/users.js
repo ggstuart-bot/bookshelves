@@ -12,6 +12,12 @@ export function getUserById(id) {
     return db.prepare(`SELECT id, username FROM users WHERE id=:id`).get({ id });
 }
 
+export function updateUserAvatarById(id, avatarId) {
+    return db.prepare(
+        `UPDATE users SET avatarId=:avatarId WHERE id=:id`,
+    ).run({ id, avatarId });
+}
+
 // Placeholder: this will need to change when users get more columns
 export async function createUser({ username, password }) {
     const hashedPassword = await hashPassword(password);
