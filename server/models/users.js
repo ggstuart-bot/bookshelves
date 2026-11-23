@@ -9,7 +9,7 @@ export function getUserByUsername(username) {
 
 // Placeholder: this will need to change when users get more columns
 export function getUserById(id) {
-    return db.prepare(`SELECT id, username FROM users WHERE id=:id`).get({ id });
+    return db.prepare(`SELECT id, username, avatarId FROM users WHERE id=:id`).get({ id });
 }
 
 export function updateUserAvatarById(id, avatarId) {
