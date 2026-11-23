@@ -48,9 +48,11 @@ function avatarForm(user, errors) {
 }
 
 function visibilityForm(user) {
+    const action = user.isPublic ? "unpublish" : "publish";
+    const label = user.isPublic ? "make profile private" : "make profile public";
     return html`
         <h2>Profile is ${user.isPublic ? "public" : "private"}</h2>
         <p>${user.isPublic ? "Anyone" : "Only you"} can see your profile</p>
-        ${user.isPublic ? "" : postButton(`/users/${user.id}/publish`, "make profile public")}
+        ${postButton(`/users/${user.id}/${action}`, label)}
     `;
 }

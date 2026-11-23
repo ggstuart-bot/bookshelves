@@ -53,9 +53,17 @@ export function profileController(ctx) {
     return redirect(`/users/${ctx.user.id}`, ctx);
 }
 
-export function publishProfileController(ctx) {
+function changeProfileVisibility(ctx, isPublic) {
     const { data: { targetUser } } = ctx;
-    updateUserIsPublicById(targetUser.id, 1);
-    ctx.flash = "Your profile is now public";
+    updateUserIsPublicById(targetUser.id, isPublic);
+    ctx.flash = isPublic ? "Your profile is now public" : "Your profile is now private";
     return redirect("/profile", ctx);
+}
+
+export function publishProfileController(ctx) {
+    return changeProfileVisibility(ctx, 1);
+}
+
+export function unpublishProfileController(ctx) {
+    return changeProfileVisibility(ctx, 0);
 }

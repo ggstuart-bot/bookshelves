@@ -20,6 +20,7 @@ import {
     profileController,
     publishProfileController,
     signupFormController,
+    unpublishProfileController,
     uploadAvatarController,
     userController,
 } from "./controllers/users.js";
@@ -83,6 +84,7 @@ app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
 app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, mayChangeAvatar, validateAvatar, uploadAvatarController);
 app.post("/users/:userId/publish", mustBeSignedIn, withTargetUser, mayPublishProfile, publishProfileController);
+app.post("/users/:userId/unpublish", mustBeSignedIn, withTargetUser, mayPublishProfile, unpublishProfileController);
 
 export function server(request) {
     const url = new URL(request.url);
