@@ -1,8 +1,13 @@
-import { createUser } from "../models/users.js";
+import { createUser, updateUserAvatarById } from "../models/users.js";
+import { getShelvesByOwnerId } from "../models/shelves.js";
+import { addThumbnails } from "../models/shelfBooks.js";
+import { createFile, deleteFileById, getFileById } from "../models/files.js";
 import { signin } from "../tools/authentication.js";
+import { NotFoundError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { signupView } from "../views/signup.js";
+import { userView } from "../views/user.js";
 
 export function signupFormController(ctx) {
     ctx.data.title = "Sign up";
@@ -15,4 +20,35 @@ export async function createUserController(ctx) {
     signin(user.id, ctx);
     ctx.flash = `Welcome, ${user.username}`;
     return redirect("/", ctx);
+}
+
+export function userController(ctx) {
+    const { data: { targetUser } } = ctx;
+    ctx.data.shelves = addThumbnails(getShelvesByOwnerId(targetUser.id));
+    ctx.data.title = targetUser.username;
+    return render(userView, ctx);
+}
+
+export function avatarController(ctx) {
+    const { data: { targetUser } } = ctx;
+    const avatarFile = targetUser.avatarId && getFileById(targetUser.avatarId);
+    if (!avatarFile) {
+        throw new NotFoundError(`No avatar for user ${targetUser.id}`);
+    }
+    return new Response(avatarFile);
+}
+
+export async function uploadAvatarController(ctx) {
+    const { validated: { avatar }, data: { targetUser } } = ctx;
+    const avatarId = await createFile(avatar);
+    updateUserAvatarById(targetUser.id, avatarId);
+    if (targetUser.avatarId) {
+        deleteFileById(targetUser.avatarId);
+    }
+    ctx.flash = "Avatar updated";
+    return redirect("/profile", ctx);
+}
+
+export function profileController(ctx) {
+    return redirect(`/users/${ctx.user.id}`, ctx);
 }

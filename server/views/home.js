@@ -1,7 +1,12 @@
 import { html } from "../tools/html.js";
+import { cardGrid } from "./partials/cardGrid.js";
+import { avatarImage } from "./partials/avatarImage.js";
+import { shelfCard } from "./partials/shelfCard.js";
 import { searchForm } from "./partials/searchForm.js";
 
-export function homeView() {
+export function homeView(ctx) {
+    const { data: { shelves } } = ctx;
+
     return html`
         <section>
             <header>
@@ -10,6 +15,17 @@ export function homeView() {
             </header>
             <h2>Find a book</h2>
             ${searchForm()}
+            <h2>Everyone's shelves</h2>
+            ${cardGrid(
+                shelves.map((shelf) => shelfCard(shelf, ownerLink(shelf))),
+                "Nobody has made a shelf yet",
+            )}
         </section>
     `;
+}
+
+function ownerLink(shelf) {
+    return html`<a href="/users/${shelf.ownerId}">${
+        avatarImage({ id: shelf.ownerId, avatarId: shelf.avatarId })
+    }${shelf.username}</a>`;
 }

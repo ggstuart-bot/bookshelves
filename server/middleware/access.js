@@ -19,3 +19,9 @@ export function mayUseShelf(ctx, next) {
     const { url, request } = ctx;
     throw new NotFoundError(`${request.method} ${url.pathname} is not permitted`);
 }
+
+export function mayChangeAvatar(ctx, next) {
+    if (ctx.user?.id === ctx.data.targetUser.id) return next(ctx);
+    const { url, request } = ctx;
+    throw new NotFoundError(`${request.method} ${url.pathname} is not permitted`);
+}
