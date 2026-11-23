@@ -9,7 +9,7 @@ export function publicShelfView(ctx) {
         <section>
             <header>
                 <h1>${shelf.title}</h1>
-                <p>A shelf by ${owner.username}</p>
+                <p>A shelf by <a href="/users/${owner.id}">${owner.username}</a></p>
             </header>
             ${cardGrid(books.map((book) => bookCard(book)), "No books on this shelf yet")}
             <p><a href="/">Back to home</a></p>
