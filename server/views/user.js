@@ -17,7 +17,12 @@ export function userView(ctx) {
             ${cardGrid(shelves.map((shelf) => shelfCard(shelf)), "No shelves yet")}
         </section>
         ${currentUser?.id === targetUser.id
-            ? html`<aside>${avatarForm(targetUser, errors)}</aside>`
+            ? html`
+                <aside>
+                    ${avatarForm(targetUser, errors)}
+                    ${visibilityForm(targetUser)}
+                </aside>
+            `
             : ""}
     `;
 }
@@ -33,5 +38,12 @@ function avatarForm(user, errors) {
             <span id="avatar-error" class="error">${errors?.avatar ?? ""}</span>
             <button>upload avatar</button>
         </form>
+    `;
+}
+
+function visibilityForm(user) {
+    return html`
+        <h2>Profile is ${user.isPublic ? "public" : "private"}</h2>
+        <p>${user.isPublic ? "Anyone" : "Only you"} can see your profile</p>
     `;
 }

@@ -22,7 +22,8 @@ db.exec(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         hashedPassword TEXT NOT NULL,
-        avatarId INTEGER REFERENCES files(id) ON DELETE SET NULL
+        avatarId INTEGER REFERENCES files(id) ON DELETE SET NULL,
+        isPublic INTEGER NOT NULL DEFAULT 0
     )
 `);
 

@@ -9,7 +9,9 @@ export function getUserByUsername(username) {
 
 // Placeholder: this will need to change when users get more columns
 export function getUserById(id) {
-    return db.prepare(`SELECT id, username, avatarId FROM users WHERE id=:id`).get({ id });
+    return db.prepare(
+        `SELECT id, username, avatarId, isPublic FROM users WHERE id=:id`,
+    ).get({ id });
 }
 
 export function updateUserAvatarById(id, avatarId) {
@@ -19,13 +21,13 @@ export function updateUserAvatarById(id, avatarId) {
 }
 
 // Placeholder: this will need to change when users get more columns
-export async function createUser({ username, password }) {
+export async function createUser({ username, password, isPublic = 0 }) {
     const hashedPassword = await hashPassword(password);
     return db.prepare(`
-        INSERT INTO users(username, hashedPassword)
-        VALUES (:username, :hashedPassword)
+        INSERT INTO users(username, hashedPassword, isPublic)
+        VALUES (:username, :hashedPassword, :isPublic)
         RETURNING *
-    `).get({ username, hashedPassword });
+    `).get({ username, hashedPassword, isPublic });
 }
 
 export function usernameExists(username) {
