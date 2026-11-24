@@ -44,6 +44,7 @@ import { withSession } from "./middleware/session.js";
 import { requireAdmin, requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 import {
+    canChangeAdmin,
     canChangeAvatar,
     canPublishProfile,
     canPublishShelf,
@@ -61,6 +62,7 @@ const validateAvatar = withValidation(avatarSchema, userController);
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser");
+const mayChangeAdmin = requirePermission(canChangeAdmin, "targetUser", ForbiddenError);
 const mayChangeAvatar = requirePermission(canChangeAvatar, "targetUser");
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser");
 const mayPublishShelf = requirePermission(canPublishShelf, "shelf", ForbiddenError);
@@ -98,8 +100,8 @@ app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
 app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, mayChangeAvatar, validateAvatar, uploadAvatarController);
 app.post("/users/:userId/publish", mustBeSignedIn, withTargetUser, mayPublishProfile, publishProfileController);
 app.post("/users/:userId/unpublish", mustBeSignedIn, withTargetUser, mayPublishProfile, unpublishProfileController);
-app.post("/users/:userId/promote", mustBeSignedIn, requireAdmin, withTargetUser, promoteController);
-app.post("/users/:userId/demote", mustBeSignedIn, requireAdmin, withTargetUser, demoteController);
+app.post("/users/:userId/promote", mustBeSignedIn, requireAdmin, withTargetUser, mayChangeAdmin, promoteController);
+app.post("/users/:userId/demote", mustBeSignedIn, requireAdmin, withTargetUser, mayChangeAdmin, demoteController);
 
 export function server(request) {
     const url = new URL(request.url);
