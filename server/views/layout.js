@@ -21,6 +21,7 @@ export function layout(content, ctx) {
                     <a href="/" class="brand"><img src="/assets/icon.svg" alt=""> Bookshelves</a>
                     <nav>
                         ${navLink("/books", "books", url.pathname)}
+                        ${adminLinks(user, url.pathname)}
                         ${authLinks(user, url.pathname)}
                     </nav>
                 </header>
@@ -45,6 +46,10 @@ function flashMessage(flash) {
 
 function userMessage(user) {
     return user ? html`<p>Signed in as '${user.username}'</p>` : "";
+}
+
+function adminLinks(user, path) {
+    return user?.isAdmin ? navLink("/users", "users", path) : "";
 }
 
 function authLinks(user, path) {
