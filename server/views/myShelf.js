@@ -1,4 +1,5 @@
 import { html } from "../tools/html.js";
+import { canPublishShelf } from "../tools/permissions.js";
 import { bookCard } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
@@ -6,7 +7,7 @@ import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 import { visibilityButton } from "./partials/visibilityButton.js";
 
 export function myShelfView(ctx) {
-    const { data: { shelf, books, errors, values } } = ctx;
+    const { user, data: { shelf, books, errors, values } } = ctx;
 
     return html`
         <section>
@@ -29,7 +30,7 @@ export function myShelfView(ctx) {
             )}
             <h2>Visibility</h2>
             <p>${shelf.isPublic ? "Anyone" : "Only you"} can see this shelf</p>
-            ${visibilityButton(shelf)}
+            ${shelf.isPublic || canPublishShelf(user, shelf) ? visibilityButton(shelf) : ""}
             <h2>Delete shelf</h2>
             <p>The books stay in the catalogue</p>
             ${postButton(`/shelves/${shelf.id}/delete`, "delete shelf")}
