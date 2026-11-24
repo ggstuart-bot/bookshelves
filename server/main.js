@@ -11,6 +11,7 @@ import {
     unpublishShelfController,
 } from "./controllers/shelves.js";
 import { staticController } from "./controllers/static.js";
+import { ForbiddenError } from "./tools/errors.js";
 import { Router } from "./tools/router.js";
 import { withLogs } from "./middleware/logging.js";
 import { withErrors } from "./middleware/errors.js";
@@ -19,12 +20,15 @@ import { shelfSchema } from "./schema/shelf.js";
 import {
     avatarController,
     createUserController,
+    demoteController,
     profileController,
+    promoteController,
     publishProfileController,
     signupFormController,
     unpublishProfileController,
     uploadAvatarController,
     userController,
+    usersController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import { avatarSchema } from "./schema/avatar.js";
@@ -37,11 +41,13 @@ import {
 } from "./controllers/sessions.js";
 import { signinSchema } from "./schema/signin.js";
 import { withSession } from "./middleware/session.js";
-import { requireGuest, requirePermission, requireUser } from "./middleware/access.js";
+import { requireAdmin, requireGuest, requirePermission, requireUser } from "./middleware/access.js";
 import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 import {
+    canChangeAdmin,
     canChangeAvatar,
     canPublishProfile,
+    canPublishShelf,
     canUseShelf,
     canViewShelf,
     canViewUser,
@@ -56,8 +62,10 @@ const validateAvatar = withValidation(avatarSchema, userController);
 const mustBeSignedIn = requireUser(signinRedirectController);
 const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser");
+const mayChangeAdmin = requirePermission(canChangeAdmin, "targetUser", ForbiddenError);
 const mayChangeAvatar = requirePermission(canChangeAvatar, "targetUser");
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser");
+const mayPublishShelf = requirePermission(canPublishShelf, "shelf", ForbiddenError);
 const mayViewShelf = requirePermission(canViewShelf, "shelf");
 const mayUseShelf = requirePermission(canUseShelf, "shelf");
 
@@ -81,16 +89,19 @@ app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, mayViewShelf, shelfController);
 app.post("/shelves/:shelfId/edit", mustBeSignedIn, withShelf, mayUseShelf, validateEditShelf, editShelfController);
-app.post("/shelves/:shelfId/publish", mustBeSignedIn, withShelf, mayUseShelf, publishShelfController);
+app.post("/shelves/:shelfId/publish", mustBeSignedIn, withShelf, mayUseShelf, mayPublishShelf, publishShelfController);
 app.post("/shelves/:shelfId/unpublish", mustBeSignedIn, withShelf, mayUseShelf, unpublishShelfController);
 app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, deleteShelfController);
 app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withBook, mayUseShelf, addBookController);
 app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, withBook, mayUseShelf, removeBookController);
+app.get("/users", mustBeSignedIn, requireAdmin, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
 app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, mayChangeAvatar, validateAvatar, uploadAvatarController);
 app.post("/users/:userId/publish", mustBeSignedIn, withTargetUser, mayPublishProfile, publishProfileController);
 app.post("/users/:userId/unpublish", mustBeSignedIn, withTargetUser, mayPublishProfile, unpublishProfileController);
+app.post("/users/:userId/promote", mustBeSignedIn, requireAdmin, withTargetUser, mayChangeAdmin, promoteController);
+app.post("/users/:userId/demote", mustBeSignedIn, requireAdmin, withTargetUser, mayChangeAdmin, demoteController);
 
 export function server(request) {
     const url = new URL(request.url);

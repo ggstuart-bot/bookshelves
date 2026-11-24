@@ -1,5 +1,11 @@
-import { createUser, updateUserAvatarById, updateUserIsPublicById } from "../models/users.js";
-import { getPublicShelvesByOwnerId } from "../models/shelves.js";
+import {
+    createUser,
+    getUsers,
+    updateUserAvatarById,
+    updateUserIsAdminById,
+    updateUserIsPublicById,
+} from "../models/users.js";
+import { getPublicShelvesByOwnerId, unpublishShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
 import { createFile, deleteFileById, getFileById } from "../models/files.js";
 import { signin } from "../tools/authentication.js";
@@ -7,6 +13,7 @@ import { NotFoundError } from "../tools/errors.js";
 import { redirect } from "../tools/redirect.js";
 import { render } from "../tools/render.js";
 import { signupView } from "../views/signup.js";
+import { usersView } from "../views/users.js";
 import { userView } from "../views/user.js";
 
 export function signupFormController(ctx) {
@@ -20,6 +27,12 @@ export async function createUserController(ctx) {
     signin(user.id, ctx);
     ctx.flash = `Welcome, ${user.username}`;
     return redirect("/", ctx);
+}
+
+export function usersController(ctx) {
+    ctx.data.users = getUsers();
+    ctx.data.title = "Users";
+    return render(usersView, ctx);
 }
 
 export function userController(ctx) {
@@ -53,9 +66,31 @@ export function profileController(ctx) {
     return redirect(`/users/${ctx.user.id}`, ctx);
 }
 
+function changeAdminStatus(ctx, isAdmin) {
+    const { data: { targetUser } } = ctx;
+    updateUserIsAdminById(targetUser.id, isAdmin);
+    ctx.flash = isAdmin
+        ? `'${targetUser.username}' is now an admin`
+        : `'${targetUser.username}' is no longer an admin`;
+    return redirect("/users", ctx);
+}
+
+export function promoteController(ctx) {
+    return changeAdminStatus(ctx, 1);
+}
+
+export function demoteController(ctx) {
+    return changeAdminStatus(ctx, 0);
+}
+
+// Unpublishing a profile also unpublishes its shelves,
+// so a public shelf always has a public owner
 function changeProfileVisibility(ctx, isPublic) {
     const { data: { targetUser } } = ctx;
     updateUserIsPublicById(targetUser.id, isPublic);
+    if (!isPublic) {
+        unpublishShelvesByOwnerId(targetUser.id);
+    }
     ctx.flash = isPublic ? "Your profile is now public" : "Your profile is now private";
     return redirect("/profile", ctx);
 }

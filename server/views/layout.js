@@ -1,4 +1,5 @@
 import { html } from "../tools/html.js";
+import { isAdmin } from "../tools/permissions.js";
 import { avatarImage } from "./partials/avatarImage.js";
 import { postButton } from "./partials/postButton.js";
 
@@ -21,6 +22,7 @@ export function layout(content, ctx) {
                     <a href="/" class="brand"><img src="/assets/icon.svg" alt=""> Bookshelves</a>
                     <nav>
                         ${navLink("/books", "books", url.pathname)}
+                        ${adminLinks(user, url.pathname)}
                         ${authLinks(user, url.pathname)}
                     </nav>
                 </header>
@@ -45,6 +47,10 @@ function flashMessage(flash) {
 
 function userMessage(user) {
     return user ? html`<p>Signed in as '${user.username}'</p>` : "";
+}
+
+function adminLinks(user, path) {
+    return isAdmin(user) ? navLink("/users", "users", path) : "";
 }
 
 function authLinks(user, path) {

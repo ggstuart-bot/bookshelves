@@ -1,11 +1,12 @@
 import { html } from "../tools/html.js";
+import { canPublishShelf } from "../tools/permissions.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { shelfCard } from "./partials/shelfCard.js";
 import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 import { visibilityButton } from "./partials/visibilityButton.js";
 
 export function myShelvesView(ctx) {
-    const { data: { shelves, errors, values } } = ctx;
+    const { user, data: { shelves, errors, values } } = ctx;
     const publicShelves = shelves.filter((shelf) => shelf.isPublic);
     const privateShelves = shelves.filter((shelf) => !shelf.isPublic);
 
@@ -24,9 +25,14 @@ export function myShelvesView(ctx) {
             <h2>Private shelves</h2>
             <p>Only you can see these shelves</p>
             ${cardGrid(
-                privateShelves.map((shelf) => shelfCard(shelf, visibilityButton(shelf))),
+                privateShelves.map((shelf) =>
+                    shelfCard(shelf, canPublishShelf(user, shelf) ? visibilityButton(shelf) : "")
+                ),
                 "No private shelves yet",
             )}
+            ${user.isPublic
+                ? ""
+                : html`<p><a href="/profile">Publish your profile</a> to share shelves</p>`}
         </section>
         <aside>
             <h2>New shelf</h2>
