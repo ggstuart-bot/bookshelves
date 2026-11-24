@@ -30,6 +30,9 @@ export function myShelvesView(ctx) {
                 ),
                 "No private shelves yet",
             )}
+            ${user.isPublic
+                ? ""
+                : html`<p><a href="/profile">Publish your profile</a> to share shelves</p>`}
         </section>
         <aside>
             <h2>New shelf</h2>

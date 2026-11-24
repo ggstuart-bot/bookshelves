@@ -29,13 +29,25 @@ export function myShelfView(ctx) {
                 "rename",
             )}
             <h2>Visibility</h2>
-            <p>${shelf.isPublic ? "Anyone" : "Only you"} can see this shelf</p>
-            ${shelf.isPublic || canPublishShelf(user, shelf) ? visibilityButton(shelf) : ""}
+            ${visibilityControls(user, shelf)}
             <h2>Delete shelf</h2>
             <p>The books stay in the catalogue</p>
             ${postButton(`/shelves/${shelf.id}/delete`, "delete shelf")}
         </aside>
     `;
+}
+
+// Who can see the shelf, then the button, or a link if the profile is private
+function visibilityControls(user, shelf) {
+    if (shelf.isPublic) {
+        return html`<p>Anyone can see this shelf</p>
+        ${visibilityButton(shelf)}`;
+    }
+    const control = canPublishShelf(user, shelf)
+        ? visibilityButton(shelf)
+        : html`<p><a href="/profile">Publish your profile</a> to share shelves</p>`;
+    return html`<p>Only you can see this shelf</p>
+        ${control}`;
 }
 
 function removeForm(shelf, book) {
