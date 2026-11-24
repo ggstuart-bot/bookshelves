@@ -22,6 +22,10 @@ function userCard(user) {
             ${avatarImage(user)}
             <div>
                 <h2><a href="/users/${user.id}">${user.username}</a></h2>
+                <p>
+                    ${user.isAdmin ? html`<span class="badge">admin</span>` : ""}
+                    <span class="badge">${user.isPublic ? "public" : "private"}</span>
+                </p>
             </div>
         </li>
     `;
