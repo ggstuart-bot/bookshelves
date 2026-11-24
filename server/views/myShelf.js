@@ -1,4 +1,5 @@
 import { html } from "../tools/html.js";
+import { canPublishShelf } from "../tools/permissions.js";
 import { bookCard } from "./partials/bookCard.js";
 import { cardGrid } from "./partials/cardGrid.js";
 import { postButton } from "./partials/postButton.js";
@@ -28,12 +29,27 @@ export function myShelfView(ctx) {
                 "rename",
             )}
             <h2>Visibility</h2>
-            <p>${shelf.isPublic ? "Anyone" : "Only you"} can see this shelf</p>
-            ${visibilityButton(user, shelf)}
+            ${visibilityControls(user, shelf)}
             <h2>Delete shelf</h2>
             <p>The books stay in the catalogue</p>
             ${postButton(`/shelves/${shelf.id}/delete`, "delete shelf")}
         </aside>
+    `;
+}
+
+// Who can see the shelf, then the button, or a link if the profile is private
+function visibilityControls(user, shelf) {
+    if (shelf.isPublic) {
+        return html`<p>Anyone can see this shelf</p>
+        ${visibilityButton(user, shelf)}`;
+    }
+    if (canPublishShelf(user, shelf)) {
+        return html`<p>Only you can see this shelf</p>
+        ${visibilityButton(user, shelf)}`;
+    }
+    return html`
+        <p>Only you can see this shelf</p>
+        <p><a href="/profile">Publish your profile</a> to share shelves</p>
     `;
 }
 
