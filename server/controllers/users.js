@@ -1,4 +1,9 @@
-import { createUser, updateUserAvatarById, updateUserIsPublicById } from "../models/users.js";
+import {
+    createUser,
+    getUsers,
+    updateUserAvatarById,
+    updateUserIsPublicById,
+} from "../models/users.js";
 import { getPublicShelvesByOwnerId, unpublishShelvesByOwnerId } from "../models/shelves.js";
 import { addThumbnails } from "../models/shelfBooks.js";
 import { createFile, deleteFileById, getFileById } from "../models/files.js";
@@ -24,6 +29,7 @@ export async function createUserController(ctx) {
 }
 
 export function usersController(ctx) {
+    ctx.data.users = getUsers();
     ctx.data.title = "Users";
     return render(usersView, ctx);
 }

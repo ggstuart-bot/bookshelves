@@ -1,6 +1,10 @@
 import { hashPassword } from "../tools/hash.js";
 import { db } from "./db.js";
 
+export function getUsers() {
+    return db.prepare(`SELECT id, username, isAdmin, avatarId, isPublic FROM users;`).all();
+}
+
 export function getUserByUsername(username) {
     return db.prepare(
         `SELECT * FROM users WHERE username=:username`,
