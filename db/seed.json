@@ -65,6 +65,7 @@
         {
             "username": "adminUser",
             "password": "adminUser1!",
+            "isAdmin": 1,
             "avatar": "adminUser.webp",
             "isPublic": 1,
             "shelves": [

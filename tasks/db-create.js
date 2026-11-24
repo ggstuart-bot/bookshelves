@@ -16,12 +16,12 @@ db.exec(`
     )
 `);
 
-// Placeholder: this will need more columns later
 db.exec(`
     CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         hashedPassword TEXT NOT NULL,
+        isAdmin INTEGER DEFAULT 0,
         avatarId INTEGER REFERENCES files(id) ON DELETE SET NULL,
         isPublic INTEGER NOT NULL DEFAULT 0
     )
