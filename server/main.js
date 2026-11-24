@@ -20,6 +20,7 @@ import { shelfSchema } from "./schema/shelf.js";
 import {
     avatarController,
     createUserController,
+    demoteController,
     profileController,
     promoteController,
     publishProfileController,
@@ -98,6 +99,7 @@ app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, mayChangeAvata
 app.post("/users/:userId/publish", mustBeSignedIn, withTargetUser, mayPublishProfile, publishProfileController);
 app.post("/users/:userId/unpublish", mustBeSignedIn, withTargetUser, mayPublishProfile, unpublishProfileController);
 app.post("/users/:userId/promote", mustBeSignedIn, requireAdmin, withTargetUser, promoteController);
+app.post("/users/:userId/demote", mustBeSignedIn, requireAdmin, withTargetUser, demoteController);
 
 export function server(request) {
     const url = new URL(request.url);

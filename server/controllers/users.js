@@ -66,11 +66,21 @@ export function profileController(ctx) {
     return redirect(`/users/${ctx.user.id}`, ctx);
 }
 
-export function promoteController(ctx) {
+function changeAdminStatus(ctx, isAdmin) {
     const { data: { targetUser } } = ctx;
-    updateUserIsAdminById(targetUser.id, 1);
-    ctx.flash = `'${targetUser.username}' is now an admin`;
+    updateUserIsAdminById(targetUser.id, isAdmin);
+    ctx.flash = isAdmin
+        ? `'${targetUser.username}' is now an admin`
+        : `'${targetUser.username}' is no longer an admin`;
     return redirect("/users", ctx);
+}
+
+export function promoteController(ctx) {
+    return changeAdminStatus(ctx, 1);
+}
+
+export function demoteController(ctx) {
+    return changeAdminStatus(ctx, 0);
 }
 
 // Unpublishing a profile also unpublishes its shelves,
