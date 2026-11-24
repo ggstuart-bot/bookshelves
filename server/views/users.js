@@ -1,6 +1,7 @@
 import { html } from "../tools/html.js";
 import { avatarImage } from "./partials/avatarImage.js";
 import { cardGrid } from "./partials/cardGrid.js";
+import { postButton } from "./partials/postButton.js";
 
 export function usersView(ctx) {
     const { data: { users } } = ctx;
@@ -10,13 +11,14 @@ export function usersView(ctx) {
             <header>
                 <h1>Users</h1>
             </header>
-            ${cardGrid(users.map((user) => userCard(user)), "No users")}
+            ${cardGrid(users.map((user) => userCard(user, adminButton(user))), "No users")}
         </section>
     `;
 }
 
 // A user as a card in a .grid list, with their avatar as the picture.
-function userCard(user) {
+// Pass extra content (e.g. the admin button) to show it in the card footer
+function userCard(user, footer) {
     return html`
         <li class="card user">
             ${avatarImage(user)}
@@ -26,7 +28,14 @@ function userCard(user) {
                     ${user.isAdmin ? html`<span class="badge">admin</span>` : ""}
                     <span class="badge">${user.isPublic ? "public" : "private"}</span>
                 </p>
+                ${footer ? html`<footer>${footer}</footer>` : ""}
             </div>
         </li>
     `;
+}
+
+function adminButton(user) {
+    const action = user.isAdmin ? "demote" : "promote";
+    const label = user.isAdmin ? "remove admin" : "make admin";
+    return postButton(`/users/${user.id}/${action}`, label);
 }
