@@ -21,6 +21,7 @@ import {
     avatarController,
     createUserController,
     profileController,
+    promoteController,
     publishProfileController,
     signupFormController,
     unpublishProfileController,
@@ -96,6 +97,7 @@ app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
 app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, mayChangeAvatar, validateAvatar, uploadAvatarController);
 app.post("/users/:userId/publish", mustBeSignedIn, withTargetUser, mayPublishProfile, publishProfileController);
 app.post("/users/:userId/unpublish", mustBeSignedIn, withTargetUser, mayPublishProfile, unpublishProfileController);
+app.post("/users/:userId/promote", mustBeSignedIn, requireAdmin, withTargetUser, promoteController);
 
 export function server(request) {
     const url = new URL(request.url);

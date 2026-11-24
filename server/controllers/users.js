@@ -2,6 +2,7 @@ import {
     createUser,
     getUsers,
     updateUserAvatarById,
+    updateUserIsAdminById,
     updateUserIsPublicById,
 } from "../models/users.js";
 import { getPublicShelvesByOwnerId, unpublishShelvesByOwnerId } from "../models/shelves.js";
@@ -63,6 +64,13 @@ export async function uploadAvatarController(ctx) {
 
 export function profileController(ctx) {
     return redirect(`/users/${ctx.user.id}`, ctx);
+}
+
+export function promoteController(ctx) {
+    const { data: { targetUser } } = ctx;
+    updateUserIsAdminById(targetUser.id, 1);
+    ctx.flash = `'${targetUser.username}' is now an admin`;
+    return redirect("/users", ctx);
 }
 
 // Unpublishing a profile also unpublishes its shelves,
