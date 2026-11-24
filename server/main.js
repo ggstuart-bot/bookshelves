@@ -26,6 +26,7 @@ import {
     unpublishProfileController,
     uploadAvatarController,
     userController,
+    usersController,
 } from "./controllers/users.js";
 import { userSchema } from "./schema/user.js";
 import { avatarSchema } from "./schema/avatar.js";
@@ -89,6 +90,7 @@ app.post("/shelves/:shelfId/unpublish", mustBeSignedIn, withShelf, mayUseShelf, 
 app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, deleteShelfController);
 app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withBook, mayUseShelf, addBookController);
 app.post("/shelves/:shelfId/books/:bookId/delete", mustBeSignedIn, withShelf, withBook, mayUseShelf, removeBookController);
+app.get("/users", mustBeSignedIn, usersController);
 app.get("/users/:userId", withTargetUser, mayViewUser, userController);
 app.get("/users/:userId/avatar", withTargetUser, mayViewUser, avatarController);
 app.post("/users/:userId/avatar", mustBeSignedIn, withTargetUser, mayChangeAvatar, validateAvatar, uploadAvatarController);
