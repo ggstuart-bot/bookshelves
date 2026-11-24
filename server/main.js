@@ -42,6 +42,7 @@ import { withBook, withShelf, withTargetUser } from "./middleware/resources.js";
 import {
     canChangeAvatar,
     canPublishProfile,
+    canPublishShelf,
     canUseShelf,
     canViewShelf,
     canViewUser,
@@ -58,6 +59,7 @@ const mustBeSignedOut = requireGuest(alreadySignedInRedirectController);
 const mayViewUser = requirePermission(canViewUser, "targetUser");
 const mayChangeAvatar = requirePermission(canChangeAvatar, "targetUser");
 const mayPublishProfile = requirePermission(canPublishProfile, "targetUser");
+const mayPublishShelf = requirePermission(canPublishShelf, "shelf");
 const mayViewShelf = requirePermission(canViewShelf, "shelf");
 const mayUseShelf = requirePermission(canUseShelf, "shelf");
 
@@ -81,7 +83,7 @@ app.get("/shelves", mustBeSignedIn, myShelvesController);
 app.post("/shelves", mustBeSignedIn, validateNewShelf, createShelfController);
 app.get("/shelves/:shelfId", withShelf, mayViewShelf, shelfController);
 app.post("/shelves/:shelfId/edit", mustBeSignedIn, withShelf, mayUseShelf, validateEditShelf, editShelfController);
-app.post("/shelves/:shelfId/publish", mustBeSignedIn, withShelf, mayUseShelf, publishShelfController);
+app.post("/shelves/:shelfId/publish", mustBeSignedIn, withShelf, mayUseShelf, mayPublishShelf, publishShelfController);
 app.post("/shelves/:shelfId/unpublish", mustBeSignedIn, withShelf, mayUseShelf, unpublishShelfController);
 app.post("/shelves/:shelfId/delete", mustBeSignedIn, withShelf, mayUseShelf, deleteShelfController);
 app.post("/shelves/:shelfId/books/:bookId/add", mustBeSignedIn, withShelf, withBook, mayUseShelf, addBookController);
