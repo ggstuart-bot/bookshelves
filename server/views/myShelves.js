@@ -5,7 +5,7 @@ import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 import { visibilityButton } from "./partials/visibilityButton.js";
 
 export function myShelvesView(ctx) {
-    const { data: { shelves, errors, values } } = ctx;
+    const { user, data: { shelves, errors, values } } = ctx;
     const publicShelves = shelves.filter((shelf) => shelf.isPublic);
     const privateShelves = shelves.filter((shelf) => !shelf.isPublic);
 
@@ -18,13 +18,13 @@ export function myShelvesView(ctx) {
             <h2>Public shelves</h2>
             <p>Anyone can see these shelves</p>
             ${cardGrid(
-                publicShelves.map((shelf) => shelfCard(shelf, visibilityButton(shelf))),
+                publicShelves.map((shelf) => shelfCard(shelf, visibilityButton(user, shelf))),
                 "No public shelves yet",
             )}
             <h2>Private shelves</h2>
             <p>Only you can see these shelves</p>
             ${cardGrid(
-                privateShelves.map((shelf) => shelfCard(shelf, visibilityButton(shelf))),
+                privateShelves.map((shelf) => shelfCard(shelf, visibilityButton(user, shelf))),
                 "No private shelves yet",
             )}
         </section>

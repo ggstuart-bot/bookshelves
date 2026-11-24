@@ -6,7 +6,7 @@ import { shelfTitleForm } from "./partials/shelfTitleForm.js";
 import { visibilityButton } from "./partials/visibilityButton.js";
 
 export function myShelfView(ctx) {
-    const { data: { shelf, books, errors, values } } = ctx;
+    const { user, data: { shelf, books, errors, values } } = ctx;
 
     return html`
         <section>
@@ -29,7 +29,7 @@ export function myShelfView(ctx) {
             )}
             <h2>Visibility</h2>
             <p>${shelf.isPublic ? "Anyone" : "Only you"} can see this shelf</p>
-            ${visibilityButton(shelf)}
+            ${visibilityButton(user, shelf)}
             <h2>Delete shelf</h2>
             <p>The books stay in the catalogue</p>
             ${postButton(`/shelves/${shelf.id}/delete`, "delete shelf")}
